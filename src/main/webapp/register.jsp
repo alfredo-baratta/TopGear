@@ -150,7 +150,7 @@
       <%
       if(request.getAttribute("error") != null) {
       %>
-      <p class="error-message"><%= request.getAttribute("error") %></p>
+      <p class="error-message"><%= request.getAttribute("messgerr") %></p>
       <%
       }
       %>
@@ -163,6 +163,7 @@
               maxlength="16"
               autofocus
               placeholder="CF123456789"
+              pattern="[A-Z]{6}[0-9]{2}[A-Z]{1}[0-9]{2}[A-Z]{1}[0-9]{3}[A-Z]{1}"
               required
             />
           </div>
@@ -194,7 +195,6 @@
             <input
               type="date"
               name="datanascita"
-              placeholder="example@gmail.com"
               required
             />
           </div>
@@ -209,7 +209,7 @@
             <label for="email">Città</label>
             <input
               type="text"
-              name="cognome"
+              name="citta"
               maxlength="30"
               placeholder="Salerno"
               required
@@ -235,6 +235,7 @@
               name="cap"
               maxlength="5"
               placeholder="84121"
+              pattern="[0-9]{5}"
               required
             />
           </div>

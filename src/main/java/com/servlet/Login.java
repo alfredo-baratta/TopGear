@@ -35,7 +35,7 @@ public class Login extends HttpServlet {
         if (email == null || password == null) {
         	request.setAttribute("error", Boolean.TRUE);
         	request.setAttribute("messgerr", "Parametri non presenti.");
-        	RequestDispatcher dispatcher = request.getRequestDispatcher("/index.jsp");
+        	RequestDispatcher dispatcher = request.getRequestDispatcher("/login.jsp");
         	dispatcher.forward(request, response);
         	return;
         }
@@ -43,7 +43,7 @@ public class Login extends HttpServlet {
         try {
 	        Connection conn = dataSource.getConnection();
 	        
-	        String query = "SELECT id FROM utente WHERE email = ? AND password = ?";
+	        String query = "SELECT CF, nome, cognome FROM utente WHERE email = ? AND pass = ?";
 	        PreparedStatement ps = conn.prepareStatement(query);
 	        
 	        password = DigestUtils.md5Hex(password);
@@ -54,8 +54,12 @@ public class Login extends HttpServlet {
 	        ResultSet rs = ps.executeQuery();
 	        
 	        if(rs.next()) {
-	        	String codiceFiscale = rs.getString("codicefiscale");
-	        	session.setAttribute("cf", codiceFiscale);
+	        	String codiceFiscale = rs.getString("CF");
+	        	String nome = rs.getString("nome");
+	        	String cognome = rs.getString("cognome");
+	        	session.setAttribute("username", codiceFiscale);
+	        	request.setAttribute("nome", nome);
+	        	request.setAttribute("cognome", cognome);
 	        	request.getRequestDispatcher("/index.jsp").forward(request, response);
 	        } else {
 	        	request.setAttribute("error", Boolean.TRUE);

@@ -131,7 +131,7 @@
       <%
       if(request.getAttribute("error") != null) {
       %>
-      <p class="error-message"><%= request.getAttribute("error") %></p>
+      <p class="error-message"><%= request.getAttribute("messgerr") %></p>
       <%
       }
       %>
@@ -144,6 +144,8 @@
             autofocus
             maxlength="50"
             placeholder="example@gmail.com"
+            value="<%= (String) request.getAttribute("email") != null ? 
+            		request.getParameter("email") : ""%>"
             required
           />
         </div>

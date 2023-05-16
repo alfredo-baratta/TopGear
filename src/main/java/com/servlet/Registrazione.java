@@ -68,10 +68,8 @@ public class Registrazione extends HttpServlet {
 	        
 	        ps.executeUpdate();
 	        
-	        HttpSession session = request.getSession(true);
-	    	session.setAttribute("cf", codiceFiscale);
-	    	
-	        request.getRequestDispatcher("/index.jsp").forward(request, response);
+	    	request.setAttribute("email", email);
+	        request.getRequestDispatcher("/login.jsp").forward(request, response);
 	        
         } catch (Exception e) {
         	System.out.println("Errore: " + e.getMessage());
