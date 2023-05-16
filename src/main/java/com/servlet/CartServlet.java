@@ -20,12 +20,14 @@ public class CartServlet extends HttpServlet {
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
+		HttpSession session = request.getSession(true);
+		Carrello cart = (Carrello)session.getAttribute("cart");
+		response.setContentType("text/html");
+		
 		String id_tmp1 = request.getParameter("id_remove");
 		String id_tmp2 = request.getParameter("id_change");
 		String id_tmp3 = request.getParameter("id_reset");
 		
-		HttpSession session = request.getSession(true);
-		Carrello cart = (Carrello)session.getAttribute("cart");
 		
 		if(id_tmp1 != null){
 			

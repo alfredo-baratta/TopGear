@@ -1,12 +1,13 @@
-<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
-    pageEncoding="ISO-8859-1"%>
+<%@page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1" %>
+<%@page import="com.servlet.CartServlet" %>
+<%@page import="java.util.ArrayList" %>
 <!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Document</title>
+    <title>Carrello</title>
     <style>
       body {
         min-height: 100vh;
@@ -33,6 +34,17 @@
         flex-direction: column;
         justify-content: center;
         align-items: center;
+      }
+      
+      .carrello-vuoto{
+      	width: 100%;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        align-items: center;
+        border: none;
+        outline: none;
+        margin-bottom: 15px;
       }
 
       .dettagli-riepilogo {
@@ -148,6 +160,9 @@
         .carrello-left {
           width: 100%;
         }
+        .carrello-vuoto{
+          width: 100%;
+        }
         .riepilogo {
           margin-top: 25px;
         }
@@ -202,7 +217,40 @@
     />
   </head>
   <body>
+  
+  <jsp:directive.page import="entities.*" />
+  <jsp:directive.page import="com.servlet.CartServlet"/>
+  <jsp:useBean id="cart" scope="session" class="entities.Carrello" />
+  
     <div class="container">
+      <%
+  	  if (cart.getNumProdotti() == 0){
+ 	  %>
+  		
+  		  <div class="carrello-left">
+  			  <div class="table-title">
+         		<h3>Carrello</h3>
+          		<button
+           		  style="
+             	    width: 30px;
+              	    height: 30px;
+              	    background-color: transparent;
+              	    border: 1px solid #f5f5f5;
+              		border-radius: 5px;
+            	  "
+          		>
+            	  <i class="fa fa-trash" aria-hidden="true"></i>
+          		</button>
+        	  </div>
+			<div class="carrello-vuoto" style="width: 100%">
+				<h4>Non sono presenti elementi nel carrello.</h4>
+			</div>
+  	   	  </div>
+  		
+  	  <%
+  	  } else {
+  	  %>
+    
       <div class="carrello-left">
         <div class="table-title">
           <h3>Carrello</h3>
@@ -226,52 +274,77 @@
               <th>PREZZO</th>
             </tr>
           </thead>
+          
+          <%
+          ArrayList<Prodotto> lista_prodotti = cart.getListaProdottiAsArrayList();
+      	  String[] temp = new String[8];
+      	
+      	  for (Prodotto p : lista_prodotti){
+      		
+      		temp[0] = p.getId();								//ID
+      		temp[1] = p.getImg();								//IMG
+      		temp[2] = p.getNome();								//NOME
+      		temp[3] = p.getDescrizione();						//DESCRIZIONE
+      		temp[4] = Boolean.toString(p.getDisponibile());		//E' DISPONIBILE?
+      		temp[5] = Integer.toString(p.getQta());				//QUANTITA'
+      		temp[6] = Float.toString(p.getPrezzo());			//PREZZO
+      		temp[7] = Integer.toString(p.getDisponibilita());	//DISPONIBILITA'
+          %>
+          
           <tbody>
             <tr class="item">
               <td style="display: flex; gap: 5px; align-items: center">
                 <img
                   style="height: 100px"
-                  src="dogwood-7978952_1920.jpg"
+                  src="<%=temp[1]%>"
                   alt="image"
                   srcset=""
                 />
-                <p style="font-weight: 500; margin-top: 0">Nome</p>
+                <p style="font-weight: 500; margin-top: 0"><%=temp[2]%></p>
               </td>
               <td>
                 <div class="wrapper">
                   <span class="minus">-</span>
-                  <span class="num">1</span>
+                  <span class="num"><%=temp[5]%></span>
                   <span class="plus">+</span>
                 </div>
               </td>
               <td>
-                <p style="font-weight: 600">250 euro</p>
+                <p style="font-weight: 600"><%=temp[6]%>euro</p>
               </td>
             </tr>
           </tbody>
+          <%
+      	  }
+          %>
         </table>
       </div>
+	
+	  <%
+  	  }
+	  %>
 
       <div class="riepilogo">
         <div class="dettagli-riepilogo">
           <div class="dettagli-box">
             <p class="title">Prodotti presenti:</p>
-            <p class="description">1</p>
+            <p class="description"><%= cart.getNumProdotti() %></p>
           </div>
           <div class="dettagli-box">
             <p class="title">Totale con IVA:</p>
-            <p class="description">550 euro</p>
+            <p class="description"><%= cart.calcolaIVA() %> euro</p>
           </div>
         </div>
         <hr />
         <button>Checkout</button>
       </div>
     </div>
+    
     <script>
       const plus = document.querySelector(".plus");
       const minus = document.querySelector(".minus");
       const num = document.querySelector(".num");
-      let quantity = 1;
+      let quantity = num;
 
       plus.addEventListener("click", () => {
         quantity++;
@@ -285,5 +358,6 @@
         }
       });
     </script>
+    
   </body>
 </html>
