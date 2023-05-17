@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
     <title>TopGear - Login</title>
     <style>
@@ -44,8 +44,8 @@
         flex-direction: column;
         justify-content: center;
         align-items: center;
-        max-width: 530px;
-        width: 450px;
+        max-width: 600px;
+        width: 90%;
         height: 450px;
         padding: 10px;
       }
@@ -107,7 +107,7 @@
         margin-bottom: 10px;
       }
 
-      @media screen and (max-width: 490px) {
+      @media screen and (max-width: .container) {
         body {
           background-color: white;
         }

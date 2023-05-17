@@ -267,7 +267,7 @@
         <button type="submit">Registrati</button>
         <p>
           Hai già un account?
-          <a href="login.html">Accedi</a>
+          <a href="login.jsp">Accedi</a>
         </p>
       </div>
     </form>
