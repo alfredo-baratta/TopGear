@@ -123,7 +123,7 @@
     </style>
   </head>
   <body>
-    <img src="immagini/sito/Top-Gear-Logo.png" class="img" />
+    <img src="assets/Top-Gear-Logo.png" class="img" />
 
     <form method="post" action="loginServlet" class="login-box">
       <div class="container">

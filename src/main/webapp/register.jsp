@@ -143,7 +143,7 @@
     </style>
   </head>
   <body>
-    <img src="immagini/sito/Top-Gear-Logo.png" class="img" width="100%"/>
+    <img src="assets/Top-Gear-Logo.png" class="img" width="100%"/>
     <form method="post" action="registrazioneServlet" class="register-box">
       <div class="container">
       <%

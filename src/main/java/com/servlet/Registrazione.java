@@ -1,6 +1,7 @@
 package com.servlet;
 
 import java.io.IOException;
+
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -16,6 +17,9 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.sql.DataSource;
 import org.apache.commons.codec.digest.DigestUtils;
+
+import entities.Utente;
+import entities.Risposta;
 
 @WebServlet("/registrazioneServlet")
 public class Registrazione extends HttpServlet {
@@ -47,7 +51,30 @@ public class Registrazione extends HttpServlet {
         	return;
         }
         
-        try {
+        Utente u = new Utente();
+        Risposta r = new Risposta();
+        
+        if(u.verificaEmail(email)) {
+        	request.setAttribute("error", Boolean.TRUE);
+        	request.setAttribute("messgerr", "Indirizzo email già presente nel sistema, verrai reindirizzato alla pagina di login!");
+        	
+            RequestDispatcher dispatcher = request.getRequestDispatcher("/login.jsp");
+            dispatcher.forward(request, response);   
+        }
+        
+        r = u.salvaUtente(codiceFiscale, nome, cognome, dataDiNascita, email, password, cellulare, citta, indirizzo, cap);
+        if(!r.getEsito()) {
+        	request.setAttribute("error", Boolean.TRUE);
+        	request.setAttribute("messgerr", r.getMessage());
+        	
+            RequestDispatcher dispatcher = request.getRequestDispatcher("/login.jsp");
+            dispatcher.forward(request, response); 
+        }else {
+        	request.setAttribute("email", u.getEmail());
+	        request.getRequestDispatcher("/login.jsp").forward(request, response);
+        }
+        
+        /*try {
         	Connection conn = dataSource.getConnection();
 	        
 	        String query = "INSERT INTO Utente (CF, nome, cognome, datanascita, email, pass, cellulare, citta, via, cap) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
@@ -95,7 +122,7 @@ public class Registrazione extends HttpServlet {
             RequestDispatcher dispatcher = request.getRequestDispatcher("/register.jsp");
             dispatcher.forward(request, response);        		
             
-        }
+        }*/
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
