@@ -124,7 +124,7 @@
     <% if(request.getAttribute("accessori") != null) { %>
     <c:forEach var="accessorio" items="${accessori}">
       <div class="product">
-        <div onclick="location.href='prodotto/${accessorio.getId()}'" class="image">
+        <div onclick="location.href='prodotto?id=${accessorio.getId()}'" class="image">
           <img src="assets/${accessorio.getImmagine()}" />
         </div>
         <div class="product-description">

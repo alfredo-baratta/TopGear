@@ -16,7 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-@WebServlet("/servletDettaglio")
+@WebServlet("/prodotto")
 public class ProdottoServlet extends HttpServlet {
     
 	private static final long serialVersionUID = 1L;
@@ -25,15 +25,23 @@ public class ProdottoServlet extends HttpServlet {
 	
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
-        //int IdAccessorio = Integer.parseInt(request.getParameter("IdAccessorio"));
-        int idAccessorio = 1;
+        String idAccessorio = request.getParameter("id");
+        
+        if(idAccessorio == null || idAccessorio.isEmpty()) {
+        	response.sendRedirect("/TopGear/catalogo");
+        	return;
+        }
+
+        Connection conn = null;
 
         try {
-        	Connection conn = dataSource.getConnection();
+        	conn = dataSource.getConnection();
+        	
+        	int id = Integer.parseInt(idAccessorio);
             
             String query = "SELECT * FROM accessorio WHERE id = ?";
             PreparedStatement stmt = conn.prepareStatement(query);
-            stmt.setInt(1, idAccessorio);
+            stmt.setInt(1, id);
             ResultSet rs = stmt.executeQuery();
 
             if (rs.next()) {
@@ -44,7 +52,7 @@ public class ProdottoServlet extends HttpServlet {
                 
                 String q2 = "SELECT link_immagine FROM immagine WHERE idAccessorio = ?";
                 PreparedStatement stmt2 = conn.prepareStatement(q2);
-                stmt2.setInt(1, idAccessorio);
+                stmt2.setInt(1, id);
                 ResultSet rs2 = stmt2.executeQuery();
                 
                 List<String> link_immagini = new ArrayList<String>();
@@ -63,11 +71,18 @@ public class ProdottoServlet extends HttpServlet {
                 RequestDispatcher dispatcher = request.getRequestDispatcher("/prodotto.jsp");
                 dispatcher.forward(request, response);
             } else {
-                RequestDispatcher dispatcher = request.getRequestDispatcher("/emulatoreCatalogo.html");
-                dispatcher.forward(request, response);
+            	response.sendRedirect("/TopGear/catalogo");
             }
         } catch (Exception e) {
             System.out.println("Errore: " + e.getMessage());
+        } finally {
+            if (conn != null) {
+                try {
+                    conn.close();
+                } catch (SQLException e) {
+                    System.out.println("Errore durante la chiusura della connessione: " + e.getMessage());
+                }
+            }
         }
     }
 
