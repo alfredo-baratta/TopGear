@@ -100,8 +100,7 @@
       }
 
       .img {
-        width: 180px;
-        height: 200px;
+        width: 200px;
       }
       
       .error-message {
@@ -124,7 +123,7 @@
     </style>
   </head>
   <body>
-    <img src="assets/undraw_login_re_4vu2.svg" class="img" />
+    <img src="immagini/sito/Top-Gear-Logo.png" class="img" />
 
     <form method="post" action="loginServlet" class="login-box">
       <div class="container">

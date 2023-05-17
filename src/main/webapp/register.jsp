@@ -104,8 +104,7 @@
       }
 
       .img {
-        width: 180px;
-        height: 200px;
+        width: 200px;
       }
       
       .error-message {
@@ -144,7 +143,7 @@
     </style>
   </head>
   <body>
-    <img src="assets/undraw_sign_up_n6im.svg" class="img" />
+    <img src="immagini/sito/Top-Gear-Logo.png" class="img" width="100%"/>
     <form method="post" action="registrazioneServlet" class="register-box">
       <div class="container">
       <%
