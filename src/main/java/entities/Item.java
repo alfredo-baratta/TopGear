@@ -10,17 +10,17 @@ public class Item {
 	private float prezzo;
 	private boolean isDisponibile;
 	private int disponibilita;
-	private String img;
+	private int iva;
 	
 	//costruttore
-	public Item(String i1, String n, String d, float p, String i2, boolean isd, int disp) {
+	public Item(String i1, String n, String d, float p, boolean isd, int disp, int iva) {
 		this.id = i1;
 		this.nome = n;
 		this.descrizione = d;
 		this.prezzo = p;
 		this.isDisponibile = isd;
-		this.img = i2;
 		this.disponibilita = disp;
+		this.iva = iva;
 	}
 	
 	public Item() {
@@ -56,13 +56,6 @@ public class Item {
 		return this.prezzo;
 	}
 	
-	public void setImg(String val) {
-		this.img = val;
-	}
-	public String getImg() {
-		return this.img;
-	}
-	
 	public void setDisponibile(boolean val) {
 		this.isDisponibile = val;
 	}
@@ -75,5 +68,18 @@ public class Item {
 	}
 	public int getDisponibilita() {
 		return this.disponibilita;
+	}
+	
+	public void setIva(int val) {
+		this.iva = val;
+	}
+	public int getIva() {
+		return this.iva;
+	}
+	
+	public String toString() {
+		String result = "";
+		result = this.id + "/" + this.nome + "/" + this.descrizione + "/" + this.prezzo + "/" + this.disponibilita + "/" + this.getIva();
+		return result;
 	}
 }
