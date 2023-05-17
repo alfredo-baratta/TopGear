@@ -20,17 +20,17 @@ public class DriverManagerConnectionPool  {
 	}
 	
 	private static synchronized Connection createDBConnection() throws SQLException {
-		Connection newConnection = null;
-		String ip = "localhost";
-		String port = "3306";
-		String db = "topgear";
-		String username = "root";
-		String password = "password";
+	    Connection newConnection = null;
+	    String ip = "localhost";
+	    String port = "3306";
+	    String db = "topgear";
+	    String username = "root";
+	    String password = "password";
+	    
+	    newConnection = DriverManager.getConnection("jdbc:mysql://" + ip + ":" + port + "/" + db, username, password);
 
-		newConnection = DriverManager.getConnection("jdbc:mysql://localhost:3306/topgear", "root", "password");
-
-		newConnection.setAutoCommit(false);
-		return newConnection;
+	    newConnection.setAutoCommit(false);
+	    return newConnection;
 	}
 
 

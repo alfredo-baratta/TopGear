@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -18,17 +19,22 @@ import javax.sql.DataSource;
 
 import entities.Accessorio;
 
-@WebServlet("/Catalogo")
-public class Catalogo extends HttpServlet {
-
+@WebServlet("/catalogo")
+public class CatalogoServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
+
+    public CatalogoServlet() {
+        super();
+    }
+
 	@Resource(name="jdbc/topgear")
 	DataSource dataSource;
 	
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
+    	Connection conn = null;
         try {
-        	Connection conn = dataSource.getConnection();
+        	conn = dataSource.getConnection();
             
             String query = "SELECT * FROM accessorio WHERE visibilita = true";
             PreparedStatement stmt = conn.prepareStatement(query);
@@ -62,11 +68,19 @@ public class Catalogo extends HttpServlet {
             dispatcher.forward(request, response);
         } catch (Exception e) {
             System.out.println("Errore: " + e.getMessage());
+        } finally {
+            if (conn != null) {
+                try {
+                    conn.close();
+                } catch (SQLException e) {
+                    System.out.println("Errore durante la chiusura della connessione: " + e.getMessage());
+                }
+            }
         }
     }
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        // doGet(request, response);
+        doGet(request, response);
     }
 
 }
