@@ -29,8 +29,6 @@ public class Utente {
     public Utente() {
     }
     
-    
-    
     public String getCodicefiscale() {
     	return codicefiscale;
     }
@@ -213,7 +211,7 @@ public class Utente {
         	return r;
         }
         try (Connection conn = DriverManagerConnectionPool.getConnection()) {
-        	String query = "INSERT INTO Utente (CF, nome, cognome, datanascita, email, pass, cellulare, citta, via, cap) "
+        	String query = "INSERT INTO utenti (cf, nome, cognome, datanascita, email, password, telefono, citta, via, cap) "
         			+ "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
         	PreparedStatement ps = conn.prepareStatement(query);
         	ps.setString(1, codiceFiscale);
@@ -263,7 +261,7 @@ public class Utente {
     	Boolean find = false;
         
     	 try (Connection conn = DriverManagerConnectionPool.getConnection()) {
-        	String query = "SELECT COUNT(*) FROM utente WHERE email = ?";
+        	String query = "SELECT COUNT(*) FROM utenti WHERE email = ?";
         	PreparedStatement statement = conn.prepareStatement(query);
             statement.setString(1, email);
             ResultSet rs = statement.executeQuery();
@@ -283,7 +281,7 @@ public class Utente {
     public boolean verificaCredenziali(String email, String password) {
     	
         try (Connection conn = DriverManagerConnectionPool.getConnection()) {
-            String query = "SELECT * FROM utente WHERE email = ? AND pass = ?";
+            String query = "SELECT * FROM utenti WHERE email = ? AND password = ?";
             PreparedStatement statement = conn.prepareStatement(query);
             statement.setString(1, email);
             statement.setString(2, DigestUtils.md5Hex(password));
@@ -292,10 +290,10 @@ public class Utente {
             if (rs.next()) {
                 setCodicefiscale(rs.getString("cf"));
                 setEmail(rs.getString("email"));
-                setPassword(rs.getString("pass"));
+                setPassword(rs.getString("password"));
                 setNome(rs.getString("nome"));
                 setCognome(rs.getString("cognome"));
-                setCellulare(rs.getString("cellulare"));
+                setCellulare(rs.getString("telefono"));
                 setDatanascita(rs.getString("datanascita"));
                 setCitta(rs.getString("citta"));
                 setCap(rs.getString("cap"));

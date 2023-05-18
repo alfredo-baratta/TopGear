@@ -203,7 +203,7 @@
 
         <div class="group-box">
           <div class="label-box">
-            <label for="email">Cellulare</label>
+            <label for="email">Telefono</label>
             <input type="tel" name="numtel" placeholder="3827465712" pattern="^\\d{10}$" required />
           </div>
           <div class="label-box">
@@ -255,6 +255,7 @@
               placeholder="example@gmail.com"
               required
             />
+          </div>
           <div class="label-box">
             <label for="password">Password</label>
             <input
@@ -265,14 +266,12 @@
               required
             />
           </div>
-        </div>
-
+      	</div>
         <button type="submit">Registrati</button>
         <p>
           Hai già un account?
           <a href="login.jsp">Accedi</a>
         </p>
-      </div>
     </form>
   </body>
 </html>
