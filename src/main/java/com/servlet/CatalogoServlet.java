@@ -15,9 +15,10 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import javax.sql.DataSource;
 
-import entities.Accessorio;
+import entities.*;
 
 @WebServlet("/catalogo")
 public class CatalogoServlet extends HttpServlet {
@@ -31,7 +32,6 @@ public class CatalogoServlet extends HttpServlet {
 	DataSource dataSource;
 	
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
     	Connection conn = null;
         try {
         	conn = dataSource.getConnection();
@@ -80,7 +80,7 @@ public class CatalogoServlet extends HttpServlet {
     }
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        doGet(request, response);
+    	doGet(request, response);
     }
 
 }
