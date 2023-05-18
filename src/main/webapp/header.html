@@ -1,103 +1,224 @@
 <!DOCTYPE html>
-<html>
-<head>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
     <style>
-      
+      body,
+      html {
+        background: #000;
+        color: #fff;
+        font-family: "Intro", sans-serif;
+        font-size: 16px;
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+      *,
+      *:before,
+      *:after {
+        box-sizing: border-box;
+      }
+      h1,
+      h2,
+      h3,
+      h4,
+      h5,
+      h6,
+      p,
+      ol,
+      ul {
+        margin: 0 0 1rem 0;
+        padding: 0;
+      }
+      ol,
+      ul {
+        list-style-type: none;
+      }
+      img {
+        height: auto;
+      }
+      h1 {
+        font-size: 4rem;
+      }
+      h2 {
+        font-size: 3rem;
+      }
+      h3 {
+        font-size: 2rem;
+      }
+      h4 {
+        font-size: 1rem;
+      }
+      h5 {
+        font-size: 0.8rem;
+      }
+      h6 {
+        font-size: 0.6rem;
+      }
+      a {
+        text-decoration: none;
+        color: white;
+      }
 
-        header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
+      .header {
+        background-color: #1d1d1f;
+        position: fixed;
+        top: 0;
+        left: 0;
+        z-index: 9999;
+        width: 100%;
+        display: "flex";
+        flex-direction: "row";
+        align-items: "center";
+      }
+      .header__content {
+        max-width: 1200px;
+        width: 100%;
+        margin: 0 auto;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+      .header__logo {
+        padding: 0px 15px;
+      }
 
-.logo {
-  font-size: 24px;
-  margin-left: 15px;
-}
+      .header__menu {
+        padding-bottom: 0;
+        margin-bottom: 0;
+      }
+      .header__menu li {
+        display: inline-block;
+      }
+      .header__menu li a {
+        color: #fff;
+        opacity: 0.8;
+        display: block;
+        padding: 16px;
+        font-size: 15px;
+      }
+      .header__icons {
+        width: 50px;
+      }
 
-nav {
-  flex: 1;
-}
+      @media (max-width: 768px) {
+        .header__menu {
+          position: absolute;
+          top: 50px;
+          background-color: #1d1d1f;
+          width: 100%;
+          height: 100vh;
+          height: 0vh;
+          overflow: hidden;
+          transition: all 1s cubic-bezier(0.215, 0.61, 0.355, 1);
+        }
 
-nav ul {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-  display: flex;
-  justify-content: center;
-}
+        .header__menu li {
+          width: 100%;
+          border-bottom: 1px solid #444;
+        }
+        .menu-open .header__menu {
+          height: 100vh;
+          padding: 3%;
+        }
 
-nav li {
-  margin: 0 10px;
-}
+        .icon-hamburger {
+          height: 50px;
+          width: 50px;
+          margin-left: 20px;
+          padding-top: 5px;
+        }
+        .icon-hamburger span {
+          height: 1px;
+          width: 30px;
+          background: #fff;
+          position: relative;
+          display: block;
+          margin-top: 12px;
+          transition: all 0.2s cubic-bezier(0.215, 0.61, 0.355, 1);
+        }
 
-nav a,
-.account a,
-.cart a {
-  font-family: 'Courier New';  
-  color: black;
-  text-decoration: none;
-}
+        .menu-open .icon-hamburger span:nth-child(1) {
+          transform: rotate(45deg) translateY(9px);
+        }
+        .menu-open .icon-hamburger span:nth-child(2) {
+          transform: rotate(-45deg) translateY(-9px);
+        }
 
-.account-cart {
-  display: flex;
-}
+        .header__icons {
+          display: flex;
+          width: 80px;
+          justify-content: center;
+          align-items: center;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <header class="header">
+      <div class="header__content">
+        <a class="header__logo" href="">TopGear</a>
+        <ul class="header__menu">
+          <li><a href="">Model 1</a></li>
+          <li><a href="">Model 2</a></li>
+          <li><a href="">Model 3</a></li>
+          <li><a href="">Shop</a></li>
+        </ul>
+        <div class="header__icons">
+          <a style="text-decoration: none; color: white" href=""
+            ><svg
+              width="25"
+              height="25"
+              fill="currentColor"
+              viewBox="0 0 24 24"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path d="M8.25 21a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3Z"></path>
+              <path d="M18.75 21a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3Z"></path>
+              <path
+                d="M21.413 5.662a1.121 1.121 0 0 0-.87-.412H6.276L5.99 3.62A.75.75 0 0 0 5.25 3h-3a.75.75 0 0 0 0 1.5h2.37l2.141 12.13a.75.75 0 0 0 .739.62h12a.75.75 0 1 0 0-1.5H8.13l-.265-1.5h11.328a1.128 1.128 0 0 0 1.104-.904l1.35-6.75a1.124 1.124 0 0 0-.234-.934Z"
+              ></path>
+            </svg>
+          </a>
 
-.account {
-  margin-right: 10px;
-}
-
-.menu-toggle {
-  display: none;
-}
-
-@media (max-width: 768px) {
-  nav,
-  .account-cart {
-    display: none;
-  }
-
-  .menu-toggle {
-    display: block;
-    font-size: 24px;
-    cursor: pointer;
-  }
-}
-
-      </style>
-      
-</head>
-<body>
-    <header>
-        <div class="logo"><img src="assets/logo_header.png" alt="Logo" height="50" lenght="27"></div>
-        <nav>
-          <ul>
-            <li><a href="#">Model 1</a></li>
-            <li><a href="#">Model 2</a></li>
-            <li><a href="#">Model 3</a></li>
-            <li><a href="#">Shop</a></li>
-          </ul>
-        </nav>
-        <div class="account-cart">
-
-
-          <div class="account"><a href="#">Account</a></div>
-
-          <div class="cart">
-            <a href="#">
-            <!-- icona carrello-->
-            <svg width="25" height="25" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                <path d="M8.25 21a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3Z"></path>
-                <path d="M18.75 21a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3Z"></path>
-                <path d="M21.413 5.662a1.121 1.121 0 0 0-.87-.412H6.276L5.99 3.62A.75.75 0 0 0 5.25 3h-3a.75.75 0 0 0 0 1.5h2.37l2.141 12.13a.75.75 0 0 0 .739.62h12a.75.75 0 1 0 0-1.5H8.13l-.265-1.5h11.328a1.128 1.128 0 0 0 1.104-.904l1.35-6.75a1.124 1.124 0 0 0-.234-.934Z"></path>
-              </svg>
-            <!-- icona carrello-->
-            </a>
+          <div class="icon-hamburger">
+            <span></span>
+            <span></span>
           </div>
-
         </div>
-        <div class="menu-toggle">&#9776;</div>
-      </header>
-      
-</body>
+      </div>
+    </header>
+
+    <script>
+      let item = document.querySelector(".icon-hamburger");
+      item.addEventListener("click", function () {
+        document.body.classList.toggle("menu-open");
+      });
+
+      // elements
+      var elements_to_watch = document.querySelectorAll(".watch");
+
+      // callback
+      var callback = function (items) {
+        items.forEach((item) => {
+          if (item.isIntersecting) {
+            item.target.classList.add("in-page");
+          } else {
+            item.target.classList.remove("in-page");
+          }
+        });
+      };
+
+      // observer
+      var observer = new IntersectionObserver(callback, { threshold: 0.6 });
+
+      // apply
+      elements_to_watch.forEach((element) => {
+        observer.observe(element);
+      });
+    </script>
+  </body>
 </html>
