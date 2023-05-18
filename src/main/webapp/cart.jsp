@@ -1,6 +1,7 @@
 <%@page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1" %>
 <%@page import="com.servlet.CartServlet" %>
 <%@page import="java.util.ArrayList" %>
+
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -8,6 +9,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Carrello</title>
+    
     <style>
       body {
         min-height: 100vh;
@@ -51,6 +53,7 @@
         display: flex;
         flex-direction: column;
         width: 100%;
+        padding-top: 10px;
       }
 
       .dettagli-box {
@@ -82,9 +85,9 @@
         align-items: center;
       }
 
-      .riepilogo button {
-        background-color: black;
-        color: white;
+      button.checkout {
+        background-color: #9CEAFF;
+        color: black;
         padding: 10px;
         border: none;
         outline: none;
@@ -92,6 +95,7 @@
         height: 45px;
         font-weight: 400;
         margin-top: 15px;
+        border-radius: 5px;
       }
 
       .riepilogo hr {
@@ -101,8 +105,34 @@
         border-top: 1px solid #f5f5f5;
       }
 
-      button:hover {
+      button.checkout:hover {
         cursor: pointer;
+        background-color: #4E9BB7;
+        color: white;
+      }
+      
+      button.remove{
+      	cursor:pointer;
+      	background-color: #FFD5B4;
+      	color:black;
+      }
+      
+      button.remove:hover{
+      	cursor:pointer;
+      	background-color: #FA885F;
+      	color: white;
+      }
+      
+      button.change{
+      	cursor:pointer;
+      	background-color: #9CEAFF;
+      	color:black;
+      }
+      
+      button.change:hover{
+      	cursor:pointer;
+      	background-color: #4E9BB7;
+      	color: white;
       }
 
       table th {
@@ -128,6 +158,10 @@
         outline: none;
         margin-bottom: 15px;
       }
+      
+      .item{
+      	background-color: transparent;
+      }
 
       .item:not(:last-of-type) {
         border-bottom: 2px solid #f5f5f5;
@@ -139,7 +173,7 @@
         justify-content: center;
       }
       .wrapper span {
-        width: 100%;
+        width: 80%;
         text-align: center;
         font-size: 16px;
         font-weight: 600;
@@ -222,6 +256,40 @@
   <jsp:directive.page import="com.servlet.CartServlet"/>
   <jsp:useBean id="cart" scope="session" class="entities.Carrello" />
   
+  <%
+  	
+  	String removeID = request.getParameter("removeFromID");
+	String decreaseID = request.getParameter("decrease");
+	String increaseID = request.getParameter("increase");
+	boolean removeAll = Boolean.parseBoolean(request.getParameter("removeAll"));
+
+
+	//System.out.println("Prodotti totali: "+cart.getNumProdotti());
+	
+	if(removeID != null){
+		//System.out.println("Sto per rimuovere questo prodotto: " + removeID);
+		try{
+			cart.remove(removeID);
+		}
+		catch(Exception e){
+			System.out.println("Errore: " + e.getMessage());
+		}
+	}
+
+	if(decreaseID != null){
+		cart.decreaseQta(decreaseID);
+	}
+	
+	if(increaseID != null){
+		cart.increaseQta(increaseID);
+	}
+
+	if(removeAll){
+		cart.resetEverything();
+	}
+  	
+  %>
+  
     <div class="container">
       <%
   	  if (cart.getNumProdotti() == 0){
@@ -230,17 +298,6 @@
   		  <div class="carrello-left">
   			  <div class="table-title">
          		<h3>Carrello</h3>
-          		<button
-           		  style="
-             	    width: 30px;
-              	    height: 30px;
-              	    background-color: transparent;
-              	    border: 1px solid #f5f5f5;
-              		border-radius: 5px;
-            	  "
-          		>
-            	  <i class="fa fa-trash" aria-hidden="true"></i>
-          		</button>
         	  </div>
 			<div class="carrello-vuoto" style="width: 100%">
 				<h4>Non sono presenti elementi nel carrello.</h4>
@@ -254,17 +311,21 @@
       <div class="carrello-left">
         <div class="table-title">
           <h3>Carrello</h3>
-          <button
-            style="
-              width: 30px;
-              height: 30px;
-              background-color: transparent;
-              border: 1px solid #f5f5f5;
-              border-radius: 5px;
-            "
-          >
-            <i class="fa fa-trash" aria-hidden="true"></i>
-          </button>
+          <form action="cart" method="post">
+            <button
+              class="remove"
+              onclick="<% boolean remove = true; %>"
+              style="
+                width: 30px;
+                height: 30px;
+                border: 1px solid transparent;
+                border-radius: 5px;
+              "
+            >
+              <i class="fa fa-trash" aria-hidden="true"></i>
+            </button>
+          <input type="hidden" value="<%=remove%>" name="removeAll">
+          </form>
         </div>
         <table style="width: 100%; border-collapse: collapse" class="table">
           <thead>
@@ -277,18 +338,20 @@
           
           <%
           ArrayList<Prodotto> lista_prodotti = cart.getListaProdottiAsArrayList();
-      	  String[] temp = new String[8];
+      	  String[] temp = new String[7];
       	
       	  for (Prodotto p : lista_prodotti){
       		
       		temp[0] = p.getId();								//ID
-      		temp[1] = p.getImg();								//IMG
-      		temp[2] = p.getNome();								//NOME
-      		temp[3] = p.getDescrizione();						//DESCRIZIONE
-      		temp[4] = Boolean.toString(p.getDisponibile());		//E' DISPONIBILE?
-      		temp[5] = Integer.toString(p.getQta());				//QUANTITA'
-      		temp[6] = Float.toString(p.getPrezzo());			//PREZZO
-      		temp[7] = Integer.toString(p.getDisponibilita());	//DISPONIBILITA'
+      		
+      		temp[1] = p.getNome();								//NOME
+      		temp[2] = p.getDescrizione();						//DESCRIZIONE
+      		temp[3] = Boolean.toString(p.getDisponibile());		//E' DISPONIBILE?
+      		temp[4] = Integer.toString(p.getQta());				//QUANTITA'
+      		temp[5] = Float.toString(p.getPrezzo());			//PREZZO
+      		temp[6] = Integer.toString(p.getDisponibilita());	//DISPONIBILITA'
+      		
+      		System.out.println("dal carrello: " + temp[0]);
           %>
           
           <tbody>
@@ -296,21 +359,61 @@
               <td style="display: flex; gap: 5px; align-items: center">
                 <img
                   style="height: 100px"
-                  src="<%=temp[1]%>"
+                  src=""
                   alt="image"
                   srcset=""
                 />
-                <p style="font-weight: 500; margin-top: 0"><%=temp[2]%></p>
+                <p style="font-weight: 500; margin-top: 0"><%= temp[1]%></p>
               </td>
               <td>
                 <div class="wrapper">
-                  <span class="minus">-</span>
-                  <span class="num"><%=temp[5]%></span>
-                  <span class="plus">+</span>
+                  <form action="cart" method="post">
+                    <!-- <span class="minus">-</span>  -->
+                     <button 
+                         class="change"
+             			 style="
+               			 width: 30px;
+               			 height: 30px;
+               			 border: 1px solid transparent;
+               			 border-radius: 5px;
+             			 "
+           			 > - </button>
+                    <input type="hidden" name="decrease" value="<%=temp[0]%>">
+                  </form>
+                  <span class="num"><%= temp[4]%></span>
+                  <form action="cart" method="post">
+                    <!-- <span class="plus">+</span> -->
+                     <button 
+                     	 class="change"
+             			 style="
+               			 width: 30px;
+               			 height: 30px;
+               			 border: 1px solid transparent;
+               			 border-radius: 5px;
+             			 "
+           			 > + </button>
+                    <input type="hidden" name="increase" value="<%=temp[0]%>">
+                  </form>
                 </div>
               </td>
               <td>
-                <p style="font-weight: 600"><%=temp[6]%>euro</p>
+                <p style="font-weight: 600"><%= temp[5]%> euro</p>
+              </td>  
+              <td>
+                <form action="cart" method="post">
+                  <button
+                    class="remove"
+            	    style="
+              	    width: 30px;
+             	    height: 30px;
+              	    border: 1px solid transparent;
+             	    border-radius: 5px;
+            	    "
+          		  >
+            	    <i class="fa fa-trash" aria-hidden="true"></i>
+          		  </button>
+          		  <input type="hidden" value="<%= temp[0]%>" name="removeFromID">
+          		</form>
               </td>
             </tr>
           </tbody>
@@ -336,11 +439,12 @@
           </div>
         </div>
         <hr />
-        <button>Checkout</button>
+        <button class="checkout">Checkout</button>
       </div>
     </div>
     
     <script>
+      /*
       const plus = document.querySelector(".plus");
       const minus = document.querySelector(".minus");
       const num = document.querySelector(".num");
@@ -357,6 +461,7 @@
           num.innerText = quantity;
         }
       });
+      */
     </script>
     
   </body>
