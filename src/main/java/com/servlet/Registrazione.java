@@ -14,7 +14,7 @@ import javax.sql.DataSource;
 import entities.Utente;
 import entities.Risposta;
 
-@WebServlet("/registrazioneServlet")
+@WebServlet("/registrazione")
 public class Registrazione extends HttpServlet {
 	
 	private static final long serialVersionUID = 1L;
@@ -22,6 +22,11 @@ public class Registrazione extends HttpServlet {
 	DataSource dataSource;
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		RequestDispatcher dispatcher = request.getRequestDispatcher("/register.jsp");
+    	dispatcher.forward(request, response);
+	}
+
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		response.setContentType("text/html");
 		 
         String codiceFiscale = request.getParameter("cf");
@@ -72,10 +77,6 @@ public class Registrazione extends HttpServlet {
         	request.setAttribute("email", u.getEmail());
 	        request.getRequestDispatcher("/login.jsp").forward(request, response);
         }
-	}
-
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		doGet(request, response);
 	}
 
 }

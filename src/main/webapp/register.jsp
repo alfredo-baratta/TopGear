@@ -144,7 +144,7 @@
   </head>
   <body>
     <img src="assets/Top-Gear-Logo.png" class="img" width="100%"/>
-    <form method="post" action="registrazioneServlet" class="register-box">
+    <form method="post" action="registrazione" class="register-box">
       <div class="container">
       <%
       if(request.getAttribute("error") != null) {
