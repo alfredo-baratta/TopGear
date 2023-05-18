@@ -11,10 +11,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.sql.DataSource;
 import javax.servlet.http.HttpSession;
-
-import java.sql.*;
-
-import org.apache.commons.codec.digest.DigestUtils;
 import entities.Utente; 
 @WebServlet("/loginServlet")
 public class Login extends HttpServlet {
