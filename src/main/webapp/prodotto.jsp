@@ -1,5 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
+    
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+    
 <%@ include file="header.html" %>
 <!DOCTYPE html>
 <html lang="en">
@@ -149,9 +152,9 @@
     <div class="container">
       <div class="container-immagine">
         <div class="first-product-image slider" data-slides-to-show="1">
-          <img src="assets/dogwood-7978952_1920.jpg" />
-          <img src="assets/dogwood-7978952_1920.jpg" />
-          <img src="assets/dogwood-7978952_1920.jpg" />
+          <c:forEach var="immagine" items="${immagini}">
+          	<img src="data:image/jpg;base64,${immagine}" />
+          </c:forEach>
         </div>
       </div>
       <div class="informazioni-prodotto">

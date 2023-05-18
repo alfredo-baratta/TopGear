@@ -6,6 +6,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.List;
 
 import javax.annotation.Resource;
@@ -36,7 +37,7 @@ public class CatalogoServlet extends HttpServlet {
         try {
         	conn = dataSource.getConnection();
             
-            String query = "SELECT * FROM accessorio WHERE visibilita = true";
+            String query = "SELECT * FROM accessori WHERE visibilita = true";
             PreparedStatement stmt = conn.prepareStatement(query);
             ResultSet rs = stmt.executeQuery();
             
@@ -48,18 +49,19 @@ public class CatalogoServlet extends HttpServlet {
                 String descrizione = rs.getString("descrizione");
                 float prezzo = (float) rs.getDouble("prezzo");
                 int disponibilita = rs.getInt("disponibilita");
-                String immagine = null;
+                String immagineBase64 = null;
                 
-                String q2 = "SELECT link_immagine FROM immagine WHERE idAccessorio = ? LIMIT 1";
+                String q2 = "SELECT immagine FROM immagini_accessorio WHERE id = ? LIMIT 1";
                 PreparedStatement stmt2 = conn.prepareStatement(q2);
                 stmt2.setInt(1, id);
                 ResultSet rs2 = stmt2.executeQuery();
                 
                 if(rs2.next()) {
-                    immagine = rs2.getString("link_immagine");
+                	byte[] immagine = rs2.getBytes("immagine");
+                	immagineBase64 = Base64.getEncoder().encodeToString(immagine);
                 }
                 
-                accessori.add(new Accessorio(id, nome, descrizione, prezzo, disponibilita, immagine));
+                accessori.add(new Accessorio(id, nome, descrizione, prezzo, disponibilita, immagineBase64));
             }
             
             request.setAttribute("accessori", accessori);

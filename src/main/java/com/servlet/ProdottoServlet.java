@@ -13,6 +13,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.sql.DataSource;
 
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.List;
 
 
@@ -39,7 +40,7 @@ public class ProdottoServlet extends HttpServlet {
         	
         	int id = Integer.parseInt(idAccessorio);
             
-            String query = "SELECT * FROM accessorio WHERE id = ?";
+            String query = "SELECT * FROM accessori WHERE id = ?";
             PreparedStatement stmt = conn.prepareStatement(query);
             stmt.setInt(1, id);
             ResultSet rs = stmt.executeQuery();
@@ -50,23 +51,24 @@ public class ProdottoServlet extends HttpServlet {
                 float prezzo = (float) rs.getDouble("prezzo");
                 int disponibilita = rs.getInt("disponibilita");
                 
-                String q2 = "SELECT link_immagine FROM immagine WHERE idAccessorio = ?";
+                String q2 = "SELECT immagine FROM immagini_accessorio WHERE fk_accessorio = ?";
                 PreparedStatement stmt2 = conn.prepareStatement(q2);
                 stmt2.setInt(1, id);
                 ResultSet rs2 = stmt2.executeQuery();
                 
-                List<String> link_immagini = new ArrayList<String>();
+                List<String> immagini = new ArrayList<String>();
                 
                 while(rs2.next()) {
-                    String linkImmagine = rs2.getString("link_immagine");
-                    link_immagini.add(linkImmagine);
+                	byte[] immagine = rs2.getBytes("immagine");
+                    String immagineBase64 = Base64.getEncoder().encodeToString(immagine);
+                    immagini.add(immagineBase64);
                 }
                
                 request.setAttribute("nome", nome);
                 request.setAttribute("descrizione", descrizione);
                 request.setAttribute("prezzo", prezzo);
                 request.setAttribute("disponibilita", disponibilita);
-                request.setAttribute("immagini", link_immagini);
+                request.setAttribute("immagini", immagini);
                 
                 RequestDispatcher dispatcher = request.getRequestDispatcher("/prodotto.jsp");
                 dispatcher.forward(request, response);
