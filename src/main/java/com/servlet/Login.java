@@ -12,7 +12,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.sql.DataSource;
 import javax.servlet.http.HttpSession;
 import entities.Utente; 
-@WebServlet("/loginServlet")
+@WebServlet("/login")
 public class Login extends HttpServlet {
 	
 	private static final long serialVersionUID = 1L;
@@ -20,7 +20,11 @@ public class Login extends HttpServlet {
 	DataSource dataSource;
 	
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        
+    	RequestDispatcher dispatcher = request.getRequestDispatcher("/login.jsp");
+    	dispatcher.forward(request, response);
+	}
+
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		response.setContentType("text/html");
         
 		HttpSession session = request.getSession(true);
@@ -49,10 +53,6 @@ public class Login extends HttpServlet {
         	RequestDispatcher dispatcher = request.getRequestDispatcher("/login.jsp");
         	dispatcher.forward(request, response);
         }
-	}
-
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		doGet(request, response);
 	}
 
 }

@@ -125,7 +125,7 @@
   <body>
     <img src="assets/Top-Gear-Logo.png" class="img" />
 
-    <form method="post" action="loginServlet" class="login-box">
+    <form method="post" action="login" class="login-box">
       <div class="container">
       <%
       if(request.getAttribute("error") != null) {
