@@ -173,6 +173,7 @@
               name="nome"
               maxlength="30"
               placeholder="Mario"
+              pattern = "^[a-zA-Z\\s]+$"
               required
             />
           </div>
@@ -186,6 +187,7 @@
               name="cognome"
               maxlength="30"
               placeholder="Rossi"
+              pattern = "^[a-zA-Z\\s]+$"
               required
             />
           </div>
@@ -202,7 +204,7 @@
         <div class="group-box">
           <div class="label-box">
             <label for="email">Cellulare</label>
-            <input type="tel" name="numtel" placeholder="3827465712" required />
+            <input type="tel" name="numtel" placeholder="3827465712" pattern="^\\d{10}$" required />
           </div>
           <div class="label-box">
             <label for="email">Città</label>
@@ -211,6 +213,7 @@
               name="citta"
               maxlength="30"
               placeholder="Salerno"
+              pattern = "^[a-zA-Z\\s]+$"
               required
             />
           </div>
@@ -223,7 +226,8 @@
               type="text"
               name="indirizzo"
               maxlength="50"
-              placeholder="Via Del Calabrese"
+              placeholder="Via Del Calabrese, numero oppure snc"
+              pattern="^[a-zA-Z\\s\\d]+,\\s(\\d+[A-Za-z]?|SNC|snc)$\n"
               required
             />
           </div>
@@ -244,14 +248,13 @@
           <div class="label-box">
             <label for="email">Email</label>
             <input
-              type="email"
+              type="email" 
               name="email"
               autocapitalize="none"
               maxlength="50"
               placeholder="example@gmail.com"
               required
             />
-          </div>
           <div class="label-box">
             <label for="password">Password</label>
             <input

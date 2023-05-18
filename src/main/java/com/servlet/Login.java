@@ -15,7 +15,7 @@ import javax.servlet.http.HttpSession;
 import java.sql.*;
 
 import org.apache.commons.codec.digest.DigestUtils;
-
+import entities.Utente; 
 @WebServlet("/loginServlet")
 public class Login extends HttpServlet {
 	
@@ -32,6 +32,8 @@ public class Login extends HttpServlet {
         String email = request.getParameter("email");
         String password = request.getParameter("password");
         
+        Utente u = new Utente();
+        
         if (email == null || password == null) {
         	request.setAttribute("error", Boolean.TRUE);
         	request.setAttribute("messgerr", "Parametri non presenti.");
@@ -40,43 +42,17 @@ public class Login extends HttpServlet {
         	return;
         }
         
-        try {
-	        Connection conn = dataSource.getConnection();
-	        
-	        String query = "SELECT CF, nome, cognome FROM utente WHERE email = ? AND pass = ?";
-	        PreparedStatement ps = conn.prepareStatement(query);
-	        
-	        password = DigestUtils.md5Hex(password);
-	        
-	        ps.setString(1, email);
-	        ps.setString(2, password);
-	        
-	        ResultSet rs = ps.executeQuery();
-	        
-	        if(rs.next()) {
-	        	String codiceFiscale = rs.getString("CF");
-	        	String nome = rs.getString("nome");
-	        	String cognome = rs.getString("cognome");
-	        	session.setAttribute("username", codiceFiscale);
-	        	request.setAttribute("nome", nome);
-	        	request.setAttribute("cognome", cognome);
-	        	request.getRequestDispatcher("/index.jsp").forward(request, response);
-	        } else {
-	        	request.setAttribute("error", Boolean.TRUE);
-	        	request.setAttribute("messgerr", "Credenziali non valide.");
-	        	RequestDispatcher dispatcher = request.getRequestDispatcher("/login.jsp");
-	        	dispatcher.forward(request, response);
-	        }
-	        
-        } catch (Exception e) {
-        	System.out.println("Errore: " + e.getMessage());
-        	
+        if(u.verificaCredenziali(email, password)) {
+        	session.setAttribute("username", u.getCodicefiscale());
+        	request.setAttribute("nome", u.getNome());
+        	request.setAttribute("cognome", u.getCognome());
+        	request.getRequestDispatcher("/index.jsp").forward(request, response);
+        }else {
         	request.setAttribute("error", Boolean.TRUE);
-        	request.setAttribute("messgerr", e.getMessage());
+        	request.setAttribute("messgerr", "Credenziali non valide.");
         	RequestDispatcher dispatcher = request.getRequestDispatcher("/login.jsp");
         	dispatcher.forward(request, response);
         }
-        
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

@@ -2,10 +2,20 @@ package entities;
 
 import java.sql.*;
 import org.apache.commons.codec.digest.DigestUtils;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import Model.DriverManagerConnectionPool;
 public class Utente {
-    private String codicefiscale;
+    private static String formatoemail = "^\\w+([\\.-]?\\w+)*@\\w+([\\.-]?\\w+)*(\\.\\w{2,3})+$";
+    private static String formatonumtel = "^\\d{10}$";
+    private static String formatoindirizzo = "^[a-zA-Z\\s\\d]+,\\s(\\d+[A-Za-z]?|SNC|snc)$\n";
+    private static String formatostringaalfabetica = "^[a-zA-Z\\s]+$";
+    private static String formatocap = "[0-9]{5}";
+    private static String formatopw = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d).{8,}$\n";
+    private static String formatoCF = "[A-Z]{6}[0-9]{2}[A-Z]{1}[0-9]{2}[A-Z]{1}[0-9]{3}[A-Z]{1}";
+    private static String formatodata = "^\\d{4}-\\d{2}-\\d{2}$\n";
+	private String codicefiscale;
 	private String email;
     private String password;
     private String nome;
@@ -101,8 +111,107 @@ public class Utente {
         this.cap = cap;
     }
     
+    public boolean validaCF(String CF) {
+    	Pattern pattern = Pattern.compile(formatoCF);
+    	Matcher matcher = pattern.matcher(CF);
+        return matcher.matches();
+    }
+    
+    public boolean validaEmail(String email) {
+    	Pattern pattern = Pattern.compile(formatoemail);
+    	Matcher matcher = pattern.matcher(email);
+        return matcher.matches();
+    }
+    
+    public boolean validaNumeroTelefonico(String numero) {
+    	Pattern pattern = Pattern.compile(formatonumtel);
+    	Matcher matcher = pattern.matcher(numero);
+        return matcher.matches();
+    }
+    
+    public boolean validaPassword(String password) {
+    	Pattern pattern = Pattern.compile(formatopw);
+    	Matcher matcher = pattern.matcher(password);
+        return matcher.matches();
+
+    }
+    
+    public boolean validaIndirizzo(String indirizzo) {
+    	Pattern pattern = Pattern.compile(formatoindirizzo);
+    	Matcher matcher = pattern.matcher(indirizzo);
+        return matcher.matches();
+    }
+    
+    public boolean validaAlfabetica(String stringa) {
+    	Pattern pattern = Pattern.compile(formatostringaalfabetica);
+    	Matcher matcher = pattern.matcher(stringa);
+        return matcher.matches();
+    }
+    
+    public boolean validaCAP(String cap) {
+    	Pattern pattern = Pattern.compile(formatocap);
+    	Matcher matcher = pattern.matcher(cap);
+        return matcher.matches();
+    }
+    
+    public boolean validaData(String data) {
+    	Pattern pattern = Pattern.compile(formatodata);
+    	Matcher matcher = pattern.matcher(data);
+        return matcher.matches();
+    }
+    
     public Risposta salvaUtente(String codiceFiscale, String nome, String cognome, String dataDiNascita, String email, String password, String cellulare, String citta, String indirizzo, String cap) {
         Risposta r = new Risposta();
+        if(!validaCF(codiceFiscale)) {
+        	r.setEsito(false);
+        	r.setMessage("Errore! Codice fiscale non valido!");
+        	return r;
+        }
+        if(!validaEmail(email)) {
+        	r.setEsito(false);
+        	r.setMessage("Errore! Email non valida!");
+        	return r;
+        }
+        if(!validaNumeroTelefonico(cellulare)) {
+        	r.setEsito(false);
+        	r.setMessage("Errore! Numero telefonico non valido!");
+        	return r;
+        }
+        if(!validaPassword(password)) {
+        	r.setEsito(false);
+        	r.setMessage("Errore! Password non valida!");
+        	return r;
+        }
+        if(!validaIndirizzo(indirizzo)) {
+        	r.setEsito(false);
+        	r.setMessage("Errore! Indirizzo non valido!");
+        	return r;
+        }
+        if(!validaAlfabetica(nome)) {
+        	r.setEsito(false);
+        	r.setMessage("Errore! Nome non valido!");
+        	return r;
+        }
+        if(!validaAlfabetica(cognome)) {
+        	r.setEsito(false);
+        	r.setMessage("Errore! Cognome non valido!");
+        	return r;
+        }
+        if(!validaAlfabetica(citta)) {
+        	r.setEsito(false);
+        	r.setMessage("Errore! Città non valida!");
+        	return r;
+        }
+        if(!validaCAP(cap)) {
+        	r.setEsito(false);
+        	r.setMessage("Errore! Cap non valido!");
+        	return r;
+        }
+        if(!validaData(dataDiNascita)) {
+        	r.setEsito(false);
+        	r.setMessage("Errore! Data di nascita non valida!");
+        	return r;
+        }
         try (Connection conn = DriverManagerConnectionPool.getConnection()) {
         	String query = "INSERT INTO Utente (CF, nome, cognome, datanascita, email, pass, cellulare, citta, via, cap) "
         			+ "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
@@ -190,7 +299,7 @@ public class Utente {
                 setDatanascita(rs.getString("datanascita"));
                 setCitta(rs.getString("citta"));
                 setCap(rs.getString("cap"));
-                setIndirizzo(rs.getString("indirizzo"));
+                setIndirizzo(rs.getString("via"));
             }
             DriverManagerConnectionPool.releaseConnection(conn);
             return true;

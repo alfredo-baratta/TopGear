@@ -67,62 +67,18 @@ public class Registrazione extends HttpServlet {
         	request.setAttribute("error", Boolean.TRUE);
         	request.setAttribute("messgerr", r.getMessage());
         	
-            RequestDispatcher dispatcher = request.getRequestDispatcher("/login.jsp");
-            dispatcher.forward(request, response); 
+        	if(r.getMessage().toLowerCase().contains("non valid")) {
+        		RequestDispatcher dispatcher = request.getRequestDispatcher("/register.jsp");
+        		dispatcher.forward(request, response); 
+        	}else {
+        		RequestDispatcher dispatcher = request.getRequestDispatcher("/login.jsp");
+        		dispatcher.forward(request, response); 
+        	}
+            
         }else {
         	request.setAttribute("email", u.getEmail());
 	        request.getRequestDispatcher("/login.jsp").forward(request, response);
         }
-        
-        /*try {
-        	Connection conn = dataSource.getConnection();
-	        
-	        String query = "INSERT INTO Utente (CF, nome, cognome, datanascita, email, pass, cellulare, citta, via, cap) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
-	        PreparedStatement ps = conn.prepareStatement(query);
-	        
-	        password = DigestUtils.md5Hex(password);
-	        
-	        ps.setString(1, codiceFiscale);
-	        ps.setString(2, nome);
-	        ps.setString(3, cognome);
-	        ps.setString(4, dataDiNascita);
-	        ps.setString(5, email);
-	        ps.setString(6, password);
-	        ps.setString(7, cellulare);
-	        ps.setString(8, citta);
-	        ps.setString(9, indirizzo);
-	        ps.setString(10, cap);
-	        
-	        ps.executeUpdate();
-	        
-	    	request.setAttribute("email", email);
-	        request.getRequestDispatcher("/login.jsp").forward(request, response);
-	        
-        } catch (Exception e) {
-        	System.out.println("Errore: " + e.getMessage());
-        	
-        	String mesgerr = null;
-        	
-        	if (e.getMessage().toLowerCase().contains("duplicate")) {
-        		if(e.getMessage().contains("utente.PRIMARY"))
-        			mesgerr = "Errore, il codice fiscale da lei inserito risulta già presente nei nostri sistemi";
-        		else if(e.getMessage().contains("utente.email"))
-        			mesgerr = "Errore, l'indirizzo email da lei inserito risulta già presente nei nostri sistemi";
-        		else if(e.getMessage().contains("utente.cellulare"))
-        			mesgerr = "Errore, il numero di telefono da lei inserito risulta già presente nei nostri sistemi";
-        		else 
-					mesgerr = "Errore, ricontrollare i dati inseriti";
-        	}
-        	
-        	if(mesgerr == null)
-				mesgerr = "Errore, ricontrollare i dati inseriti";
-
-        	request.setAttribute("error", Boolean.TRUE);
-        	request.setAttribute("messgerr", mesgerr);
-            RequestDispatcher dispatcher = request.getRequestDispatcher("/register.jsp");
-            dispatcher.forward(request, response);        		
-            
-        }*/
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
