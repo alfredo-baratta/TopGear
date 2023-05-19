@@ -289,7 +289,6 @@ public class Utente {
             ResultSet rs = statement.executeQuery();
             
             if (rs.next()) {
-            	System.out.println(rs.getString("email"));
                 setCodicefiscale(rs.getString("cf"));
                 setEmail(rs.getString("email"));
                 setPassword(rs.getString("password"));

@@ -43,7 +43,6 @@ public class Login extends HttpServlet {
         }
         
         if(u.verificaCredenziali(email, password)) {
-        	System.out.println("Sono qui!");
         	session.setAttribute("username", u.getCodicefiscale());
         	request.setAttribute("nome", u.getNome());
         	request.setAttribute("cognome", u.getCognome());
