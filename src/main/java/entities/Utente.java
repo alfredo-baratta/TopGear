@@ -9,12 +9,12 @@ import Model.DriverManagerConnectionPool;
 public class Utente {
     private static String formatoemail = "^\\w+([\\.-]?\\w+)*@\\w+([\\.-]?\\w+)*(\\.\\w{2,3})+$";
     private static String formatonumtel = "^\\d{10}$";
-    private static String formatoindirizzo = "^[a-zA-Z\\s\\d]+,\\s(\\d+[A-Za-z]?|SNC|snc)$\n";
+    private static String formatoindirizzo = "^[a-zA-Z\\s]+,\\s(\\d+[A-Za-z]?|SNC|snc)$";
     private static String formatostringaalfabetica = "^[a-zA-Z\\s]+$";
     private static String formatocap = "[0-9]{5}";
-    private static String formatopw = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d).{8,}$\n";
+    private static String formatopw = "(?=.*\\d)(?=.*[a-z])(?=.*[A-Z]).{8,}";
     private static String formatoCF = "[A-Z]{6}[0-9]{2}[A-Z]{1}[0-9]{2}[A-Z]{1}[0-9]{3}[A-Z]{1}";
-    private static String formatodata = "^\\d{4}-\\d{2}-\\d{2}$\n";
+    private static String formatodata = "^\\d{4}-\\d{2}-\\d{2}$";
 	private String codicefiscale;
 	private String email;
     private String password;
@@ -241,6 +241,7 @@ public class Utente {
             r.setEsito(true);
             r.setMessage("OK");
         }catch (SQLException e) {
+        	System.out.println(e.getMessage());
         	r.setEsito(false); 
         	if (e.getMessage().toLowerCase().contains("duplicate")) {
         		if(e.getMessage().contains("utente.PRIMARY"))
@@ -288,6 +289,7 @@ public class Utente {
             ResultSet rs = statement.executeQuery();
             
             if (rs.next()) {
+            	System.out.println(rs.getString("email"));
                 setCodicefiscale(rs.getString("cf"));
                 setEmail(rs.getString("email"));
                 setPassword(rs.getString("password"));
@@ -299,6 +301,9 @@ public class Utente {
                 setCap(rs.getString("cap"));
                 setIndirizzo(rs.getString("via"));
             }
+            else {
+				return false;
+			}
             DriverManagerConnectionPool.releaseConnection(conn);
             return true;
         } catch (Exception e) {

@@ -161,7 +161,7 @@
         <button type="submit">Accedi</button>
         <p>
           Non hai un account?
-          <a href="register.jsp">Registrati</a>
+          <a href="/TopGear/registrazione">Registrati</a>
         </p>
       </div>
     </form>

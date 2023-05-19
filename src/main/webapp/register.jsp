@@ -204,7 +204,7 @@
         <div class="group-box">
           <div class="label-box">
             <label for="email">Telefono</label>
-            <input type="tel" name="numtel" placeholder="3827465712" pattern="^\\d{10}$" required />
+            <input type="tel" name="numtel" placeholder="3201234567" pattern="^\d{10}$" required />
           </div>
           <div class="label-box">
             <label for="email">Città</label>
@@ -227,7 +227,7 @@
               name="indirizzo"
               maxlength="50"
               placeholder="Via Del Calabrese, numero oppure snc"
-              pattern="^[a-zA-Z\\s\\d]+,\\s(\\d+[A-Za-z]?|SNC|snc)$\n"
+              pattern="^[a-zA-Z\s]+,\s(\d+[A-Za-z]?|SNC|snc)$"
               required
             />
           </div>
@@ -263,6 +263,7 @@
               name="password"
               maxlength="16"
               placeholder="********"
+              pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}"
               required
             />
           </div>
@@ -270,7 +271,7 @@
         <button type="submit">Registrati</button>
         <p>
           Hai già un account?
-          <a href="login.jsp">Accedi</a>
+          <a href="/TopGear/login">Accedi</a>
         </p>
     </form>
   </body>
