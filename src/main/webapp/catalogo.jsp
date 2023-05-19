@@ -3,6 +3,8 @@
 
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
+<%@ include file="header.html" %>
+
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -23,6 +25,8 @@
         flex-direction: row;
         gap: 25px;
         flex-wrap: wrap;
+        padding: 15px;
+        margin-top: 65px;
       }
 
       .product {
@@ -72,13 +76,6 @@
         align-self: center;
       }
 
-      .page-title {
-        font-size: 25px;
-        font-weight: 600;
-        margin-bottom: 30px;
-        text-align: center;
-      }
-
       .product-prezzo {
         margin-top: 0;
       }
@@ -119,7 +116,6 @@
     </style>
   </head>
   <body>
-    <div class="page-title">Catalogo</div>
     <div class="container">
     <% if(request.getAttribute("accessori") != null) { %>
     <c:forEach var="accessorio" items="${accessori}">
@@ -132,11 +128,57 @@
             ${accessorio.getNome()}
           </p>
           <p class="product-prezzo">${accessorio.getPrezzo()} euro</p>
-          <button class="add-to-cart">Aggiungi al carrello</button>
+          <button class="add-to-cart" onClick="addToCart(${accessorio.getId()}, '${accessorio.getNome()}', ${accessorio.getPrezzo()})">Aggiungi al carrello</button>
         </div>
       </div>
     </c:forEach>
       <% } %>
     </div>
+    <script>
+    function addToCart(productId, nome, prezzo, quantity = 1) {
+
+        let cart = getCartFromCookie();
+
+        const existingProductIndex = cart.findIndex(
+          (item) => item.productId === productId
+        );
+
+        if (existingProductIndex > -1) {
+        	
+          cart[existingProductIndex].quantity += quantity;
+        } 
+        else {
+          cart.push({ productId, quantity, nome, prezzo });
+        }
+
+        saveCartToCookie(cart);
+        return quantity;
+    }
+    
+    function getCartFromCookie() {
+  	  
+        if (document.cookie.includes("cart=")) {
+          const cartCookie = document.cookie
+            .split(";")
+            .find((cookie) => cookie.trim().startsWith("cart="));
+          const cartValue = cartCookie.split("=")[1];
+          return JSON.parse(decodeURIComponent(cartValue));
+        }
+
+        // Se il cookie del carrello non esiste, restituisci un carrello vuoto
+        // Se il cookie non c'è, restituisci un carrello vuoto
+        return [];
+      }
+    
+    function saveCartToCookie(cart) {
+
+        const cartValue = encodeURIComponent(JSON.stringify(cart));
+        // Imposta il cookie del carrello con la durata di 30 giorni
+        const expirationDate = new Date();
+        expirationDate.setDate(expirationDate.getDate() + 30);
+        
+        document.cookie = "cart="+ cartValue + "; expires=" + expirationDate.toUTCString();
+      }
+    </script>
   </body>
 </html>
