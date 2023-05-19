@@ -25,13 +25,13 @@
         padding: 14px;
         max-width: 300px;
         max-height: 220px;
+        margin-top: 20px;
       }
 
       .carrello-left {
         width: 60%;
         display: flex;
         flex-direction: column;
-        justify-content: center;
         align-items: center;
       }
 
@@ -87,7 +87,6 @@
         flex-direction: row;
         flex-wrap: wrap;
         justify-content: space-around;
-        align-items: center;
       }
 
       button.checkout {
@@ -233,11 +232,8 @@
       }
 
       @media screen and (max-width: 1000px) {
-        .container {
-          flex-direction: column;
-        }
         .carrello-left {
-          width: 100%;
+          width: 90%;
         }
         .riepilogo {
           margin-top: 25px;
@@ -245,7 +241,8 @@
       }
 
       @media screen and (max-width: 600px) {
-        .table thead {
+
+        .table th{
           display: none;
         }
         
@@ -267,6 +264,10 @@
         .remove-button{
           align-self: center;
         }
+        .riepilogo{
+          align-self: center;
+        }
+        
 
       }
       @media screen and (max-width: 370px) {
@@ -321,10 +322,10 @@
           id="products-table"
         >
           <thead>
-            <tr>
-              <th>PRODOTTO</th>
-              <th>QUANTITA'</th>
-              <th>PREZZO</th>
+            <tr id="table-head">
+              <th class="table-head">PRODOTTO</th>
+              <th class="table-head">QUANTITA'</th>
+              <th class="table-head">PREZZO</th>
             </tr>
           </thead>
           <tbody>
@@ -416,7 +417,17 @@
         setCartEmpty();
         
       } else {
+    	  
+    	const table_head = document.getElementById("table-head");
+    	
+ 
+    	const table_title = table.createTHead();
+    	const first_row = table_title.insertRow();
+    	first_row.insertCell(0).outerHTML = "<th>PRODOTTO</th>";
+    	first_row.insertCell(1).outerHTML = "<th>QUANTITA'</th>";
+    	first_row.insertCell(2).outerHTML = "<th>PREZZO</th>";
 
+    	
         // Aggiungi una riga per ogni prodotto nel carrello
         cart.forEach((item) => {
           const row = table.insertRow();
@@ -524,14 +535,6 @@
 
           const buttonToRemove = document.getElementById("removeAll");
           buttonToRemove.setAttribute("hidden", "true");
-          
-          /*
-          const textToRealign = document.getElementsByClassName("container")[0];
-          textToRealign.style.removeProperty("align-items");
-          
-          const otherTextToRealign = document.getElementsByClassName("carrello-left")[0];
-          otherTextToRealign.style.justifyContent = "";
-          */
 
       }
 
