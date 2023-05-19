@@ -321,8 +321,8 @@
           class="table"
           id="products-table"
         >
-          <thead>
-            <tr id="table-head">
+          <thead id="table-head">
+            <tr>
               <th class="table-head">PRODOTTO</th>
               <th class="table-head">QUANTITA'</th>
               <th class="table-head">PREZZO</th>
@@ -401,13 +401,7 @@
       const cart = getCartFromCookie();
 
       const table = document.getElementById("products-table");
-
-      // Salva l'indice dell'elemento selezionato nel carrello
-      const selectedRowIndex =
-        table.getElementsByClassName("selected").length > 0
-          ? table.getElementsByClassName("selected")[0].rowIndex
-          : null;
-
+          
       // Rimuovi le righe precedentemente aggiunte
       while (table.rows.length > 0) {
         table.deleteRow(0);
@@ -417,17 +411,13 @@
         setCartEmpty();
         
       } else {
-    	  
-    	const table_head = document.getElementById("table-head");
-    	
- 
-    	const table_title = table.createTHead();
-    	const first_row = table_title.insertRow();
-    	first_row.insertCell(0).outerHTML = "<th>PRODOTTO</th>";
-    	first_row.insertCell(1).outerHTML = "<th>QUANTITA'</th>";
-    	first_row.insertCell(2).outerHTML = "<th>PREZZO</th>";
-
-    	
+		
+        const table_head = document.getElementById("table-head");
+      	const first_row = table_head.insertRow();
+      	first_row.insertCell(0).outerHTML = "<th>PRODOTTO</th>";
+      	first_row.insertCell(1).outerHTML = "<th>QUANTITA'</th>";
+      	first_row.insertCell(2).outerHTML = "<th>PREZZO</th>";
+      	  
         // Aggiungi una riga per ogni prodotto nel carrello
         cart.forEach((item) => {
           const row = table.insertRow();
@@ -535,6 +525,13 @@
 
           const buttonToRemove = document.getElementById("removeAll");
           buttonToRemove.setAttribute("hidden", "true");
+          
+          const tableHead = document.getElementById("table-head");
+          
+          //tableHead.remove();	//STO STRONZO RIMUOVE PURE LA EMPTYCELL DEFINITA PRIMA MA PERCHE'E'E'E'E'E'E^^^^^^???????????????
+          
+          //document.getElementById("table-head").deleteTHead();
+          
 
       }
 
