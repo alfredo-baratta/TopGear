@@ -1,15 +1,12 @@
-<%@page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1" %>
-<%@page import="com.servlet.CartServlet" %>
-<%@page import="java.util.ArrayList" %>
-
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <title>Carrello</title>
-    
     <style>
       body {
         min-height: 100vh;
@@ -37,9 +34,12 @@
         justify-content: center;
         align-items: center;
       }
-      
-      .carrello-vuoto{
-      	width: 100%;
+
+      #carrello-vuoto {
+        color: black;
+        font-size: 15px;
+        font-weight: bold;
+        width: 100%;
         display: flex;
         flex-direction: column;
         justify-content: space-between;
@@ -53,7 +53,6 @@
         display: flex;
         flex-direction: column;
         width: 100%;
-        padding-top: 10px;
       }
 
       .dettagli-box {
@@ -70,7 +69,13 @@
         font-size: 17px;
       }
 
-      .description {
+      #prodotti-totali {
+        color: black;
+        font-size: 15px;
+        font-weight: bold;
+      }
+
+      #prezzo-totale {
         color: black;
         font-size: 15px;
         font-weight: bold;
@@ -86,7 +91,7 @@
       }
 
       button.checkout {
-        background-color: #9CEAFF;
+        background-color: #9ceaff;
         color: black;
         padding: 10px;
         border: none;
@@ -98,6 +103,12 @@
         border-radius: 5px;
       }
 
+      button.checkout:hover {
+        cursor: pointer;
+        background-color: #4e9bb7;
+        color: white;
+      }
+
       .riepilogo hr {
         margin-top: 10px;
         margin-bottom: 10px;
@@ -105,34 +116,16 @@
         border-top: 1px solid #f5f5f5;
       }
 
-      button.checkout:hover {
+      button.removeAll {
         cursor: pointer;
-        background-color: #4E9BB7;
+        background-color: #ffd5b4;
+        color: black;
+      }
+
+      button.removeAll:hover {
+        cursor: pointer;
+        background-color: #fa885f;
         color: white;
-      }
-      
-      button.remove{
-      	cursor:pointer;
-      	background-color: #FFD5B4;
-      	color:black;
-      }
-      
-      button.remove:hover{
-      	cursor:pointer;
-      	background-color: #FA885F;
-      	color: white;
-      }
-      
-      button.change{
-      	cursor:pointer;
-      	background-color: #9CEAFF;
-      	color:black;
-      }
-      
-      button.change:hover{
-      	cursor:pointer;
-      	background-color: #4E9BB7;
-      	color: white;
       }
 
       table th {
@@ -148,6 +141,10 @@
         padding-top: 15px;
         padding-bottom: 15px;
       }
+      
+      .rimuovi-prodotto-bottone{
+      	text-align: right;
+      }
 
       .table-title {
         width: 100%;
@@ -159,8 +156,10 @@
         margin-bottom: 15px;
       }
       
-      .item{
-      	background-color: transparent;
+      .buttonRemoveAll{
+      	display: flex;
+      	align-items: center;
+      	margin-left: 10px;
       }
 
       .item:not(:last-of-type) {
@@ -173,7 +172,7 @@
         justify-content: center;
       }
       .wrapper span {
-        width: 80%;
+        width: 100%;
         text-align: center;
         font-size: 16px;
         font-weight: 600;
@@ -187,14 +186,57 @@
         pointer-events: none;
       }
 
+      .first-row-cell {
+        display: flex;
+        gap: 5px;
+        align-items: center;
+      }
+
+      .first-row-cell img {
+        height: 100px;
+      }
+
+      .first-row-cell p {
+        font-weight: 500;
+        margin-top: 0;
+      }
+
+      .prezzo-testo {
+        font-weight: 600;
+      }
+
+      .remove-button {
+        width: 30px;
+        height: 30px;
+        background-color: #ffd5b4;
+        border: 1px solid transparent;
+        border-radius: 5px;
+      }
+
+      .remove-button:hover {
+        background-color: #fa885f;
+        border: 1px solid transparent;
+        color: white;
+        cursor: pointer;
+      }
+
+      .span-plus:hover {
+        background-color: #9ceaff;
+        color: black;
+        cursor: pointer;
+      }
+
+      .span-minus:hover {
+        background-color: #9ceaff;
+        color: black;
+        cursor: pointer;
+      }
+
       @media screen and (max-width: 1000px) {
         .container {
           flex-direction: column;
         }
         .carrello-left {
-          width: 100%;
-        }
-        .carrello-vuoto{
           width: 100%;
         }
         .riepilogo {
@@ -206,7 +248,7 @@
         .table thead {
           display: none;
         }
-
+        
         .table,
         .table tbody,
         .table tr,
@@ -222,6 +264,10 @@
         .table td {
           position: relative;
         }
+        .remove-button{
+          align-self: center;
+        }
+
       }
       @media screen and (max-width: 370px) {
         .riepilogo {
@@ -251,83 +297,29 @@
     />
   </head>
   <body>
-  
-  <jsp:directive.page import="entities.*" />
-  <jsp:directive.page import="com.servlet.CartServlet"/>
-  <jsp:useBean id="cart" scope="session" class="entities.Carrello" />
-  
-  <%
-  	
-  	String removeID = request.getParameter("removeFromID");
-	String decreaseID = request.getParameter("decrease");
-	String increaseID = request.getParameter("increase");
-	boolean removeAll = Boolean.parseBoolean(request.getParameter("removeAll"));
-
-
-	//System.out.println("Prodotti totali: "+cart.getNumProdotti());
-	
-	if(removeID != null){
-		//System.out.println("Sto per rimuovere questo prodotto: " + removeID);
-		try{
-			cart.remove(removeID);
-		}
-		catch(Exception e){
-			System.out.println("Errore: " + e.getMessage());
-		}
-	}
-
-	if(decreaseID != null){
-		cart.decreaseQta(decreaseID);
-	}
-	
-	if(increaseID != null){
-		cart.increaseQta(increaseID);
-	}
-
-	if(removeAll){
-		cart.resetEverything();
-	}
-  	
-  %>
-  
     <div class="container">
-      <%
-  	  if (cart.getNumProdotti() == 0){
- 	  %>
-  		
-  		  <div class="carrello-left">
-  			  <div class="table-title">
-         		<h3>Carrello</h3>
-        	  </div>
-			<div class="carrello-vuoto" style="width: 100%">
-				<h4>Non sono presenti elementi nel carrello.</h4>
-			</div>
-  	   	  </div>
-  		
-  	  <%
-  	  } else {
-  	  %>
-    
       <div class="carrello-left">
-        <div class="table-title">
+        <div class="table-title" id="table-title">
           <h3>Carrello</h3>
-          <form action="cart" method="post">
-            <button
-              class="remove"
-              onclick="<% boolean remove = true; %>"
-              style="
-                width: 30px;
-                height: 30px;
-                border: 1px solid transparent;
-                border-radius: 5px;
-              "
-            >
-              <i class="fa fa-trash" aria-hidden="true"></i>
-            </button>
-          <input type="hidden" value="<%=remove%>" name="removeAll">
-          </form>
+          <button
+            class="removeAll"
+            onclick="removeAllFromCart()"
+            id="removeAll"
+            style="
+              width: 30px;
+              height: 30px;
+              border: 1px solid transparent;
+              border-radius: 5px;
+            "
+          >
+            <i class="fa fa-trash" aria-hidden="true"></i>
+          </button>
         </div>
-        <table style="width: 100%; border-collapse: collapse" class="table">
+        <table
+          style="width: 100%; border-collapse: collapse"
+          class="table"
+          id="products-table"
+        >
           <thead>
             <tr>
               <th>PRODOTTO</th>
@@ -335,134 +327,379 @@
               <th>PREZZO</th>
             </tr>
           </thead>
-          
-          <%
-          ArrayList<Prodotto> lista_prodotti = cart.getListaProdottiAsArrayList();
-      	  String[] temp = new String[7];
-      	
-      	  for (Prodotto p : lista_prodotti){
-      		
-      		temp[0] = p.getId();								//ID
-      		
-      		temp[1] = p.getNome();								//NOME
-      		temp[2] = p.getDescrizione();						//DESCRIZIONE
-      		temp[3] = Boolean.toString(p.getDisponibile());		//E' DISPONIBILE?
-      		temp[4] = Integer.toString(p.getQta());				//QUANTITA'
-      		temp[5] = Float.toString(p.getPrezzo());			//PREZZO
-      		temp[6] = Integer.toString(p.getDisponibilita());	//DISPONIBILITA'
-      		
-      		System.out.println("dal carrello: " + temp[0]);
-          %>
-          
           <tbody>
             <tr class="item">
-              <td style="display: flex; gap: 5px; align-items: center">
+              <td class="first-row-cell">
                 <img
                   style="height: 100px"
-                  src=""
+                  src="dogwood-7978952_1920.jpg"
                   alt="image"
                   srcset=""
                 />
-                <p style="font-weight: 500; margin-top: 0"><%= temp[1]%></p>
+                <p style="font-weight: 500; margin-top: 0">nome</p>
               </td>
               <td>
                 <div class="wrapper">
-                  <form action="cart" method="post">
-                    <!-- <span class="minus">-</span>  -->
-                     <button 
-                         class="change"
-             			 style="
-               			 width: 30px;
-               			 height: 30px;
-               			 border: 1px solid transparent;
-               			 border-radius: 5px;
-             			 "
-           			 > - </button>
-                    <input type="hidden" name="decrease" value="<%=temp[0]%>">
-                  </form>
-                  <span class="num"><%= temp[4]%></span>
-                  <form action="cart" method="post">
-                    <!-- <span class="plus">+</span> -->
-                     <button 
-                     	 class="change"
-             			 style="
-               			 width: 30px;
-               			 height: 30px;
-               			 border: 1px solid transparent;
-               			 border-radius: 5px;
-             			 "
-           			 > + </button>
-                    <input type="hidden" name="increase" value="<%=temp[0]%>">
-                  </form>
+                  <span class="minus">-</span>
+                  <span id="num">1</span>
+                  <span class="plus">+</span>
                 </div>
               </td>
               <td>
-                <p style="font-weight: 600"><%= temp[5]%> euro</p>
-              </td>  
-              <td>
-                <form action="cart" method="post">
-                  <button
-                    class="remove"
-            	    style="
-              	    width: 30px;
-             	    height: 30px;
-              	    border: 1px solid transparent;
-             	    border-radius: 5px;
-            	    "
-          		  >
-            	    <i class="fa fa-trash" aria-hidden="true"></i>
-          		  </button>
-          		  <input type="hidden" value="<%= temp[0]%>" name="removeFromID">
-          		</form>
+                <p class="prezzo-testo">5333€</p>
+              </td>
+              <td class="rimuovi-prodotto-bottone">
+                <button
+                  class="removeProduct"
+                  style="
+                    width: 30px;
+                    height: 30px;
+                    border: 1px solid transparent;
+                    border-radius: 5px;
+                  "
+                >
+                  <i class="fa fa-trash" aria-hidden="true"></i>
+                </button>
               </td>
             </tr>
           </tbody>
-          <%
-      	  }
-          %>
         </table>
       </div>
-	
-	  <%
-  	  }
-	  %>
 
       <div class="riepilogo">
         <div class="dettagli-riepilogo">
           <div class="dettagli-box">
             <p class="title">Prodotti presenti:</p>
-            <p class="description"><%= cart.getNumProdotti() %></p>
+            <p id="prodotti-totali">0</p>
           </div>
           <div class="dettagli-box">
             <p class="title">Totale con IVA:</p>
-            <p class="description"><%= cart.calcolaIVA() %> euro</p>
+            <p id="prezzo-totale">0€</p>
           </div>
         </div>
         <hr />
-        <button class="checkout">Checkout</button>
+        <button class="checkout" id="checkout">Checkout</button>
       </div>
     </div>
-    
     <script>
-      /*
-      const plus = document.querySelector(".plus");
-      const minus = document.querySelector(".minus");
-      const num = document.querySelector(".num");
-      let quantity = num;
+      updateCartInfo();
 
-      plus.addEventListener("click", () => {
-        quantity++;
-        num.innerText = quantity;
-      });
+      function loadCartProduct(productId) {
+        const cart = getCartFromCookie();
 
-      minus.addEventListener("click", () => {
-        if (quantity > 1) {
-          quantity--;
-          num.innerText = quantity;
+        const existingProductIndex = cart.findIndex(
+          (item) => item.productId === productId
+        );
+
+        if (existingProductIndex > -1) {
+          const row = document.getElementById("num-" + productId);
+          row.textContent = cart[existingProductIndex].quantity;
         }
-      });
-      */
+      }
+
+      const cart = getCartFromCookie();
+
+      const table = document.getElementById("products-table");
+
+      // Salva l'indice dell'elemento selezionato nel carrello
+      const selectedRowIndex =
+        table.getElementsByClassName("selected").length > 0
+          ? table.getElementsByClassName("selected")[0].rowIndex
+          : null;
+
+      // Rimuovi le righe precedentemente aggiunte
+      while (table.rows.length > 0) {
+        table.deleteRow(0);
+      }
+
+      if (cart.length === 0) {
+        setCartEmpty();
+        
+      } else {
+
+        // Aggiungi una riga per ogni prodotto nel carrello
+        cart.forEach((item) => {
+          const row = table.insertRow();
+          row.classList.add("item");
+          row.setAttribute("id", "row-" + item.productId);
+
+          // Prima cella
+          const nameCell = row.insertCell();
+          nameCell.classList.add("first-row-cell");
+
+          const productImage = document.createElement("img");
+          productImage.setAttribute(
+            "src",
+            ""
+          );
+
+          const productName = document.createElement("p");
+          productName.textContent = item.nome;
+
+          nameCell.appendChild(productImage);
+          nameCell.appendChild(productName);
+
+          // Seconda cella
+          const quantityCell = row.insertCell();
+
+          const div = document.createElement("div");
+          div.classList.add("wrapper");
+
+          const spanMinus = document.createElement("span");
+          spanMinus.setAttribute("id", "minus-" + item.productId);
+          spanMinus.classList.add("span-minus");
+          spanMinus.textContent = "-";
+          spanMinus.classList.add("minus");
+
+          const spanNum = document.createElement("span");
+          spanNum.setAttribute("id", "num-" + item.productId);
+          spanNum.textContent = item.quantity;
+          spanNum.classList.add("num");
+
+          const spanPlus = document.createElement("span");
+          spanPlus.setAttribute("id", "plus-" + item.productId);
+          spanPlus.classList.add("span-plus");
+          spanPlus.textContent = "+";
+          spanPlus.classList.add("plus");
+
+          spanPlus.addEventListener("click", function () {
+            const spanNum = document.getElementById("num-" + item.productId);
+            const newQuantity = incrementQuantity(item.productId);
+            loadCartProduct(item.productId);
+          });
+
+          spanMinus.addEventListener("click", function () {
+            if (item.quantity > 1) {
+              const spanNum = document.getElementById("num-" + item.productId);
+              const newQuantity = decrementQuantity(item.productId);
+              loadCartProduct(item.productId);
+            } else {
+              removeOneFromCart(item.productId, item.quantity);
+            }
+          });
+
+          div.appendChild(spanMinus);
+          div.appendChild(spanNum);
+          div.appendChild(spanPlus);
+
+          quantityCell.appendChild(div);
+
+          // Terza cella
+          const priceCell = row.insertCell();
+
+          const prezzoParagraph = document.createElement("p");
+          prezzoParagraph.textContent = item.prezzo + "€";
+          prezzoParagraph.classList.add("wrapper");
+          prezzoParagraph.classList.add("prezzo-testo");
+
+          priceCell.appendChild(prezzoParagraph);
+
+          // Quarta cella
+          const removeButtonCell = row.insertCell();
+		  removeButtonCell.classList.add("rimuovi-prodotto-bottone");
+          
+          const removeProductButton = document.createElement("button");
+          removeProductButton.classList.add("remove-button");
+
+          removeProductButton.innerHTML =
+            '<i class="fa fa-trash" aria-hidden="true"></i>';
+
+          removeProductButton.addEventListener("click", function () {
+            const productId = item.productId;
+            removeFromCart(productId);
+          });
+
+          removeButtonCell.appendChild(removeProductButton);
+        });
+        
+      }
+      
+      function setCartEmpty(){
+    	  const emptyRow = table.insertRow();
+          const emptyCell = emptyRow.insertCell();
+          emptyCell.textContent = "Non sono presenti prodotti nel carrello.";
+          emptyCell.style.fontWeight = "bold";
+          emptyCell.colSpan = 4;
+          emptyCell.classList.add("carrello-vuoto");
+
+          const buttonToRemove = document.getElementById("removeAll");
+          buttonToRemove.setAttribute("hidden", "true");
+          
+          /*
+          const textToRealign = document.getElementsByClassName("container")[0];
+          textToRealign.style.removeProperty("align-items");
+          
+          const otherTextToRealign = document.getElementsByClassName("carrello-left")[0];
+          otherTextToRealign.style.justifyContent = "";
+          */
+
+      }
+
+      // Aggiorna le informazioni sul carrello nel riepilogo
+      function updateCartInfo() {
+        const cart = getCartFromCookie();
+        const totalProducts = document.getElementById("prodotti-totali");
+        const totalPrice = document.getElementById("prezzo-totale");
+
+        let productsCount = 0;
+        cart.forEach((item) => {
+          productsCount += item.quantity;
+        });
+        totalProducts.textContent = productsCount;
+
+        let total = 0;
+        cart.forEach((item) => {
+          total += item.quantity * item.prezzo;
+        });
+        totalPrice.textContent = total + "€";
+      }
+
+      // Ottieni il prodotto dal carrello in base all'ID
+      function getProductById(productId, cart) {
+        return cart.find((cart) => cart.id === productId);
+      }
+
+      // Aggiungi un prodotto al carrello o incrementa la quantità se già presente
+      function addToCart(productId, nome, prezzo, quantity = 1 ) {
+        let cart = getCartFromCookie();
+
+        const existingProductIndex = cart.findIndex(
+          (item) => item.productId === productId
+        );
+
+        if (existingProductIndex > -1) {
+          cart[existingProductIndex].quantity += quantity;
+          loadCartProduct(productId);
+        } else {
+          cart.push({ productId, quantity, nome, prezzo });
+        }
+
+        saveCartToCookie(cart);
+        updateCartInfo();
+        
+        return quantity;
+      }
+
+      // Incrementa la quantità di un prodotto nel carrello
+      function incrementQuantity(productId, quantity = 1) {
+        const updatedQuantity = addToCart(productId, null, null, 1);
+        return updatedQuantity;
+      }
+
+      // Decrementa la quantità di un prodotto nel carrello
+      function decrementQuantity(productId, quantity = 1) {
+        const updatedQuantity = removeOneFromCart(productId, 1);
+        return updatedQuantity;
+      }
+
+      // Aggiorna la quantità in un prodotto
+      function updateProducts() {
+        const cart = getCartFromCookie();
+
+        cart.forEach((item) => {
+          const spanNum = document.getElementById("num-" + item.productId);
+          spanNum.textContent = item.quantity.toString();
+        });
+      }
+
+      // Ottieni il carrello dal cookie
+      function getCartFromCookie() {
+        if (document.cookie.includes("cart=")) {
+          const cartCookie = document.cookie
+            .split(";")
+            .find((cookie) => cookie.trim().startsWith("cart="));
+
+          const cartValue = cartCookie.split("=")[1];
+
+          return JSON.parse(decodeURIComponent(cartValue));
+        }
+
+        // Se il cookie non c'è, restituisci un carrello vuoto
+        return [];
+      }
+
+      // Rimuove un singolo prodotto dalla quantità
+      function removeOneFromCart(productId, quantity = 1) {
+        let cart = getCartFromCookie();
+
+        const existingProductIndex = cart.findIndex(
+          (item) => item.productId === productId
+        );
+
+        if (existingProductIndex > -1) {
+          const existingQuantity = cart[existingProductIndex].quantity;
+
+          if (existingQuantity > 1) {
+            cart[existingProductIndex].quantity -= quantity;
+          }
+
+          saveCartToCookie(cart);
+        }
+
+        loadCartProduct(productId);
+
+        updateCartInfo();
+        return quantity;
+      }
+
+      // Rimuovi un prodotto dal carrello o diminuisci la quantità se presente
+      function removeFromCart(productId) {
+        let cart = getCartFromCookie();
+
+        const existingProductIndex = cart.findIndex(
+          (item) => item.productId === productId
+        );
+
+        if (existingProductIndex > -1) {
+          cart.splice(existingProductIndex, 1);
+
+          saveCartToCookie(cart);
+        }
+
+        const table = document.getElementById("products-table");
+
+        const row = document.getElementById("row-" + productId);
+
+        if (table && row) {
+          table.deleteRow(row.rowIndex);
+        }
+        
+        if(cart.length === 0){
+        	setCartEmpty();
+        }
+
+        updateCartInfo();
+        loadCartProduct(productId);
+      }
+
+      // Rimuovi tutti i prodotti dal carrello
+      function removeAllFromCart() {
+        let cart = getCartFromCookie();
+        cart = []; //hardcore reset, brutale ma efficace
+
+        const table = document.getElementById("products-table");
+
+        while (table.rows.length > 0) {
+          table.deleteRow(0);
+        }
+        
+        setCartEmpty();
+
+        saveCartToCookie(cart);
+        updateCartInfo();
+      }
+
+      // Salva il carrello nel cookie
+      function saveCartToCookie(cart) {
+        const cartValue = encodeURIComponent(JSON.stringify(cart));
+
+        // Expiration date di 30 giorni
+        const expirationDate = new Date();
+        expirationDate.setDate(expirationDate.getDate() + 30);
+
+        document.cookie =
+          "cart=" + cartValue + "; expires=" + expirationDate.toUTCString();
+      }
     </script>
-    
   </body>
 </html>
