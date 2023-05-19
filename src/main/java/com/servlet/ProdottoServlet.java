@@ -64,6 +64,7 @@ public class ProdottoServlet extends HttpServlet {
                     immagini.add(immagineBase64);
                 }
                
+                request.setAttribute("id", id);
                 request.setAttribute("nome", nome);
                 request.setAttribute("descrizione", descrizione);
                 request.setAttribute("prezzo", prezzo);
