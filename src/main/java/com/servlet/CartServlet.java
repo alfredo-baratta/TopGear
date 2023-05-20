@@ -20,7 +20,7 @@ public class CartServlet extends HttpServlet {
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
-		RequestDispatcher dispatcher = request.getRequestDispatcher("cart.jsp");
+		RequestDispatcher dispatcher = request.getRequestDispatcher("/cart.jsp");
 		dispatcher.forward(request,  response);
 		
 	}

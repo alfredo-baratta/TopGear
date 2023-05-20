@@ -2,6 +2,8 @@
     pageEncoding="UTF-8"%>
     
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+
+<%@ page import="java.util.ArrayList" %>
     
 <%@ include file="header.html" %>
 <!DOCTYPE html>
@@ -155,7 +157,14 @@
       <div class="informazioni-prodotto">
         <p class="nome"><%= request.getAttribute("nome") %></p>
         <div class="prezzo"><%= request.getAttribute("prezzo") %> €</div>
-        <button class="add-to-cart" onClick="addToCart(<%= request.getAttribute("id") %>, '<%=request.getAttribute("nome")%>', <%= request.getAttribute("prezzo") %>)">Aggiungi al carrello</button>
+<% 
+	ArrayList<String> lista = (ArrayList<String>) request.getAttribute("immagini");
+	Object primoElemento = null;
+	if (lista != null && !lista.isEmpty()) {
+    	primoElemento = lista.get(0);
+	}
+%>
+        <button class="add-to-cart" onClick="addToCart(<%= request.getAttribute("id") %>, '<%=request.getAttribute("nome")%>', <%= request.getAttribute("prezzo") %>, 1, <%= primoElemento %>)">Aggiungi al carrello</button>
         <div class="descrizione">Descrizione</div>
         <p class="descrizione-testuale">
           <%= request.getAttribute("descrizione") %>
@@ -186,7 +195,7 @@
         });
       });
       
-      function addToCart(productId, nome, prezzo, quantity = 1) {
+      function addToCart(productId, nome, prezzo, quantity = 1, imageId) {
 
           let cart = getCartFromCookie();
 
@@ -199,7 +208,7 @@
             cart[existingProductIndex].quantity += quantity;
           } 
           else {
-            cart.push({ productId, quantity, nome, prezzo });
+            cart.push({ productId, quantity, nome, prezzo, imageId });
           }
 
           saveCartToCookie(cart);

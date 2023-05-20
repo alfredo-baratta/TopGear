@@ -1,5 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+    
+<%@ include file="header.html" %>
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -8,6 +10,11 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <title>Carrello</title>
     <style>
+      * {
+        margin: 0;
+        padding: 0;
+      }
+
       body {
         min-height: 100vh;
         height: 100%;
@@ -87,6 +94,8 @@
         flex-direction: row;
         flex-wrap: wrap;
         justify-content: space-around;
+        margin-top: 105px;
+        min-height: 100vh;
       }
 
       button.checkout {
@@ -702,4 +711,5 @@
       }
     </script>
   </body>
+  <%@ include file="footer.html" %>
 </html>

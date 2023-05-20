@@ -81,6 +81,7 @@
         font-weight: 400;
         max-width: 250px;
         align-self: center;
+        margin-top: 15px;
       }
 
       .product-prezzo {
@@ -135,14 +136,14 @@
             ${accessorio.getNome()}
           </p>
           <p class="product-prezzo">${accessorio.getPrezzo()} €</p>
-          <button class="add-to-cart" onClick="addToCart(${accessorio.getId()}, '${accessorio.getNome()}', ${accessorio.getPrezzo()})">Aggiungi al carrello</button>
+          <button class="add-to-cart" onClick="addToCart(${accessorio.getId()}, '${accessorio.getNome()}', ${accessorio.getPrezzo()}, 1, ${accessorio.getImmagine()})">Aggiungi al carrello</button>
         </div>
       </div>
     </c:forEach>
       <% } %>
     </div>
     <script>
-    function addToCart(productId, nome, prezzo, quantity = 1) {
+    function addToCart(productId, nome, prezzo, quantity = 1, imageId) {
 
         let cart = getCartFromCookie();
 
@@ -155,7 +156,7 @@
           cart[existingProductIndex].quantity += quantity;
         } 
         else {
-          cart.push({ productId, quantity, nome, prezzo });
+          cart.push({ productId, quantity, nome, prezzo, imageId });
         }
 
         saveCartToCookie(cart);
