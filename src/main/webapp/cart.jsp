@@ -134,6 +134,10 @@
         border-bottom: 2px solid #f5f5f5;
         font-size: 14px;
       }
+      
+      .table-head .emptyCell{
+      	width: 100%;
+      }
 
       table td {
         text-align: center;
@@ -301,7 +305,7 @@
     <div class="container">
       <div class="carrello-left">
         <div class="table-title" id="table-title">
-          <h3>Carrello</h3>
+          <h3>CARRELLO</h3>
           <button
             class="removeAll"
             onclick="removeAllFromCart()"
@@ -326,6 +330,7 @@
               <th class="table-head">PRODOTTO</th>
               <th class="table-head">QUANTITA'</th>
               <th class="table-head">PREZZO</th>
+              <th class="table-head emptyCell"></th>
             </tr>
           </thead>
           <tbody>
@@ -402,23 +407,18 @@
 
       const table = document.getElementById("products-table");
           
-      // Rimuovi le righe precedentemente aggiunte
       while (table.rows.length > 0) {
         table.deleteRow(0);
       }
 
       if (cart.length === 0) {
         setCartEmpty();
+        showHeadTable();
         
       } else {
-		
-        const table_head = document.getElementById("table-head");
-      	const first_row = table_head.insertRow();
-      	first_row.insertCell(0).outerHTML = "<th>PRODOTTO</th>";
-      	first_row.insertCell(1).outerHTML = "<th>QUANTITA'</th>";
-      	first_row.insertCell(2).outerHTML = "<th>PREZZO</th>";
+    	  
+    	showHeadTable();
       	  
-        // Aggiungi una riga per ogni prodotto nel carrello
         cart.forEach((item) => {
           const row = table.insertRow();
           row.classList.add("item");
@@ -431,7 +431,7 @@
           const productImage = document.createElement("img");
           productImage.setAttribute(
             "src",
-            ""
+            "/TopGear/immagini-a?id=" + item.imageId
           );
 
           const productName = document.createElement("p");
@@ -482,7 +482,6 @@
           div.appendChild(spanMinus);
           div.appendChild(spanNum);
           div.appendChild(spanPlus);
-
           quantityCell.appendChild(div);
 
           // Terza cella
@@ -515,24 +514,19 @@
         
       }
       
+      // Setta il messaggio di informazione quando il cart è vuoto
       function setCartEmpty(){
     	  const emptyRow = table.insertRow();
           const emptyCell = emptyRow.insertCell();
           emptyCell.textContent = "Non sono presenti prodotti nel carrello.";
           emptyCell.style.fontWeight = "bold";
+          emptyCell.style.paddingTop = "25px";
           emptyCell.colSpan = 4;
           emptyCell.classList.add("carrello-vuoto");
 
           const buttonToRemove = document.getElementById("removeAll");
           buttonToRemove.setAttribute("hidden", "true");
           
-          const tableHead = document.getElementById("table-head");
-          
-          //tableHead.remove();	//STO STRONZO RIMUOVE PURE LA EMPTYCELL DEFINITA PRIMA MA PERCHE'E'E'E'E'E'E^^^^^^???????????????
-          
-          //document.getElementById("table-head").deleteTHead();
-          
-
       }
 
       // Aggiorna le informazioni sul carrello nel riepilogo
@@ -553,14 +547,23 @@
         });
         totalPrice.textContent = total + "€";
       }
-
-      // Ottieni il prodotto dal carrello in base all'ID
-      function getProductById(productId, cart) {
-        return cart.find((cart) => cart.id === productId);
+      
+      // Mostra a schermo la table head
+      function showHeadTable(){
+    	  const table_head = document.getElementById("table-head");
+          const first_row = table_head.insertRow();
+          first_row.insertCell(0).outerHTML = "<th>PRODOTTO</th>";
+          first_row.insertCell(1).outerHTML = "<th>QUANTITA'</th>";
+          first_row.insertCell(2).outerHTML = "<th>PREZZO</th>";
+          //first_row.insertCell(3).outerHTML = "<th></th>";
+          
+          const emptyCell = first_row.insertCell(3);
+          emptyCell.classList.add("emptyCell");
+          emptyCell.outerHTML="<th></th>";
       }
 
       // Aggiungi un prodotto al carrello o incrementa la quantità se già presente
-      function addToCart(productId, nome, prezzo, quantity = 1 ) {
+      function addToCart(productId, nome, prezzo, quantity = 1, imageId) {
         let cart = getCartFromCookie();
 
         const existingProductIndex = cart.findIndex(
@@ -571,12 +574,11 @@
           cart[existingProductIndex].quantity += quantity;
           loadCartProduct(productId);
         } else {
-          cart.push({ productId, quantity, nome, prezzo });
+          cart.push({ productId, quantity, nome, prezzo, imageId });
         }
 
         saveCartToCookie(cart);
         updateCartInfo();
-        
         return quantity;
       }
 
@@ -613,8 +615,6 @@
 
           return JSON.parse(decodeURIComponent(cartValue));
         }
-
-        // Se il cookie non c'è, restituisci un carrello vuoto
         return [];
       }
 
@@ -675,7 +675,7 @@
       // Rimuovi tutti i prodotti dal carrello
       function removeAllFromCart() {
         let cart = getCartFromCookie();
-        cart = []; //hardcore reset, brutale ma efficace
+        cart = [];
 
         const table = document.getElementById("products-table");
 
@@ -684,7 +684,7 @@
         }
         
         setCartEmpty();
-
+        showHeadTable()
         saveCartToCookie(cart);
         updateCartInfo();
       }
