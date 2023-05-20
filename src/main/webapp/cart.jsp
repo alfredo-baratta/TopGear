@@ -74,6 +74,7 @@
         color: grey;
         font-weight: 600;
         font-size: 17px;
+        margin-bottom: 20px;
       }
 
       #prodotti-totali {
