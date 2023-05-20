@@ -136,7 +136,7 @@
             ${accessorio.getNome()}
           </p>
           <p class="product-prezzo">${accessorio.getPrezzo()} €</p>
-          <button class="add-to-cart" onClick="addToCart(${accessorio.getId()}, '${accessorio.getNome()}', ${accessorio.getPrezzo()}, 1, ${accessorio.getImmagine()})">Aggiungi al carrello</button>
+          <button class="add-to-cart" onClick="addToCart(${accessorio.getId()}, '${accessorio.getNome()}', ${accessorio.getPrezzo()}, 1, ${accessorio.getImmagine()}); updateCartQuantity();">Aggiungi al carrello</button>
         </div>
       </div>
     </c:forEach>

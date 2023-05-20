@@ -182,7 +182,7 @@
         <div class="header__icons">
           <a style="text-decoration: none; color: white" href="/TopGear/cart"
             >
-            <span class="cart-count-badge">3</span><svg
+            <span class="cart-count-badge" id="header-quantity"></span><svg
               width="25"
               height="25"
               fill="currentColor"
@@ -210,6 +210,8 @@
       item.addEventListener("click", function () {
         document.body.classList.toggle("menu-open");
       });
+      
+      updateCartQuantity();
 
       // elements
       var elements_to_watch = document.querySelectorAll(".watch");
@@ -232,6 +234,32 @@
       elements_to_watch.forEach((element) => {
         observer.observe(element);
       });
+      
+      // Aggiorna le informazioni sul carrello nel riepilogo
+      function updateCartQuantity() {
+        const cart = getCartFromCookie();
+        const totalProducts = document.getElementById("header-quantity");
+
+        let productsCount = 0;
+        cart.forEach((item) => {
+          productsCount += item.quantity;
+        });
+        totalProducts.textContent = productsCount;
+      }
+      
+      // Ottieni il carrello dal cookie
+      function getCartFromCookie() {
+        if (document.cookie.includes("cart=")) {
+          const cartCookie = document.cookie
+            .split(";")
+            .find((cookie) => cookie.trim().startsWith("cart="));
+
+          const cartValue = cartCookie.split("=")[1];
+
+          return JSON.parse(decodeURIComponent(cartValue));
+        }
+        return [];
+      }
     </script>
   </body>
 </html>

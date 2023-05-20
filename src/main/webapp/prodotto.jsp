@@ -164,7 +164,7 @@
     	primoElemento = lista.get(0);
 	}
 %>
-        <button class="add-to-cart" onClick="addToCart(<%= request.getAttribute("id") %>, '<%=request.getAttribute("nome")%>', <%= request.getAttribute("prezzo") %>, 1, <%= primoElemento %>)">Aggiungi al carrello</button>
+        <button class="add-to-cart" onClick="addToCart(<%= request.getAttribute("id") %>, '<%=request.getAttribute("nome")%>', <%= request.getAttribute("prezzo") %>, 1, <%= primoElemento %>); updateCartQuantity();">Aggiungi al carrello</button>
         <div class="descrizione">Descrizione</div>
         <p class="descrizione-testuale">
           <%= request.getAttribute("descrizione") %>
