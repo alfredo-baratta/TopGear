@@ -49,19 +49,18 @@ public class CatalogoServlet extends HttpServlet {
                 String descrizione = rs.getString("descrizione");
                 float prezzo = (float) rs.getDouble("prezzo");
                 int disponibilita = rs.getInt("disponibilita");
-                String immagineBase64 = null;
+                int idImmagine = -1;
                 
-                String q2 = "SELECT immagine FROM immagini_accessorio WHERE id = ? LIMIT 1";
+                String q2 = "SELECT id FROM immagini_accessorio WHERE fk_accessorio = ? LIMIT 1";
                 PreparedStatement stmt2 = conn.prepareStatement(q2);
                 stmt2.setInt(1, id);
                 ResultSet rs2 = stmt2.executeQuery();
                 
                 if(rs2.next()) {
-                	byte[] immagine = rs2.getBytes("immagine");
-                	immagineBase64 = Base64.getEncoder().encodeToString(immagine);
+                	idImmagine = rs2.getInt("id");
                 }
                 
-                accessori.add(new Accessorio(id, nome, descrizione, prezzo, disponibilita, immagineBase64));
+                accessori.add(new Accessorio(id, nome, descrizione, prezzo, disponibilita, String.valueOf(idImmagine)));
             }
             
             request.setAttribute("accessori", accessori);

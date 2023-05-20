@@ -1,5 +1,5 @@
-<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
-    pageEncoding="ISO-8859-1"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
     
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
     
@@ -93,6 +93,7 @@
       .first-product-image {
         align-self: center;
         width: 600px;
+        max-width: 600px;
       }
 
       .immagini {
@@ -154,13 +155,13 @@
       <div class="container-immagine">
         <div class="first-product-image slider" data-slides-to-show="1">
           <c:forEach var="immagine" items="${immagini}">
-          	<img src="data:image/jpg;base64,${immagine}" />
+          	<img src="/TopGear/immagini-a?id=${immagine}" />
           </c:forEach>
         </div>
       </div>
       <div class="informazioni-prodotto">
         <p class="nome"><%= request.getAttribute("nome") %></p>
-        <div class="prezzo"><%= request.getAttribute("prezzo") %>$</div>
+        <div class="prezzo"><%= request.getAttribute("prezzo") %> €</div>
         <button class="add-to-cart" onClick="addToCart(<%= request.getAttribute("id") %>, '<%=request.getAttribute("nome")%>', <%= request.getAttribute("prezzo") %>)">Aggiungi al carrello</button>
         <div class="descrizione">Descrizione</div>
         <p class="descrizione-testuale">
@@ -223,7 +224,7 @@
           }
 
           // Se il cookie del carrello non esiste, restituisci un carrello vuoto
-          // Se il cookie non c'�, restituisci un carrello vuoto
+          // Se il cookie non c'è, restituisci un carrello vuoto
           return [];
         }
       

@@ -1,5 +1,5 @@
-<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
-    pageEncoding="ISO-8859-1"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
 
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
@@ -121,13 +121,13 @@
     <c:forEach var="accessorio" items="${accessori}">
       <div class="product">
         <div onclick="location.href='prodotto?id=${accessorio.getId()}'" class="image">
-          <img src="data:image/jpg;base64,${accessorio.getImmagine()}" />
+          <img src="/TopGear/immagini-a?id=${accessorio.getImmagine()}" />
         </div>
         <div class="product-description">
           <p onclick="location.href='test.html'" class="product-title">
             ${accessorio.getNome()}
           </p>
-          <p class="product-prezzo">${accessorio.getPrezzo()} euro</p>
+          <p class="product-prezzo">${accessorio.getPrezzo()} €</p>
           <button class="add-to-cart" onClick="addToCart(${accessorio.getId()}, '${accessorio.getNome()}', ${accessorio.getPrezzo()})">Aggiungi al carrello</button>
         </div>
       </div>
@@ -166,7 +166,7 @@
         }
 
         // Se il cookie del carrello non esiste, restituisci un carrello vuoto
-        // Se il cookie non c'�, restituisci un carrello vuoto
+        // Se il cookie non c'è, restituisci un carrello vuoto
         return [];
       }
     

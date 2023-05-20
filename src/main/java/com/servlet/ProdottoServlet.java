@@ -51,7 +51,7 @@ public class ProdottoServlet extends HttpServlet {
                 float prezzo = (float) rs.getDouble("prezzo");
                 int disponibilita = rs.getInt("disponibilita");
                 
-                String q2 = "SELECT immagine FROM immagini_accessorio WHERE fk_accessorio = ?";
+                String q2 = "SELECT id FROM immagini_accessorio WHERE fk_accessorio = ?";
                 PreparedStatement stmt2 = conn.prepareStatement(q2);
                 stmt2.setInt(1, id);
                 ResultSet rs2 = stmt2.executeQuery();
@@ -59,9 +59,8 @@ public class ProdottoServlet extends HttpServlet {
                 List<String> immagini = new ArrayList<String>();
                 
                 while(rs2.next()) {
-                	byte[] immagine = rs2.getBytes("immagine");
-                    String immagineBase64 = Base64.getEncoder().encodeToString(immagine);
-                    immagini.add(immagineBase64);
+                	int idImmagine = rs2.getInt("id");
+                	immagini.add(String.valueOf(idImmagine));
                 }
                
                 request.setAttribute("id", id);
