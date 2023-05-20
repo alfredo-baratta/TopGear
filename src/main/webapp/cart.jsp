@@ -588,6 +588,7 @@
 
         saveCartToCookie(cart);
         updateCartInfo();
+        updateCartQuantity();
         return quantity;
       }
 
@@ -648,6 +649,7 @@
         loadCartProduct(productId);
 
         updateCartInfo();
+        updateCartQuantity();
         return quantity;
       }
 
@@ -678,6 +680,7 @@
         }
 
         updateCartInfo();
+        updateCartQuantity();
         loadCartProduct(productId);
       }
 
@@ -696,6 +699,7 @@
         showHeadTable()
         saveCartToCookie(cart);
         updateCartInfo();
+        updateCartQuantity();
       }
 
       // Salva il carrello nel cookie
