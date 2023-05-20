@@ -17,7 +17,6 @@
         padding: 0;
       }
       body {
-        width: 100%;
         min-height: 100vh;
         height: 100%;
         font-family: Arial, Helvetica, sans-serif;
@@ -233,5 +232,5 @@
         }
     </script>
   </body>
-  <footer><%@ include file="footer.html" %></footer>
+  <%@ include file="footer.html" %>
 </html>

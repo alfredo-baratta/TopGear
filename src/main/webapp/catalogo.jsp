@@ -13,14 +13,21 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Catalogo</title>
     <style>
+      * {
+        margin: 0;
+        padding: 0;
+      }
+
       body {
         font-family: Arial, Helvetica, sans-serif;
         height: 100%;
+        min-height: 100vh;
       }
 
       .container {
         width: 100%;
         height: 100%;
+        min-height: 100vh;
         display: flex;
         flex-direction: row;
         gap: 25px;
@@ -181,4 +188,5 @@
       }
     </script>
   </body>
+  <%@ include file="footer.html" %>
 </html>
