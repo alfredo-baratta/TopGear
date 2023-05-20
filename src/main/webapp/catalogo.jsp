@@ -132,7 +132,7 @@
           <img src="/TopGear/immagini-a?id=${accessorio.getImmagine()}" />
         </div>
         <div class="product-description">
-          <p onclick="location.href='test.html'" class="product-title">
+          <p onclick="location.href='prodotto?id=${accessorio.getId()}'" class="product-title">
             ${accessorio.getNome()}
           </p>
           <p class="product-prezzo">${accessorio.getPrezzo()} €</p>
