@@ -6,6 +6,28 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
     <style>
+    .cart-count-badge {
+        position: absolute;
+        top: -10px;
+        right: 10px;
+        background-color: red;
+        color: white;
+        border-radius: 50%;
+        width: 20px;
+        height: 20px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-size: 12px;
+      }
+
+      @media (max-width: 768px) {
+        .cart-count-badge {
+          right: 40px;
+          top: 0px;
+        }
+      }
+    
       *,
       *:before,
       *:after {
@@ -91,6 +113,7 @@
         font-size: 15px;
       }
       .header__icons {
+        position: relative;
         width: 50px;
       }
 
@@ -159,7 +182,8 @@
         </ul>
         <div class="header__icons">
           <a style="text-decoration: none; color: white" href="/TopGear/cart"
-            ><svg
+            >
+            <span class="cart-count-badge">3</span><svg
               width="25"
               height="25"
               fill="currentColor"
