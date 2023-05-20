@@ -95,18 +95,11 @@
         width: 600px;
         max-width: 600px;
       }
-
-      .immagini {
-        display: flex;
-        flex-direction: row;
-        gap: 5px;
-        margin-top: 5px;
-        width: 600px;
+      
+      .first-product-image img {
         align-self: center;
-      }
-
-      .immagini img {
-        height: 90px;
+        width: 600px;
+        max-width: 600px;
       }
 
       @media screen and (max-width: 1251px) {
@@ -126,6 +119,7 @@
           align-self: center;
         }
       }
+
       @media screen and (max-width: 630px) {
         .first-product-image {
           width: 98%;
