@@ -117,7 +117,7 @@
         }
       }
 
-      @media screen and (max-width: 490px) {
+      @media screen and (max-width: 620px) {
         body {
           background-color: white;
           min-height: 100vh;
