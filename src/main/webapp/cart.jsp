@@ -352,7 +352,7 @@
                   alt="image"
                   srcset=""
                 />
-                <p style="font-weight: 500; margin-top: 0">nome</p>
+                <p style="font-weight: 500; margin-top: 0">nome generico</p>
               </td>
               <td>
                 <div class="wrapper">
@@ -394,7 +394,7 @@
           </div>
         </div>
         <hr />
-        <button class="checkout" id="checkout">Checkout</button>
+        <button class="checkout" onclick="procedeToCheckout()" id="checkout">Checkout</button>
       </div>
     </div>
     <script>
@@ -702,6 +702,19 @@
         updateCartInfo();
         updateCartQuantity();
       }
+      
+      // Esegue il checkout
+      function procedeToCheckout(){
+    	  //L'idea è che la prima pagina che viene mostrata è una per eseguire il pagamento. A conclusione di ciò
+    	  //viene generato l'ordine, e salvato nel DataBase (tramite una servlet apposita?)
+    	  
+    	  //successivamente vieni re-indirizzato ad OrdersServlet, dove piglia le info storate nel DataBase per 
+    	  //poter poi visualizzare gli ordini effettuati a schermo
+    	  <% //TODO: tutto %>
+    	  
+    	  window.location.href = "pagamento";
+      }
+      
 
       // Salva il carrello nel cookie
       function saveCartToCookie(cart) {
