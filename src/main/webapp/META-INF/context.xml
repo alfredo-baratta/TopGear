@@ -6,5 +6,6 @@
 	type="javax.sql.DataSource"
 	username="root"
 	password="password"
-	url="jdbc:mysql://localhost:3306/topgear"/>
+	url="jdbc:mysql://localhost:3306/topgear"
+	allowCasualMultipartParsing="true"/>
 </Context>
