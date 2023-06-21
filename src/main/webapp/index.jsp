@@ -5,7 +5,7 @@
 <%@ page import="javax.servlet.http.HttpSession" %>
 <%@ include file="utils/sessionCheck.jsp" %>
 <!DOCTYPE html>
-<html>
+<html lang="it">
 <head>
 <meta charset="UTF-8">
 <title>Benvenuto</title>

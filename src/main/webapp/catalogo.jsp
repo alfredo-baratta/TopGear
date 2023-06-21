@@ -6,7 +6,7 @@
 <%@ include file="header.html" %>
 
 <!DOCTYPE html>
-<html lang="en">
+<html lang="it">
   <head>
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
@@ -129,7 +129,7 @@
     <c:forEach var="accessorio" items="${accessori}">
       <div class="product">
         <div onclick="location.href='prodotto?id=${accessorio.getId()}'" class="image">
-          <img src="/TopGear/immagini-a?id=${accessorio.getImmagine()}" />
+          <img src="/TopGear/immagini-a?id=${accessorio.getImmagine()}" alt="Immagine catalogo singolo prodotto" />
         </div>
         <div class="product-description">
           <p onclick="location.href='prodotto?id=${accessorio.getId()}'" class="product-title">

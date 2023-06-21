@@ -7,7 +7,7 @@
     
 <%@ include file="header.html" %>
 <!DOCTYPE html>
-<html lang="en">
+<html lang="it">
   <head>
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
@@ -150,7 +150,7 @@
       <div class="container-immagine">
         <div class="first-product-image slider" data-slides-to-show="1">
           <c:forEach var="immagine" items="${immagini}">
-          	<img src="/TopGear/immagini-a?id=${immagine}" />
+          	<img src="/TopGear/immagini-a?id=${immagine}" alt="Immagine catalogo"/>
           </c:forEach>
         </div>
       </div>

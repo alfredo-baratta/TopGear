@@ -259,23 +259,25 @@ public class Utente {
     }
     
     public boolean verificaEmail(String email) {
-    	Boolean find = false;
-        
-    	 try (Connection conn = DriverManagerConnectionPool.getConnection()) {
-        	String query = "SELECT COUNT(*) FROM utenti WHERE email = ?";
-        	PreparedStatement statement = conn.prepareStatement(query);
+        Boolean find = false;
+
+        try (Connection conn = DriverManagerConnectionPool.getConnection();
+             PreparedStatement statement = conn.prepareStatement("SELECT COUNT(*) FROM utenti WHERE email = ?")) {
+
             statement.setString(1, email);
-            ResultSet rs = statement.executeQuery();
-            if(rs.next()) {
-            	if(rs.getInt(1)>0) {
-            		System.out.println(rs.getInt(1));
-            		find = true;
-            	}
+            try (ResultSet rs = statement.executeQuery()) {
+                if (rs.next()) {
+                    if (rs.getInt(1) > 0) {
+                        System.out.println(rs.getInt(1));
+                        find = true;
+                    }
+                }
             }
             DriverManagerConnectionPool.releaseConnection(conn);
-        }catch (Exception e) {
-        	System.out.println("Errore: " + e.getMessage());
-		}
+        } catch (Exception e) {
+            System.out.println("Errore: " + e.getMessage());
+        }
+        
         return find;
     }
     

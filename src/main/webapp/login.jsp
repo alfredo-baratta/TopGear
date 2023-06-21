@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <!DOCTYPE html>
-<html>
+<html lang="it">
   <head>
     <meta charset="utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
@@ -123,7 +123,7 @@
     </style>
   </head>
   <body>
-    <img src="assets/Top-Gear-Logo.png" class="img" />
+    <img src="assets/Top-Gear-Logo.png" class="img" alt="Logo TopGear" />
 
     <form method="post" action="login" class="login-box">
       <div class="container">
