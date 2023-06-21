@@ -143,8 +143,6 @@
             autofocus
             maxlength="50"
             placeholder="example@gmail.com"
-            value="<%= (String) request.getAttribute("email") != null ? 
-            		request.getParameter("email") : ""%>"
             required
           />
         </div>
