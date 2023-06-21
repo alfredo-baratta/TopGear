@@ -127,7 +127,7 @@
     <c:forEach var="accessorio" items="${accessori}">
       <div class="product">
         <div onclick="location.href='prodotto?id=${accessorio.getId()}'" class="image">
-          <img src="/TopGear/immagini-a?id=${accessorio.getImmagine()}" />
+          <img src="/TopGear/immagini-a?id=${accessorio.getImmagine()}" alt="Immagine prodotto catalogo admin" />
         </div>
         <div class="product-description">
           <p onclick="location.href='prodotto?id=${accessorio.getId()}'" class="product-title">
