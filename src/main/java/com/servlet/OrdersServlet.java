@@ -30,8 +30,6 @@ public class OrdersServlet extends HttpServlet {
 	    else {
 	    	
 	    	//Prende le info degli ordini dal DataBase
-	    	//TODO:
-	    	
 			RequestDispatcher dispatcher = request.getRequestDispatcher("/orders.jsp");
 			dispatcher.forward(request,  response);
 	    }
