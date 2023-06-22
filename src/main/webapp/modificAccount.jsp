@@ -18,46 +18,46 @@ pageEncoding="UTF-8" %>
       <div>
         <label>Password:</label>
         <input type="password" name="password" value= "<%=
-        request.getAttribute("email") %>" readonly />
+        request.getAttribute("password") %>" readonly />
       </div>
       <div>
         <label>Nome:</label>
-        <input type="text" name="nome" value= "<%= request.getAttribute("email")
+        <input type="text" name="nome" value= "<%= request.getAttribute("nome")
         %>" readonly />
       </div>
       <div>
         <label>Cognome:</label>
         <input type="text" name="cognome" value= "<%=
-        request.getAttribute("email") %>" readonly />
+        request.getAttribute("cognome") %>" readonly />
       </div>
       <div>
-        <label>Indirizzo:</label>
-        <input type="text" name="indirizzo" value= "<%=
-        request.getAttribute("email") %>" readonly />
+        <label>Via:</label>
+        <input type="text" name="via" value= "<%=
+        request.getAttribute("via") %>" readonly />
       </div>
       <div>
         <label>Città:</label>
-        <input type="text" name="citta" value= "<%=request.getAttribute("email") %>" readonly />
+        <input type="text" name="citta" value= "<%=request.getAttribute("citta") %>" readonly />
       </div>									
       <div>
         <label>Data di nascita:</label>
         <input type="text" name="datanascita" value= "<%=
-        request.getAttribute("email") %>" readonly />
+        request.getAttribute("datanasita") %>" readonly />
       </div>
       <div>
-        <label>Cellulare:</label>
-        <input type="text" name="cellulare" value= "<%=
-        request.getAttribute("email") %>" readonly />
+        <label>Telefono:</label>
+        <input type="text" name="telefono" value= "<%=
+        request.getAttribute("telefono") %>" readonly />
       </div>
       <div>
         <label>CAP:</label>
-        <input type="text" name="cap" value= "<%= request.getAttribute("email")
+        <input type="text" name="cap" value= "<%= request.getAttribute("cap")
         %>" readonly />
       </div>
       <div>
-        <label>Username:</label>
-        <input type="text" name="username" value= "<%=
-        request.getAttribute("email") %>" readonly />
+        <label>Codice fiscale:</label>
+        <input type="text" name="cf" value= "<%=
+        request.getAttribute("cf") %>" readonly />
       </div>
       <input type="submit" value="Salva modifiche" />
     </form>
@@ -68,12 +68,12 @@ pageEncoding="UTF-8" %>
         document.getElementsByName("password")[0].removeAttribute("readonly");
         document.getElementsByName("nome")[0].removeAttribute("readonly");
         document.getElementsByName("cognome")[0].removeAttribute("readonly");
-        document.getElementsByName("indirizzo")[0].removeAttribute("readonly");
+        document.getElementsByName("via")[0].removeAttribute("readonly");
         document.getElementsByName("citta")[0].removeAttribute("readonly");
         document.getElementsByName("datanascita")[0].removeAttribute("readonly");
-        document.getElementsByName("cellulare")[0].removeAttribute("readonly");
+        document.getElementsByName("telefono")[0].removeAttribute("readonly");
         document.getElementsByName("cap")[0].removeAttribute("readonly");
-        document.getElementsByName("username")[0].removeAttribute("readonly");
+        document.getElementsByName("cf")[0].removeAttribute("readonly");
       }
     </script>
   </body>

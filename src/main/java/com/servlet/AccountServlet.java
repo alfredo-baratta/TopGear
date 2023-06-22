@@ -34,10 +34,10 @@ public class EditAccountServlet extends HttpServlet {
             String password = "";
             String nome = "";
             String cognome = "";
-            String indirizzo = "";
+            String via = "";
             String citta = "";
             String datanascita = "";
-            String cellulare = "";
+            String telefono = "";
             String cap = "";	
         	String cf = "";
         		
@@ -51,10 +51,10 @@ public class EditAccountServlet extends HttpServlet {
                 	password = rs.getString("password");
                 	nome = rs.getString("nome");
                 	cognome = rs.getString("cognome");
-                	indirizzo = rs.getString("via");
+                	via = rs.getString("via");
                 	citta = rs.getString("citta");
                 	datanascita = rs.getString("datanascita");
-                	cellulare = rs.getString("telefono");
+                	telefono = rs.getString("telefono");
                 	cap = rs.getString("cap");
                 	cf = rs.getString("cf");
                 }
@@ -67,15 +67,15 @@ public class EditAccountServlet extends HttpServlet {
         
         // Imposta i dati dell'account come attributi della richiesta
         request.setAttribute("email", email);
-        request.setAttribute("password", pwd);
+        request.setAttribute("password", password);
         request.setAttribute("nome", nome);
         request.setAttribute("cognome", cognome);
-        request.setAttribute("indirizzo", indirizzo);
+        request.setAttribute("via", via);
         request.setAttribute("citta", citta);
         request.setAttribute("datanascita", datanascita);
-        request.setAttribute("cellulare", cellulare);
+        request.setAttribute("telefono", telefono);
         request.setAttribute("cap", cap);
-        request.setAttribute("username", user);
+        request.setAttribute("cf", cf);
         
 
         // Reindirizza alla JSP per la modifica dei dati dell'account
