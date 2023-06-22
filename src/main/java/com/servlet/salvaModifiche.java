@@ -61,9 +61,9 @@ public class salvaModifiche extends HttpServlet {
 			int rowsAffected = statement.executeUpdate();
 			
 			if (rowsAffected > 0) {
-				response.sendRedirect("modificAccount.jsp");
+				response.sendRedirect("conferma.jsp");
 			} else {
-				response.sendRedirect("index.jsp");
+				response.sendRedirect("errore.jsp");
 			}
 			
 			DriverManagerConnectionPool.releaseConnection(conn);
