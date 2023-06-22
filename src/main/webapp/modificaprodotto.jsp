@@ -190,7 +190,7 @@
         <div class="first-product-image slider" data-slides-to-show="1">
           <c:forEach var="immagine" items="${immagini}">
 	          <div class="image-container align="center">
-	          	<img src="/TopGear/immagini-a?id=${immagine}" />
+	          	<img src="/TopGear/immagini_a?id=${immagine}" />
 	          	<c:if test="${fn:length(immagini) > 1}">
 			      <button class="delete-button" onclick="cancellaImmagine('${immagine}')">Cancella</button>
 			    </c:if>

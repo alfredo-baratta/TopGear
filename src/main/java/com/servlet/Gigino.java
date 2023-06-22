@@ -15,20 +15,22 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.sql.DataSource;
+
+import com.mysql.cj.jdbc.Blob;
+
 import java.io.OutputStream;
 
-@WebServlet("/immaginioa")
-public class ImmaginiAccessorioServlet extends HttpServlet {
+@WebServlet("/immagini_a")
+public class Gigino extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	@Resource(name="jdbc/topgear")
 	DataSource dataSource;
 
-    public ImmaginiAccessorioServlet() {
+    public Gigino() {
         super();
     }
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-	    System.out.println("Maremma");
 		String idImmagine = request.getParameter("id");
 	    
 	    if(idImmagine == null || idImmagine.isEmpty()) {
@@ -45,13 +47,15 @@ public class ImmaginiAccessorioServlet extends HttpServlet {
 	    	PreparedStatement stmt = conn.prepareStatement(query);
 	    	stmt.setInt(1, id);
 	    	ResultSet rs = stmt.executeQuery();
+	    	byte[] immagine = new byte[0];
+
 
 	    	if (rs.next()) {
 	    		//byte[] immagine = rs.getBytes("immagine");
-	    		 Blob blob = rs.getBlob("nome_colonna_blob");
+	    		 Blob blob = (Blob) rs.getBlob("immagine");
 
 	    		    if (blob != null) {
-	    		        byte[] immagine = blob.getBytes(1, (int) blob.length());
+	    		        immagine = blob.getBytes(1, (int) blob.length());
 	    		        blob.free(); // Libera le risorse del Blob
 	    		    }
 	    		

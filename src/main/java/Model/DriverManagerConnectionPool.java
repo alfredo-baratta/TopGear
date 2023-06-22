@@ -27,10 +27,6 @@ public class DriverManagerConnectionPool {
             newConnection.setAutoCommit(true);
         } catch (SQLException e) {
         	System.out.println("DB error: " + e.getMessage());
-        } finally {
-            if (newConnection != null) {
-                newConnection.close();
-            }
         }
         return newConnection;
     }

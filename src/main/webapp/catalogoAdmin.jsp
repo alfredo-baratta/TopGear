@@ -127,10 +127,10 @@
     <c:forEach var="accessorio" items="${accessori}">
       <div class="product">
         <div onclick="location.href='prodotto?id=${accessorio.getId()}'" class="image">
-          <img src="/TopGear/immagini-a?id=${accessorio.getImmagine()}" alt="Immagine prodotto catalogo admin" />
+          <img src="/TopGear/immagini_a?id=${accessorio.getImmagine()}" alt="Immagine prodotto catalogo admin" />
         </div>
         <div class="product-description">
-          <p onclick="location.href='prodotto?id=${accessorio.getId()}'" class="product-title">
+          <p onclick="location.href='modifica?id=${accessorio.getId()}'" class="product-title">
             ${accessorio.getNome()}
           </p>
           <p class="product-prezzo">${accessorio.getPrezzo()} €</p>
