@@ -96,17 +96,21 @@
       }
 
       .first-product-image {
-        align-self: center;
-        width: 600px;
-        max-width: 600px;
-        text-align: center;
-      }
-      
-      .first-product-image img {
-        align-self: center;
-        width: 600px;
-        max-width: 600px;
-      }
+	  align-self: center;
+	  width: 600px;
+	  max-width: 600px;
+	  max-height: 400px;
+	  text-align: center;
+	}
+	
+	.first-product-image img {
+	  align-self: center;
+	  width: 100%;
+	  height: auto;
+	  max-width: 600px;
+	  max-height: 400px;
+	  object-fit: contain;
+	}
       .delete-button {
   position: absolute;
   top: 10px;
