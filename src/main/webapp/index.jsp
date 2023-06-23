@@ -12,5 +12,6 @@
 </head>
 <body>
 	<h1>Benvenuto, <%= (String) request.getAttribute("nome") %> <%= (String) request.getAttribute("cognome") %>.️</h1>
+	<a href="<%=request.getContextPath()%>/AccountServlet" >Pisello</a>
 </body>
 </html>

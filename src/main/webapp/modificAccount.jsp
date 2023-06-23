@@ -9,6 +9,7 @@ pageEncoding="UTF-8" %>
   </head>
   <body>
     <h1>Modifica Account</h1>
+    <input type="button" value="modifica" onclick="abilitaModifica()">
     <form action="salvaModifiche" method="POST">
       <div>
         <label>Email:</label>
@@ -42,7 +43,7 @@ pageEncoding="UTF-8" %>
       <div>
         <label>Data di nascita:</label>
         <input type="text" name="datanascita" value= "<%=
-        request.getAttribute("datanasita") %>" readonly />
+        request.getAttribute("datanascita") %>" readonly />
       </div>
       <div>
         <label>Telefono:</label>
