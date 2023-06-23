@@ -1,4 +1,5 @@
 package com.servlet;
+import Model.DriverManagerConnectionPool;
 
 import java.io.IOException;
 import java.sql.Connection;
@@ -11,10 +12,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import Model.DriverManagerConnectionPool;
 
-@WebServlet("/AccountServlet")
-public class AccountServlet extends HttpServlet {
+
+@WebServlet("/Account")
+public class Account extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         // Verifica che l'utente sia autenticato
@@ -36,6 +37,7 @@ public class AccountServlet extends HttpServlet {
         String cognome = "";
         String via = "";
         String citta = "";
+        Date data = new Date();
         String datanascita = "";
         String telefono = "";
         String cap = "";
@@ -53,7 +55,8 @@ public class AccountServlet extends HttpServlet {
                     cognome = rs.getString("cognome");
                     via = rs.getString("via");
                     citta = rs.getString("citta");
-                    datanascita = rs.getString("datanascita");
+                    data = rs.getDate("datanascita");
+                    datanascita = data.toString();
                     telefono = rs.getString("telefono");
                     cap = rs.getString("cap");
                     cf = rs.getString("cf");
