@@ -55,7 +55,7 @@ public class salvaModifiche extends HttpServlet {
 			statement.setString(7, citta);
 			statement.setString(8, via);
 			statement.setString(9, cap);
-			statement.setString(10, cf;
+			statement.setString(10, cf);
 
 			
 			int rowsAffected = statement.executeUpdate();
