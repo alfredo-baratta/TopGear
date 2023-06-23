@@ -44,7 +44,11 @@
       }
 
       .image img {
+        width: 300 px;
+        height: 200px;
         max-width: 100%;
+        max-height: 100%;
+        object-fit: contain;
         border-top-right-radius: 5px;
         border-top-left-radius: 5px;
       }
