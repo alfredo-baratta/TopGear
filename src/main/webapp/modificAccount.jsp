@@ -1,9 +1,20 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 pageEncoding="UTF-8" %>
 <%@ include file="utils/sessionCheck.jsp" %>
+<%@ include file="header.html" %>
+
 <!DOCTYPE html>
 <html>
   <head>
+  
+  body {
+  display: flex;
+  justify-content: center;
+}
+  <style>
+  	
+  </style>
+  
     <meta charset="UTF-8" />
     <title>Modifica Account</title>
   </head>
@@ -78,4 +89,5 @@ pageEncoding="UTF-8" %>
       }
     </script>
   </body>
+   <%@ include file="footer.html" %>
 </html>
