@@ -15,8 +15,8 @@ import javax.servlet.http.HttpSession;
 
 
 
-@WebServlet("/Account")
-public class Account extends HttpServlet {
+@WebServlet("/modificAccount")
+public class modificAccount extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         // Verifica che l'utente sia autenticato
