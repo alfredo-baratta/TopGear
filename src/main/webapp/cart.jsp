@@ -568,7 +568,6 @@
           first_row.insertCell(0).outerHTML = "<th>PRODOTTO</th>";
           first_row.insertCell(1).outerHTML = "<th>QUANTITA'</th>";
           first_row.insertCell(2).outerHTML = "<th>PREZZO</th>";
-          //first_row.insertCell(3).outerHTML = "<th></th>";
           
           const emptyCell = first_row.insertCell(3);
           emptyCell.classList.add("emptyCell");
@@ -708,17 +707,9 @@
       
       // Esegue il checkout
       function procedeToCheckout(){
-    	  //L'idea è che la prima pagina che viene mostrata è una per eseguire il pagamento. A conclusione di ciò
-    	  //viene generato l'ordine, e salvato nel DataBase (tramite una servlet apposita?)
-    	  
-    	  //successivamente vieni re-indirizzato ad OrdersServlet, dove piglia le info storate nel DataBase per 
-    	  //poter poi visualizzare gli ordini effettuati a schermo
-    	  <% //TODO: tutto %>
-    	  
     	  window.location.href = "pagamento";
       }
       
-
       // Salva il carrello nel cookie
       function saveCartToCookie(cart) {
         const cartValue = encodeURIComponent(JSON.stringify(cart));

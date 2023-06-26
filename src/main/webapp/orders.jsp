@@ -7,9 +7,6 @@
 <title>Ordini</title>
 </head>
 <body>
-
-	<h1>Qui ti verranno mostrati tutti gli ordini effettuati</h1>
-	
 	
 </body>
 </html>
