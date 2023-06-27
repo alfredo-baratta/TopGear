@@ -96,8 +96,8 @@ pageEncoding="UTF-8" %>
   <body>
     <h1>Modifica Account</h1>
     
-    <!-- PULSANTE ATTUALMENTE INUTILIZZATO CHE SERVE PER ABILITARE LA MODIFICA AI CAMPI DEL FORM
-     <input type="button" value="modifica" onclick="abilitaModifica()"> -->
+    
+     <input type="button" value="modifica" onclick="abilitaModifica()">
     
         <form action="salvaModifiche" method="POST">
       <div class="container">
@@ -107,7 +107,7 @@ pageEncoding="UTF-8" %>
             <div class="contenuto-sezione">
               <div class="input-field">
                 <label class="input-label">Nome:</label>
-                <input type="text"class="input-text"
+                <input type="text"class="input-text" name="nome"
                 value= "<%= request.getAttribute("nome") %>" readonly />
               </div>
             </div>
@@ -118,7 +118,7 @@ pageEncoding="UTF-8" %>
             <div class="contenuto-sezione">
               <div class="input-field">
                 <label class="input-label">Cognome:</label>
-                <input type="text" class="input-text"
+                <input type="text" class="input-text" name="cognome"
                 value= "<%= request.getAttribute("cognome") %>" readonly />
               </div>
             </div>
@@ -129,7 +129,7 @@ pageEncoding="UTF-8" %>
             <div class="contenuto-sezione">
               <div class="input-field">
                 <label class="input-label">Data di nascita:</label>
-                <input type="text" class="input-text" value= "<%= request.getAttribute("datanascita") %>"
+                <input type="text" class="input-text" name="datanascita" value= "<%= request.getAttribute("datanascita") %>"
                 readonly />
               </div>
             </div>
@@ -140,7 +140,7 @@ pageEncoding="UTF-8" %>
             <div class="contenuto-sezione">
               <div class="input-field">
                 <label class="input-label">Codice fiscale:</label>
-                <input type="text"class="input-text" value= "<%= request.getAttribute("cf") %>"
+                <input type="text"class="input-text" name="cf" value= "<%= request.getAttribute("cf") %>"
                 readonly />
               </div>
             </div>
@@ -151,7 +151,7 @@ pageEncoding="UTF-8" %>
             <div class="contenuto-sezione">
               <div class="input-field">
                 <label class="input-label">E-mail:</label>
-                <input type="text" class="input-text" value= "<%= request.getAttribute("email") %>"
+                <input type="text" class="input-text" name="email" value= "<%= request.getAttribute("email") %>"
                 readonly />
               </div>
             </div>
@@ -164,7 +164,7 @@ pageEncoding="UTF-8" %>
             <div class="contenuto-sezione">
               <div class="input-field">
                 <label class="input-label">Telefono:</label>
-                <input type="text" class="input-text"
+                <input type="text" class="input-text" name="telefono"
                 value= "<%= request.getAttribute("telefono") %>" readonly />
               </div>
             </div>
@@ -175,7 +175,7 @@ pageEncoding="UTF-8" %>
             <div class="contenuto-sezione">
               <div class="input-field">
                 <label class="input-label">Indirizzo:</label>
-                <input type="text" class="input-text" value= "<%= request.getAttribute("via")
+                <input type="text" class="input-text" name="via" value= "<%= request.getAttribute("via")
                 %>" readonly />
               </div>
             </div>
@@ -186,7 +186,7 @@ pageEncoding="UTF-8" %>
             <div class="contenuto-sezione">
               <div class="input-field">
                 <label class="input-label">Città:</label>
-                <input type="text"class="input-text" value= "<%=request.getAttribute("citta") %>"
+                <input type="text"class="input-text" name="citta" value= "<%=request.getAttribute("citta") %>"
                 readonly />
               </div>
             </div>
@@ -198,7 +198,7 @@ pageEncoding="UTF-8" %>
               <div class="input-field">
                 <label class="input-label"
                   >CAP:</label>
-                <input type="text" class="input-text" value= "<%= request.getAttribute("cap") %>"
+                <input type="text" class="input-text" name="cap" value= "<%= request.getAttribute("cap") %>"
                 readonly />
               </div>
             </div>
@@ -209,7 +209,7 @@ pageEncoding="UTF-8" %>
             <div class="contenuto-sezione">
               <div class="input-field">
                 <label class="input-label">Password:</label>
-                <input type="text"class="input-text" placeholder="*****************************************************" readonly />
+                <input type="text"class="input-text" name="password" placeholder="*****************************************************" readonly />
               </div>
             </div>
           </div>
@@ -222,18 +222,13 @@ pageEncoding="UTF-8" %>
     </form>
     
     <script>
-        function abilitaModifica(){
-        document.getElementsByName("email")[0].removeAttribute("readonly");
-        document.getElementsByName("password")[0].removeAttribute("readonly");
-        document.getElementsByName("nome")[0].removeAttribute("readonly");
-        document.getElementsByName("cognome")[0].removeAttribute("readonly");
-        document.getElementsByName("via")[0].removeAttribute("readonly");
-        document.getElementsByName("citta")[0].removeAttribute("readonly");
-        document.getElementsByName("datanascita")[0].removeAttribute("readonly");
-        document.getElementsByName("telefono")[0].removeAttribute("readonly");
-        document.getElementsByName("cap")[0].removeAttribute("readonly");
-        document.getElementsByName("cf")[0].removeAttribute("readonly");
-      }
+    function abilitaModifica() {
+    	  var elements = document.getElementsByClassName('input-text');
+    	  for (var i = 0; i < elements.length; i++) {
+    	    elements[i].removeAttribute('readonly');
+    	  }
+    	}
+
     </script>
   </body>
    <%@ include file="footer.html" %>
