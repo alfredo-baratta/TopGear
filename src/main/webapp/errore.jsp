@@ -10,7 +10,7 @@
     <div>
         <h3>Errore durante la modifica dell'account!</h3>
         <p>Si è verificato un errore durante il salvataggio delle modifiche al tuo account.</p>
-        <form action="modificAccount.jsp">
+        <form action="modificAccount">
             <input type="submit" value="Torna alla pagina di modifica">
         </form>
     </div>

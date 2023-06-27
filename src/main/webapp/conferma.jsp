@@ -10,7 +10,7 @@
     <div>
         <h3>Modifiche avvenute con successo!</h3>
         <p>Le modifiche al tuo account sono state salvate correttamente.</p>
-        <form action="modificAccount.jsp">
+        <form action="modificAccount">
             <input type="submit" value="Torna alla pagina di modifica">
         </form>
     </div>

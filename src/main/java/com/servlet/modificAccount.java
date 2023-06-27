@@ -45,7 +45,7 @@ public class modificAccount extends HttpServlet {
         String cf = "";
 
         try (Connection conn = DriverManagerConnectionPool.getConnection();
-             PreparedStatement statement = conn.prepareStatement("SELECT * FROM utenti WHERE username = ?")) {
+             PreparedStatement statement = conn.prepareStatement("SELECT * FROM utenti WHERE cf = ?")) {
 
             statement.setString(1, username);
             try (ResultSet rs = statement.executeQuery()) {
@@ -81,6 +81,6 @@ public class modificAccount extends HttpServlet {
         request.setAttribute("cf", cf);
 
         // Reindirizza alla JSP per la modifica dei dati dell'account
-        request.getRequestDispatcher("/modificaAccount.jsp").forward(request, response);
+        request.getRequestDispatcher("/modificAccount.jsp").forward(request, response);
     }
 }

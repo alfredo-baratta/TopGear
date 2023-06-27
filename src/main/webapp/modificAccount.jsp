@@ -209,8 +209,7 @@ pageEncoding="UTF-8" %>
             <div class="contenuto-sezione">
               <div class="input-field">
                 <label class="input-label">Password:</label>
-                <input type="text"class="input-text" value= "<%= request.getAttribute("password")
-                %>" readonly />
+                <input type="text"class="input-text" placeholder="*****************************************************" readonly />
               </div>
             </div>
           </div>
