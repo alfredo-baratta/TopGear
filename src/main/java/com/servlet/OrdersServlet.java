@@ -47,7 +47,6 @@ public class OrdersServlet extends HttpServlet {
 	    	//deve mostrare a schermo alcune info sugli ordini presi dal DB, come Data, quantità di oggetti
 	    	//e totale speso per quell'ordine
 	    	Connection conn = null;
-	    	
 	    	/*
 	    	try {
 	        	conn = dataSource.getConnection();
