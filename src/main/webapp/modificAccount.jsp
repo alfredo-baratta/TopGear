@@ -209,7 +209,8 @@ pageEncoding="UTF-8" %>
             <div class="contenuto-sezione">
               <div class="input-field">
                 <label class="input-label">Password:</label>
-                <input type="text"class="input-text" name="password" placeholder="*****************************************************" readonly />
+                <input type="text"class="input-text" name="password" 
+                placeholder="*****************************************************" readonly />
               </div>
             </div>
           </div>

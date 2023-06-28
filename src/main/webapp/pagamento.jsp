@@ -4,7 +4,7 @@
 <html lang="it">
 <head>
 <meta charset="ISO-8859-1">
-<title>Pagamento</title>
+<title>TopGear - Pagamento</title>
 <style>
 
 body{
@@ -43,32 +43,86 @@ img{
 		<label for="visa"><img src="assets/visa.png" alt="Visa"></label>
 	</div>
 	
-	<button onclick="ButtonFunction();"> Conferma ordine </button>
+	<button onclick="ConfirmOrder();"> Conferma ordine </button>
+	
+	<button onclick="stampaFattura();"> Stampa fattura in PDF </button>
 	
 	<script>
-		function ButtonFunction(){
+		function ConfirmOrder(){
 			
 			var paymentMethod = document.querySelector('input[name="paymentMethod"]:checked').value;
 			
 			if (paymentMethod === "mastercard") {
-				// si procede con MasterCard
+				//si procede con MasterCard
+				//...
+				procedeToSaveOrder();
 
 			} else if (paymentMethod === "paypal") {
-				// si procede con paypal
+				//si procede con paypal
+				//...
+				procedeToSaveOrder();
 
 			} else if (paymentMethod === "visa") {
-				// si procede con visa
+				//si procede con visa
+				//...
+				procedeToSaveOrder();
 
 			}
-			
-			//chiama la funzione per ottenere il cart dal cookie (ricopia la funzione apposita da cart.jsp) e 
-			//inserisce tutti i dati nel DB eventualmente facendo una chiamata post ad una servlet "CreazioneOrdineServlet" DA FARE
-			
-			//ok update mi sà che me la posso cavare con un bean apposito, let's all get ready for Ordine.java!
-			//spero che questo funzioni:
+		}
+		
+		  function procedeToSaveOrder(){
+			//passo 1: ottieni il carrello dal cookie
 			const cart = getCartFromCookie();
-				//penso di spostarlo in una function apposita
-			}
+		  
+			//passo 2: esegui una richiesta AJAX per passare i dati alla servlet
+			fetch('/SalvaOrdine', {
+    			method: 'POST',
+   				headers: {
+      				'Content-Type': 'application/json',
+   				},
+    			body: JSON.stringify(cart),
+  			})
+    		.then(response => response.json())
+    		.then(data => {
+      			
+      			console.log(data);
+    		})
+    		.catch(error => {
+      			
+     		 console.error(error);
+    		});
+			
+			//passo 3: ???????????
+					
+			//passo 4: profit! ora cancella tutto dal cookie.
+	        cart = [];
+			saveCartToCookie(cart);
+			
+		}
+		
+		  function getCartFromCookie() {
+	        if (document.cookie.includes("cart=")) {
+	          const cartCookie = document.cookie
+	            .split(";")
+	            .find((cookie) => cookie.trim().startsWith("cart="));
+
+	          const cartValue = cartCookie.split("=")[1];
+
+	          return JSON.parse(decodeURIComponent(cartValue));
+	        }
+	        return [];
+	    }
+		
+	      function saveCartToCookie(cart) {
+	          const cartValue = encodeURIComponent(JSON.stringify(cart));
+
+	          const expirationDate = new Date();
+	          expirationDate.setDate(expirationDate.getDate() + 30);
+
+	          document.cookie =
+	            "cart=" + cartValue + "; expires=" + expirationDate.toUTCString();
+	        }
+		
 	</script>
 </body>
 </html>
