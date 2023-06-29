@@ -77,7 +77,7 @@ public class salvaModifiche extends HttpServlet {
 			      Date date1 = sdf.parse("2020-07-20");
 			      Date date2 = sdf.parse("2020-06-18");
 			      
-			      if(password.isEmpty()) {
+			      if(password==null) {
 			    	  password = pre_password;
 			      }
 			        // Verifica delle modifiche
