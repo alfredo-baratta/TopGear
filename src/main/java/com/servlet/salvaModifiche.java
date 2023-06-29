@@ -38,6 +38,7 @@ public class salvaModifiche extends HttpServlet {
 		// prendo i valori dalla jsp
 		String email = request.getParameter("email");
 		String password = request.getParameter("password");
+		
 		String nome = request.getParameter("nome");
 		String cognome = request.getParameter("cognome");
 		String via = request.getParameter("via");
@@ -76,6 +77,9 @@ public class salvaModifiche extends HttpServlet {
 			      Date date1 = sdf.parse("2020-07-20");
 			      Date date2 = sdf.parse("2020-06-18");
 			      
+			      if(password.isEmpty()) {
+			    	  password = pre_password;
+			      }
 			        // Verifica delle modifiche
 			        if (!nome.equals(pre_nome) ||
 			                !cognome.equals(pre_cognome) ||
