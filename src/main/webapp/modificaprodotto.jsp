@@ -202,16 +202,18 @@
           </c:forEach>
         </div>
       </div>
-      <form class="informazioni-prodotto">
-        Nome:<input type="text" id="nome" value="<%= request.getAttribute("nome") %>">
+      
+      
+      <form class="informazioni-prodotto" action="upModAccessorio" method="post">
+        Nome:<input type="text" name="nome" value="<%= request.getAttribute("nome") %>">
         <br>
   		Descrizione:<textarea id="descrizione" name="descrizione" rows="8" cols="50"><%= request.getAttribute("descrizione") %></textarea>
         <br>
-        Prezzo:<input type="text" id="prezzo" value="<%= request.getAttribute("prezzo") %>">
+        Prezzo:<input type="number" step="0.01" name="prezzo" value="<%= request.getAttribute("prezzo") %>">
         <br>
-        Iva: <input type="text" id="iva" value="<%= request.getAttribute("iva") %>">
+        Iva: <input type="number" step="0.01" name="iva" value="<%= request.getAttribute("iva") %>">
         <br>
-        Quantità disponibile: <input type="text" id="disponibilita" value="<%= request.getAttribute("disponibilita") %>">
+        Quantità disponibile: <input type="number" name="disponibilita" value="<%= request.getAttribute("disponibilita") %>">
         <br>
         <label>
   			<input type="radio" name="visibile" value="0" <%= ("0".equals(String.valueOf(request.getAttribute("visibilita")))) ? "checked" : "" %>>
@@ -223,7 +225,10 @@
   			Visibile
 		</label>
 		<input type="hidden" id="alfredo" name="dacancellare" value="<%= dacancellare %>">
+		<input type="hidden" name="id" value="<%= request.getParameter("id") %>">
+		<button type="submit">Salva modifiche</button>
         </form>
+        
         
         <form id="uploadForm" enctype="multipart/form-data">
 			<input type="file" id="imageFile" name="imageFile" accept="image/*" onchange="uploadImage(<%= request.getParameter("id") %>)">
@@ -238,7 +243,6 @@
     	primoElemento = lista.get(0);
 	}
 %>
-        <button class="Applica_modifiche" onClick="inviaRichiesta()">Applica modifiche</button>
        	<button class="Annulla_modifiche" onClick="/catalogoadmin">Annulla</button>
     </div>
 
