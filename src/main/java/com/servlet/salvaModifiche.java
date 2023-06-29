@@ -36,9 +36,6 @@ public class salvaModifiche extends HttpServlet {
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// prendo i valori dalla jsp
-		String email = request.getParameter("email");
-		String password = request.getParameter("password");
-		
 		String nome = request.getParameter("nome");
 		String cognome = request.getParameter("cognome");
 		String via = request.getParameter("via");
@@ -66,8 +63,6 @@ public class salvaModifiche extends HttpServlet {
 			        String pre_nome = resultSet.getString("nome");
 			        String pre_cognome = resultSet.getString("cognome");
 			        LocalDate pre_datanascita = LocalDate.parse(resultSet.getDate("datanascita").toString(), DateTimeFormatter.ofPattern("yyyy-MM-dd"));
-			        String pre_email = resultSet.getString("email");
-			        String pre_password = resultSet.getString("password");
 			        String pre_telefono = resultSet.getString("telefono");
 			        String pre_citta = resultSet.getString("citta");
 			        String pre_via = resultSet.getString("via");
@@ -76,16 +71,11 @@ public class salvaModifiche extends HttpServlet {
 
 			      Date date1 = sdf.parse("2020-07-20");
 			      Date date2 = sdf.parse("2020-06-18");
-			      
-			      if(password==null) {
-			    	  password = pre_password;
-			      }
+
 			        // Verifica delle modifiche
 			        if (!nome.equals(pre_nome) ||
 			                !cognome.equals(pre_cognome) ||
 			                datanascita.compareTo(pre_datanascita) != 0 ||
-			                !email.equals(pre_email) ||
-			                !password.equals(pre_password) ||
 			                !telefono.equals(pre_telefono) ||
 			                !citta.equals(pre_citta) ||
 			                !via.equals(pre_via) ||
@@ -96,11 +86,6 @@ public class salvaModifiche extends HttpServlet {
 			            updateStatement.setString(1, nome);
 			            updateStatement.setString(2, cognome);
 			            updateStatement.setDate(3, java.sql.Date.valueOf(datanascita));
-			            updateStatement.setString(4, email);
-			            if(password.isEmpty()) {
-			            	updateStatement.setString(5, pre_password);
-			            } else {
-			            updateStatement.setString(5, DigestUtils.md5Hex(password));}
 			            updateStatement.setString(6, telefono);
 			            updateStatement.setString(7, citta);
 			            updateStatement.setString(8, via);

@@ -196,34 +196,6 @@ pageEncoding="UTF-8" %>
                   <input type="button" value="Modifica" class="edit-button" onclick="abilitaModifica(this)" />
                 </div>
 
-
-              <div class="titolo-sezione">Sicurezza</div>
-
-                <div class="riga">
-                  <label>E-mail:</label>
-                  <input
-                    type="text"
-                    class="input-text"
-                    name="email"
-                    value="<%= request.getAttribute("email") %>"
-                    readonly
-                  />
-                  <input type="button" value="Modifica" class="edit-button" onclick="abilitaModifica(this)" />
-                </div>
-                
-                <div class="riga">
-                  <label>Password</label>
-                  <input
-                    type="text"
-                    class="input-text"
-                    name="email"
-                    placeholder="*************"
-                    readonly
-                  />
-                  <input type="button" value="Modifica" class="edit-button" onclick="abilitaModifica(this)" />
-                </div>
-
-
               <div class="titolo-sezione">Contatti</div>
 
                 <div class="riga">

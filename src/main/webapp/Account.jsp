@@ -166,24 +166,18 @@
         </a>
       </div>
       <div class="sezione">
-        <a href="/Preferenze">
-          <svg
-            class="icon"
-            width="25"
-            height="25"
-            fill="none"
-            stroke="currentColor"
-            stroke-linejoin="round"
-            stroke-width="2"
-            viewBox="0 0 24 24"
-            xmlns="http://www.w3.org/2000/svg"
-          >
+        <a href="<%=request.getContextPath()%>/Sicurezza.jsp">
+          <svg width="25" height="25" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+  <path d="M20 11H4a1 1 0 0 0-1 1v9a1 1 0 0 0 1 1h16a1 1 0 0 0 1-1v-9a1 1 0 0 0-1-1Z"></path>
+  <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+  <path d="M12 15v3"></path>
+</svg>
             <path
               d="M2 12V6h4.5V5a3 3 0 0 1 6 0v1H17v6h2a3 3 0 1 1 0 6h-2v4H2v-4h2a3 3 0 1 0 0-6H2Z"
             ></path>
           </svg>
-          <h2>Preferenze</h2>
-          <p>Personalizza le tue preferenze e impostazioni.</p>
+          <h2>Sicurezza</h2>
+          <p>Modifica le tue impostazioni per l'accesso.</p>
         </a>
       </div>
     </div>
