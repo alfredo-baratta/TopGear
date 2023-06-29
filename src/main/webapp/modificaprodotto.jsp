@@ -216,12 +216,12 @@
         Quantità disponibile: <input type="number" name="disponibilita" value="<%= request.getAttribute("disponibilita") %>">
         <br>
         <label>
-  			<input type="radio" name="visibile" value="0" <%= ("0".equals(String.valueOf(request.getAttribute("visibilita")))) ? "checked" : "" %>>
+  			<input type="radio" name="visibile" value="false" <%= ("0".equals(String.valueOf(request.getAttribute("visibilita")))) ? "checked" : "" %>>
   			Non visibile
 		</label>
 		<br>
 		<label>
-  			<input type="radio" name="visibile" value="1" <%= ("1".equals(String.valueOf(request.getAttribute("visibilita")))) ? "checked" : "" %>>
+  			<input type="radio" name="visibile" value="true" <%= ("1".equals(String.valueOf(request.getAttribute("visibilita")))) ? "checked" : "" %>>
   			Visibile
 		</label>
 		<input type="hidden" id="alfredo" name="dacancellare" value="<%= dacancellare %>">
