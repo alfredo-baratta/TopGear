@@ -63,14 +63,14 @@ public class Ordine {
 		this.type = type;
 	}
 	
-	public Risposta salvaOrdine(String cartData) {
+	public Risposta salvaOrdine(String orderData, int totalProducts, float totalPrice) {
 		Risposta r = new Risposta();
 		
 		//Converto i dati in un oggetto Java di tipo Cart che avrà al suo
 		//interno una lista di entities.Accessorio basically
 		
-		Cart cart;  //i know dà errore e sicuramente SonarCloud si è messo a urlare
-					//ma fidatevi che il Bean cart lo creo
+		Cart cart;  
+		
 		try {
 			
 		}
@@ -78,7 +78,7 @@ public class Ordine {
 			e.printStackTrace();
 		}
 		
-		//modificare il resto del codice in modo opportuno i guess
+		//modificare il resto del codice
 		
 		try (Connection conn = DriverManagerConnectionPool.getConnection()) {
         	String query = "INSERT INTO ordini (id, totale, data_pagamento, fk_utente) "
@@ -94,6 +94,8 @@ public class Ordine {
             setTotale(totale);
             setDataPagamento(dataPagamento);
             setUtente(utente_cf);
+            
+            //devo capire come associare l'ordine ad una lista di prodotti. mh.
             
             DriverManagerConnectionPool.releaseConnection(conn);
             r.setEsito(true);

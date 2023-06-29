@@ -71,16 +71,24 @@ img{
 		}
 		
 		  function procedeToSaveOrder(){
-			//passo 1: ottieni il carrello dal cookie
+			//ruba tutte le info che il cookie ha
 			const cart = getCartFromCookie();
+		 	const totalProducts = getTotalProductsFromCookie();
+		 	const totalPrice = getTotalPriceFromCookie();
+		 	
+		 	const orderData = {
+		 		cart: cart;
+		 		totalProducts = totalProducts;
+		 		totalPrice = totalPrice;
+		 	};
 		  
-			//passo 2: esegui una richiesta AJAX per passare i dati alla servlet
+			//esegui una richiesta AJAX per passare i dati alla servlet
 			fetch('/SalvaOrdine', {
     			method: 'POST',
    				headers: {
       				'Content-Type': 'application/json',
    				},
-    			body: JSON.stringify(cart),
+    			body: JSON.stringify(orderData),
   			})
     		.then(response => response.json())
     		.then(data => {
@@ -91,13 +99,10 @@ img{
       			
      		 console.error(error);
     		});
-			
-			//passo 3: ???????????
 					
-			//passo 4: profit! ora cancella tutto dal cookie.
+			//cancella tutto dal cookie
 	        cart = [];
 			saveCartToCookie(cart);
-			
 		}
 		
 		  function getCartFromCookie() {
@@ -115,14 +120,44 @@ img{
 		
 	      function saveCartToCookie(cart) {
 	          const cartValue = encodeURIComponent(JSON.stringify(cart));
+	          
+	          //'sta funzione qui verrà chiamata solo per resettare il cookie sostanzialmente
+	          //quindi me ne frego dei valori og di questi due:
+	          const totalProducts = 0;
+	          const totalPrice = 0.0;
 
 	          const expirationDate = new Date();
 	          expirationDate.setDate(expirationDate.getDate() + 30);
 
 	          document.cookie =
-	            "cart=" + cartValue + "; expires=" + expirationDate.toUTCString();
+	            "cart=" + cartValue + "; totalProducts=" + totalProducts + "; totalPrice=" + totalPrice "; expires=" + expirationDate.toUTCString();
 	        }
-		
+	      
+	      function getTotalProductsFromCookie() {
+	    	  if (document.cookie.includes("totalProducts=")) {
+	    	    const totalProductsCookie = document.cookie
+	    	      .split(";")
+	    	      .find((cookie) => cookie.trim().startsWith("totalProducts="));
+
+	    	    const totalProductsValue = totalProductsCookie.split("=")[1];
+
+	    	    return parseInt(totalProductsValue);
+	    	  }
+	    	  return 0;
+	    	}
+
+	    	function getTotalPriceFromCookie() {
+	    	  if (document.cookie.includes("totalPrice=")) {
+	    	    const totalPriceCookie = document.cookie
+	    	      .split(";")
+	    	      .find((cookie) => cookie.trim().startsWith("totalPrice="));
+
+	    	    const totalPriceValue = totalPriceCookie.split("=")[1];
+
+	    	    return parseFloat(totalPriceValue);
+	    	  }
+	    	  return 0.0;
+	    	}
 	</script>
 </body>
 </html>

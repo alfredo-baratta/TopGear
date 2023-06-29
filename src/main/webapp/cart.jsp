@@ -705,21 +705,21 @@
         updateCartQuantity();
       }
       
-      // Esegue il checkout
       function procedeToCheckout(){
     	  window.location.href = "pagamento";
       }
       
-      // Salva il carrello nel cookie
       function saveCartToCookie(cart) {
         const cartValue = encodeURIComponent(JSON.stringify(cart));
+        const totalProducts = document.getElementById("prodotti-totali");
+        const totalPrice = document.getElementById("prezzo-totale");
+        
 
-        // Expiration date di 30 giorni
         const expirationDate = new Date();
         expirationDate.setDate(expirationDate.getDate() + 30);
 
         document.cookie =
-          "cart=" + cartValue + "; expires=" + expirationDate.toUTCString();
+          "cart=" + cartValue + "; totalProducts=" + totalProducts + "; totalPrice=" + totalPrice "; expires=" + expirationDate.toUTCString();
       }
     </script>
   </body>

@@ -49,6 +49,9 @@ public class OrdersServlet extends HttpServlet {
 	    	Connection conn = null;
 	    	
 	    	/*
+	    	 * 
+	    	 * SISI questo è ancora un WIP copiato da... Pietro? mi pare? yea, poi quando arrivo a fare la pagina 
+	    	 * dove mostrare gli ordini lo modifico opportunamente questo codice
 	    	try {
 	        	conn = dataSource.getConnection();
 	            

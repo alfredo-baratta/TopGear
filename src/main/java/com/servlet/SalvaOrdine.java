@@ -7,6 +7,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 @WebServlet("/SalvaOrdine")
 public class SalvaOrdine extends HttpServlet {
@@ -18,13 +19,26 @@ public class SalvaOrdine extends HttpServlet {
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
-        String cartData = request.getReader().lines().reduce("", (accumulator, actual) -> accumulator + actual);
+        String orderData = request.getReader().lines().reduce("", (accumulator, actual) -> accumulator + actual);
         
-        Ordine ordine_generico = new Ordine();
+        HttpSession session = request.getSession();
         
-        //...salvo le info dell'ordine nell'oggetto ordine_generico e poi:
+        if (session == null ||  session.getAttribute("username") == null) {
+	        session.invalidate();
+	    	response.sendRedirect("login.jsp");
+	    }
         
-        ordine_generico.salvaOrdine(cartData); 
+        Ordine ordine = new Ordine();
+        
+        //devo prendere i dati presenti in orderData, dividerli e passarli alla funzione salvaOrdine
+        int totalProducts = 0;
+        float totalPrice = 0;
+        
+        System.out.println(orderData);	//test. Mi serve per vedere come i dati vengono stampati
+        //successivamente estrapolo le info e le ripongo correttamente nell'oggetto ordine
+        
+        //salvo proprio l'ordine nel database
+        ordine.salvaOrdine(orderData, totalProducts, totalPrice); 
 
         response.setContentType("application/json");
         response.getWriter().write("{\"status\": \"success\"}");
