@@ -559,6 +559,8 @@
           total += item.quantity * item.prezzo;
         });
         totalPrice.textContent = total + "€";
+        
+        saveCartToCookie(cart);
       }
       
       // Mostra a schermo la table head
@@ -700,7 +702,6 @@
         
         setCartEmpty();
         showHeadTable()
-        saveCartToCookie(cart);
         updateCartInfo();
         updateCartQuantity();
       }
@@ -719,7 +720,10 @@
         expirationDate.setDate(expirationDate.getDate() + 30);
 
         document.cookie =
-          "cart=" + cartValue + "; totalProducts=" + totalProducts + "; totalPrice=" + totalPrice "; expires=" + expirationDate.toUTCString();
+          "cart=" + cartValue + "; expires=" + expirationDate.toUTCString();
+          
+        document.cookie = "totalProducts=" + totalProducts.textContent + "; expires=" + expirationDate.toUTCString();
+        document.cookie = "totalPrice=" + totalPrice.textContent + "; expires=" + expirationDate.toUTCString();
       }
     </script>
   </body>
