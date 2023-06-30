@@ -51,7 +51,7 @@ public class salvaModifiche extends HttpServlet {
 		// connessione al database
 		try (Connection conn = DriverManagerConnectionPool.getConnection();
 			     PreparedStatement selectStatement = conn.prepareStatement("SELECT * FROM utenti WHERE cf = ?");
-			     PreparedStatement updateStatement = conn.prepareStatement("UPDATE utenti SET nome=?, cognome=?, datanascita=?, email=?, password=?, telefono=?, citta=?, via=?, cap=? WHERE cf=?")) {
+			     PreparedStatement updateStatement = conn.prepareStatement("UPDATE utenti SET nome=?, cognome=?, datanascita=?, telefono=?, citta=?, via=?, cap=? WHERE cf=?")) {
 
 			    // Esecuzione della query di selezione per ottenere i parametri attuali dell'utente
 			    selectStatement.setString(1, cf);
@@ -86,11 +86,11 @@ public class salvaModifiche extends HttpServlet {
 			            updateStatement.setString(1, nome);
 			            updateStatement.setString(2, cognome);
 			            updateStatement.setDate(3, java.sql.Date.valueOf(datanascita));
-			            updateStatement.setString(6, telefono);
-			            updateStatement.setString(7, citta);
-			            updateStatement.setString(8, via);
-			            updateStatement.setString(9, cap);
-			            updateStatement.setString(10, cf);
+			            updateStatement.setString(4, telefono);
+			            updateStatement.setString(5, citta);
+			            updateStatement.setString(6, via);
+			            updateStatement.setString(7, cap);
+			            updateStatement.setString(8, cf);
 			        
 			            // esegue l'aggiornamento e rimanda alla pagina di conferma
 			            updateStatement.executeUpdate();
