@@ -12,6 +12,12 @@
 </head>
 <body>
 	<h1>Benvenuto, <%= (String) request.getAttribute("nome") %> <%= (String) request.getAttribute("cognome") %>.️</h1>
-	<a href="<%=request.getContextPath()%>/modificAccount" >Test</a>
+	<a href="<%=request.getContextPath()%>/Sicurezza" >Sicurezza</a>
+	<br>
+	<a href="<%=request.getContextPath()%>/modificAccount" >modifica account</a>
+	<br>
+	<a href="<%=request.getContextPath()%>/Account" >Account</a>
+	
+	
 </body>
 </html>

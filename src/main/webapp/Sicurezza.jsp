@@ -6,7 +6,7 @@
 <html>
 <head>
   <meta charset="UTF-8" />
-  <title>Modifica Account</title>
+  <title>Sicurezza</title>
 
   <style>
     * {
@@ -136,11 +136,12 @@
     <div class="contenitore-esterno">
       <div class="contenitore">
         <h1>Sicurezza</h1>
+        
         <form action="Sicurezza" method="POST">
           <div class="titolo-sezione">Credenziali</div>
           <div class="riga">
             <label>Email:</label>
-            <input type="text" class="input-text" name="email"/>
+            <input type="text" class="input-text" name="email" value="<%= request.getAttribute("email") %>"/>
           </div>
           <div class="riga">
             <label>Password attuale:</label>
@@ -150,6 +151,7 @@
             <label>Nuova password:</label>
             <input type="password" class="input-text" name="nuovaPassword"/>
           </div>
+           <div id="passwordErrata" style="color: red; display: none;">Password errata</div>
           <div class="tasti">
             <button type="submit" class="save-button">Salva</button>
             <button type="button" class="cancel-button">Annulla</button>

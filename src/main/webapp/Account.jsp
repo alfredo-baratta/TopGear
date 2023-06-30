@@ -1,5 +1,8 @@
-<%@ page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1" %>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+pageEncoding="UTF-8" %>
+<%@ include file="utils/sessionCheck.jsp" %>
 <%@ include file="header.html" %>
+
 <!DOCTYPE html>
 <html>
   <head>
@@ -182,9 +185,6 @@
       </div>
     </div>
     </div>
-    <footer>
-      <%@ include file="footer.html" %>
-     </footer>
-  </body>
-
+       </body>
+ <%@ include file="footer.html" %>
 </html>
