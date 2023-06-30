@@ -16,7 +16,7 @@
 	<br>
 	<a href="<%=request.getContextPath()%>/modificAccount" >modifica account</a>
 	<br>
-	<a href="<%=request.getContextPath()%>/Account" >Account</a>
+	<a href="<%=request.getContextPath()%>/Profilo" >Account</a>
 	
 	
 </body>
