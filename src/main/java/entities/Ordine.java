@@ -69,23 +69,32 @@ public class Ordine {
 		//Converto i dati in un oggetto Java di tipo Cart che avrà al suo
 		//interno una lista di entities.Accessorio basically
 		
+		long millis = System.currentTimeMillis();  
+		
+		this.dataPagamento = new Date(millis);
+		
 		Cart cart;  
 		
 		try {
+			//prendo le info da orderData. how? who knows
+			
+			//le inserisco in tot accessori, e tali assieme a totalProducts e totalPrice li inserisco in un obj ordine
+			
 			
 		}
 		catch(Exception e){
 			e.printStackTrace();
 		}
 		
-		//modificare il resto del codice
 		
+		//salvo tutte le informazioni poste nell'obj ordine nel DB
+		/*
 		try (Connection conn = DriverManagerConnectionPool.getConnection()) {
         	String query = "INSERT INTO ordini (id, totale, data_pagamento, fk_utente) "
         			+ "VALUES (?, ?, ?, ?)";
         	PreparedStatement ps = conn.prepareStatement(query);
         	ps.setInt(1, id);
-	        ps.setFloat(2, totale);
+	        ps.setFloat(2, totalPrice);
 	        ps.setDate(3, dataPagamento);
 	        ps.setString(4, utente_cf);
             ps.executeUpdate();
@@ -106,6 +115,8 @@ public class Ordine {
         	r.setMessage("Ops! Qualcosa e' andato storto. Haha POV: sei me qualsiasi momento della vita");
         	//TODO: yeayea smelly code, però devo comunque ricordarmi di modificare questo ^ altrimenti piango
 		}
+		*/
+		
         return r;
 	}
 }

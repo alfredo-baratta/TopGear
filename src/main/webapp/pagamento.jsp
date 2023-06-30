@@ -43,12 +43,13 @@ img{
 		<label for="visa"><img src="assets/visa.png" alt="Visa"></label>
 	</div>
 	
-	<button onclick="ConfirmOrder();"> Conferma ordine </button>
+	<button onclick="confirmOrder()"> Conferma ordine </button>
 	
-	<button onclick="stampaFattura();"> Stampa fattura in PDF </button>
+	<button onclick="stampaFattura()"> Stampa fattura in PDF </button>
 	
 	<script>
-		function ConfirmOrder(){
+	
+		function confirmOrder(){
 			
 			var paymentMethod = document.querySelector('input[name="paymentMethod"]:checked').value;
 			
@@ -70,20 +71,20 @@ img{
 			}
 		}
 		
-		  function procedeToSaveOrder(){
+		function procedeToSaveOrder(){
 			//ruba tutte le info che il cookie ha
-			const cart = getCartFromCookie();
+			var cart = getCartFromCookie();
 		 	const totalProducts = getTotalProductsFromCookie();
 		 	const totalPrice = getTotalPriceFromCookie();
 		 	
 		 	const orderData = {
-		 		cart: cart;
-		 		totalProducts = totalProducts;
-		 		totalPrice = totalPrice;
+		 		cart: cart,
+		 		totalProducts: totalProducts,
+		 		totalPrice: totalPrice
 		 	};
 		  
 			//esegui una richiesta AJAX per passare i dati alla servlet
-			fetch('/SalvaOrdine', {
+			fetch('SalvaOrdine', {
     			method: 'POST',
    				headers: {
       				'Content-Type': 'application/json',
@@ -93,6 +94,7 @@ img{
     		.then(response => response.json())
     		.then(data => {
       			
+    			//ciò che risulta in data lo mostrerò a schermo prima o poi
       			console.log(data);
     		})
     		.catch(error => {
@@ -105,7 +107,7 @@ img{
 			saveCartToCookie(cart);
 		}
 		
-		  function getCartFromCookie() {
+		function getCartFromCookie() {
 	        if (document.cookie.includes("cart=")) {
 	          const cartCookie = document.cookie
 	            .split(";")
@@ -118,22 +120,25 @@ img{
 	        return [];
 	    }
 		
-	      function saveCartToCookie(cart) {
+	    function saveCartToCookie(cart) {
 	          const cartValue = encodeURIComponent(JSON.stringify(cart));
 	          
 	          //'sta funzione qui verrà chiamata solo per resettare il cookie sostanzialmente
 	          //quindi me ne frego dei valori og di questi due:
 	          const totalProducts = 0;
-	          const totalPrice = 0.0;
+	          const totalPrice = 0.0; 
 
 	          const expirationDate = new Date();
 	          expirationDate.setDate(expirationDate.getDate() + 30);
 
 	          document.cookie =
-	            "cart=" + cartValue + "; totalProducts=" + totalProducts + "; totalPrice=" + totalPrice "; expires=" + expirationDate.toUTCString();
+	            "cart=" + cartValue + "; expires=" + expirationDate.toUTCString();
+	            
+	          document.cookie = "totalProducts=" + totalProducts.textContent + "; expires=" + expirationDate.toUTCString();
+	          document.cookie = "totalPrice=" + totalPrice.textContent + "; expires=" + expirationDate.toUTCString();
 	        }
 	      
-	      function getTotalProductsFromCookie() {
+	    function getTotalProductsFromCookie() {
 	    	  if (document.cookie.includes("totalProducts=")) {
 	    	    const totalProductsCookie = document.cookie
 	    	      .split(";")
@@ -146,7 +151,7 @@ img{
 	    	  return 0;
 	    	}
 
-	    	function getTotalPriceFromCookie() {
+	    function getTotalPriceFromCookie() {
 	    	  if (document.cookie.includes("totalPrice=")) {
 	    	    const totalPriceCookie = document.cookie
 	    	      .split(";")
@@ -157,6 +162,10 @@ img{
 	    	    return parseFloat(totalPriceValue);
 	    	  }
 	    	  return 0.0;
+	    	}
+	    	
+	    function stampaFattura(){
+	    		//nothing per ora
 	    	}
 	</script>
 </body>
