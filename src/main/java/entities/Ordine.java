@@ -1,6 +1,8 @@
 package entities;
 
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 
 import Model.DriverManagerConnectionPool;
 
@@ -63,7 +65,7 @@ public class Ordine {
 		this.type = type;
 	}
 	
-	public Risposta salvaOrdine(String orderData, int totalProducts, float totalPrice) {
+	public Risposta salvaOrdine(List<String> cartItems, int totalProducts, float totalPrice) {
 		Risposta r = new Risposta();
 		
 		//Converto i dati in un oggetto Java di tipo Cart che avrà al suo
@@ -71,15 +73,32 @@ public class Ordine {
 		
 		long millis = System.currentTimeMillis();  
 		
-		this.dataPagamento = new Date(millis);
-		
-		Cart cart;  
+		Cart cart = new Cart(); 
 		
 		try {
-			//prendo le info da orderData. how? who knows
+			this.setTotale(totalPrice);
+			this.dataPagamento = new Date(millis);
 			
-			//le inserisco in tot accessori, e tali assieme a totalProducts e totalPrice li inserisco in un obj ordine
+			int productId;
+			int quantity;
+			String nome;
+			Float prezzo;
+			String imadeId;
 			
+			/*
+			int i = 0;
+			for(int j = 0; j < totalProducts; j++) {
+				System.out.println(cartItems.get(j).toString());
+			}
+			*/
+			
+			/*
+			creo l'oggetto Accessorio e lo metto nel cart
+			Accessorio acc = new Accessorio(bla bla bla);
+			
+			cart.add(Accessorio);
+			
+			 */
 			
 		}
 		catch(Exception e){

@@ -40,14 +40,10 @@ public class SalvaOrdine extends HttpServlet {
         
         
         orderData = orderData.trim();
-
-        
         orderData = orderData.substring(1, orderData.length() - 1);
 
-        
         String[] elements = orderData.split(",");
 
-        
         List<String> cartItems = new ArrayList<>();
         int totalProducts = 0;
         float totalPrice = 0.0f;
@@ -56,30 +52,61 @@ public class SalvaOrdine extends HttpServlet {
         for (String element : elements) {
             
             String[] keyValue = element.split(":");
-
             
-            String key = keyValue[0].trim();
+            String first_key = keyValue[0].trim();
             String value = keyValue[1].trim();
-
             
+            if(first_key.equals("\"cart\"")) {
+            	/*
+            	for(int i = 1; i < 5; i++) {
+            			String value = keyValue[i].trim();
+            			value = value.replace("\"", "");
+            			value = value.replace("[", "");
+            			value = value.replace("{", "");
+            			value = value.replace("}", "");
+            			value = value.replace("]", "");
+            			System.out.println(value);
+            			cartItems.add(value);
+            	}
+            	*/
+            	
+            	//no ma niente ho fatto tutto 'sto casino scervellandomi e comunque non funziona
+            	//tempo 2 secondi e uso una libreria tipo Gson per ottenere tutti i dati dal file JSON
+            	
+            	value = value.replace("[", "");
+                value = value.replace("]", "");
+
+                String[] cartElements = value.split("\\},\\{");
+
+                for (String cartElement : cartElements) {
+                    cartElement = cartElement.replace("{", "").replace("}", "").trim();
+                    String[] cartItemElements = cartElement.split(",");
+
+                    for (String itemElement : cartItemElements) {
+                        String[] itemKeyValue = itemElement.split(":");
+                        String key = itemKeyValue[0].trim().replace("\"", "");
+                        String itemValue = itemKeyValue[1].trim().replace("\"", "");
+
+                        cartItems.add(key);
+                        cartItems.add(itemValue);
+                    }
+                }
+            }
+
             value = value.replace("\"", "");
-
-            
-            if (key.equals("\"cart\"")) {
-                
-                cartItems.add(value);
-            } else if (key.equals("\"totalProducts\"")) {
+            if (first_key.equals("\"totalProducts\"")) {
                 totalProducts = Integer.parseInt(value);
-            } else if (key.equals("\"totalPrice\"")) {
+            } else if (first_key.equals("\"totalPrice\"")) {
                 totalPrice = Float.parseFloat(value);
             }
         }
         
-        System.out.println(totalProducts);
-        System.out.println(totalPrice);
+        //testing
+        System.out.println("Prodotti:" + totalProducts);
+        System.out.println("Totale: " + totalPrice);
         
         //salvo proprio l'ordine nel database
-        ordine.salvaOrdine(orderData, totalProducts, totalPrice); //uhhh copierò qualche operazione da questo file a ordine.java
+        ordine.salvaOrdine(cartItems, totalProducts, totalPrice);
 
         response.setContentType("application/json");
         response.getWriter().write("Ordine effettuato correttamente!");
