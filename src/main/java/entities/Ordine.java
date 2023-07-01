@@ -83,22 +83,42 @@ public class Ordine {
 			int quantity;
 			String nome;
 			Float prezzo;
-			String imadeId;
+			String imageId;
 			
-			/*
-			int i = 0;
-			for(int j = 0; j < totalProducts; j++) {
-				System.out.println(cartItems.get(j).toString());
-			}
-			*/
-			
-			/*
-			creo l'oggetto Accessorio e lo metto nel cart
-			Accessorio acc = new Accessorio(bla bla bla);
-			
-			cart.add(Accessorio);
-			
-			 */
+			for(int i = 0; i < totalProducts; i++) {
+        		
+        		for(int j = 0; j < 5; j++) {
+        			int index = (j + 5*i);
+        			String couple_temp = cartItems.get(index);
+        			
+        			String[] couple = couple_temp.split(":");
+        			
+        			if(couple[0].contentEquals("productId")) {
+        				productId = Integer.parseInt(couple[1]);
+        			}
+        			else if(couple[0].contentEquals("quantity")) {
+        				quantity = Integer.parseInt(couple[1]);
+        			}
+        			else if(couple[0].contentEquals("nome")) {
+        				nome = couple[1];
+        			}
+        			else if(couple[0].contentEquals("prezzo")) {
+        				prezzo = Float.parseFloat(couple[1]);
+        			}
+        			else {
+        				imageId = couple[1];
+        			}
+        			
+        			/*
+        			creo l'oggetto Accessorio e lo metto nel cart
+        			Accessorio acc = new Accessorio(bla bla bla);
+        			
+        			cart.add(Accessorio);
+        			
+        			*/
+        			
+        		}
+        	}
 			
 		}
 		catch(Exception e){

@@ -35,13 +35,19 @@ public class SalvaOrdine extends HttpServlet {
         
         //devo prendere i dati presenti in orderData, dividerli e passarli alla funzione salvaOrdine
         
-        System.out.println(orderData);	//test. Mi serve per vedere come i dati vengono stampati
-        //successivamente estrapolo le info e le ripongo correttamente nell'oggetto ordine
+        System.out.println(orderData);	//testing
         
         
         orderData = orderData.trim();
         orderData = orderData.substring(1, orderData.length() - 1);
 
+        //prendo a parte tutti gli item del cart
+    	int startIndex = orderData.indexOf("[");
+    	int endIndex = orderData.indexOf("]");
+        String items_string = orderData.substring(startIndex, endIndex);
+        items_string = items_string.replace("\"", "").replace("[", "").replace("]", "").replace("{", "").replace("}", "");
+        
+    	String[] items = items_string.split(",");
         String[] elements = orderData.split(",");
 
         List<String> cartItems = new ArrayList<>();
@@ -57,42 +63,21 @@ public class SalvaOrdine extends HttpServlet {
             String value = keyValue[1].trim();
             
             if(first_key.equals("\"cart\"")) {
-            	/*
-            	for(int i = 1; i < 5; i++) {
-            			String value = keyValue[i].trim();
-            			value = value.replace("\"", "");
-            			value = value.replace("[", "");
-            			value = value.replace("{", "");
-            			value = value.replace("}", "");
-            			value = value.replace("]", "");
-            			System.out.println(value);
-            			cartItems.add(value);
+
+            	for(int i = 0; i < items.length/5; i++) {
+            		
+            		System.out.println("\nnuovo item!");
+            		for(int j = 0; j < 5; j++) {
+            			int index = (j + 5*i);
+            			String couple_temp = items[index];
+            			cartItems.add(couple_temp);
+            			
+            			//testing
+            			System.out.println("ind: " + index + " " + couple_temp);
+            		}
             	}
-            	*/
-            	
-            	//no ma niente ho fatto tutto 'sto casino scervellandomi e comunque non funziona
-            	//tempo 2 secondi e uso una libreria tipo Gson per ottenere tutti i dati dal file JSON
-            	
-            	value = value.replace("[", "");
-                value = value.replace("]", "");
-
-                String[] cartElements = value.split("\\},\\{");
-
-                for (String cartElement : cartElements) {
-                    cartElement = cartElement.replace("{", "").replace("}", "").trim();
-                    String[] cartItemElements = cartElement.split(",");
-
-                    for (String itemElement : cartItemElements) {
-                        String[] itemKeyValue = itemElement.split(":");
-                        String key = itemKeyValue[0].trim().replace("\"", "");
-                        String itemValue = itemKeyValue[1].trim().replace("\"", "");
-
-                        cartItems.add(key);
-                        cartItems.add(itemValue);
-                    }
-                }
             }
-
+            
             value = value.replace("\"", "");
             if (first_key.equals("\"totalProducts\"")) {
                 totalProducts = Integer.parseInt(value);
@@ -102,7 +87,8 @@ public class SalvaOrdine extends HttpServlet {
         }
         
         //testing
-        System.out.println("Prodotti:" + totalProducts);
+        System.out.println("\n");
+        System.out.println("Prodotti: " + totalProducts);
         System.out.println("Totale: " + totalPrice);
         
         //salvo proprio l'ordine nel database
