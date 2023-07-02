@@ -45,7 +45,7 @@ img{
 	
 	<button onclick="confirmOrder()"> Conferma ordine </button>
 	
-	<button onclick="stampaFattura()"> Stampa fattura in PDF </button>
+	<button onclick="stampaFattura()"> Scarica fattura in PDF </button>
 	
 	<script>
 	
@@ -72,7 +72,7 @@ img{
 		}
 		
 		function procedeToSaveOrder(){
-			//ruba tutte le info che il cookie ha
+			//prendo tutto ciò che serve dal cookie
 			var cart = getCartFromCookie();
 		 	const totalProducts = getTotalProductsFromCookie();
 		 	const totalPrice = getTotalPriceFromCookie();
@@ -94,17 +94,15 @@ img{
     		.then(response => response.json())
     		.then(data => {
       			
-    			//ciò che risulta in data lo mostrerò a schermo prima o poi
+    			//Mostro a schermo un messaggio di avvenuta creazione ordine
       			console.log(data);
+    			
     		})
     		.catch(error => {
       			
      		 console.error(error);
-    		});
-					
-			//cancella tutto dal cookie
-	        cart = [];
-			saveCartToCookie(cart);
+    		});		
+			
 		}
 		
 		function getCartFromCookie() {
@@ -165,8 +163,57 @@ img{
 	    	}
 	    	
 	    function stampaFattura(){
-	    		//nothing per ora
-	    	}
+			//prendo tutto ciò che serve dal cookie
+			var cart = getCartFromCookie();
+		 	const totalProducts = getTotalProductsFromCookie();
+		 	const totalPrice = getTotalPriceFromCookie();
+		 	
+		 	const orderData = {
+		 		cart: cart,
+		 		totalProducts: totalProducts,
+		 		totalPrice: totalPrice
+		 	};
+		  
+			//esegui una richiesta AJAX per passare i dati alla servlet
+			fetch('FatturaServlet', {
+    			method: 'POST',
+   				headers: {
+      				'Content-Type': 'application/json',
+   				},
+    			body: JSON.stringify(orderData),
+  			})
+    		.then(response => response.blob())
+    		.then(blob => {
+    			
+    			//URL dal blob e link temp per scaricare il PDF
+    	        const url = URL.createObjectURL(blob);
+    	        const link = document.createElement('a');
+    	        link.href = url;
+    	        link.download = 'fattura.pdf';
+    	        
+    	        //aggiungo il Link al DOM, simulo il click su tale link, poi rimuovo il tutto
+    	        document.body.appendChild(link);
+    	        link.click();
+
+    	        document.body.removeChild(link);
+    	        URL.revokeObjectURL(url);
+    	        
+    	      	//Mostro a schermo 'na roba per indicare che la fattura è stata scaricata
+    			
+    		})
+    		.catch(error => {
+      			
+     		 console.error(error);
+    		});	
+			
+			//cancellaTuttoDalCookie()
+	    }
+	    
+	    function cancellaTuttoDalCookie(){
+	    	//cancella tutto dal cookie
+	        cart = [];
+			saveCartToCookie(cart);
+	    }
 	</script>
 </body>
 </html>
