@@ -91,7 +91,7 @@ pageEncoding="UTF-8" %>
     <h1>Gestisci account</h1>
     <div class="container">
       <div class="sezione">
-        <a href="<%=request.getContextPath()%>/modificAccount.jsp" >
+        <a href="<%=request.getContextPath()%>/modificAccount" >
           <svg
             class="icon"
             width="25"
@@ -169,7 +169,7 @@ pageEncoding="UTF-8" %>
         </a>
       </div>
       <div class="sezione">
-        <a href="<%=request.getContextPath()%>/Sicurezza.jsp">
+        <a href="<%=request.getContextPath()%>/Sicurezza">
           <svg width="25" height="25" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
   <path d="M20 11H4a1 1 0 0 0-1 1v9a1 1 0 0 0 1 1h16a1 1 0 0 0 1-1v-9a1 1 0 0 0-1-1Z"></path>
   <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>

@@ -94,14 +94,14 @@ public class salvaModifiche extends HttpServlet {
 			        
 			            // esegue l'aggiornamento e rimanda alla pagina di conferma
 			            updateStatement.executeUpdate();
-			            response.sendRedirect("conferma.jsp");
+			            response.sendRedirect("conferma");
 
 			            //altrimenti se sono uguali, quindi non ci sono state modifiche rimanda ad errore
 			        } else {
-			            response.sendRedirect("errore.jsp");
+			            response.sendRedirect("errore");
 			        }
 			        	//se la prima query non ha trovato risultati rimanda alla pagina di errore 
-			    } else {response.sendRedirect("errore.jsp");}
+			    } else {response.sendRedirect("errore");}
 
 			    DriverManagerConnectionPool.releaseConnection(conn);
 			} catch (Exception e) {

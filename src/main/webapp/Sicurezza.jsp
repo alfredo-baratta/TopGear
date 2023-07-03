@@ -127,6 +127,11 @@
       display: flex;
       justify-content: center;
     }
+    
+    .messaggio{
+    margin-bottom:5px;
+    text-align:center;
+    font-size:14px;}
   </style>
 </head>
 
@@ -139,9 +144,22 @@
         
         <form action="Sicurezza" method="POST">
           <div class="titolo-sezione">Credenziali</div>
+          
+          <div class="messaggio">
+           <%
+          if(request.getAttribute("messaggio")!= null && request.getAttribute("tipo") == "errore" && request.getAttribute("tipo") != null ){ %>
+         <div id="errore" style="color: red;"><%= (String) request.getAttribute("messaggio") %></div> 
+          <% } %>
+          
+          <%
+          if(request.getAttribute("messaggio")!= null && request.getAttribute("tipo") == "ok" && request.getAttribute("tipo") != null ){ %>
+         <div id="errore" style="color: #53eb0f;"><%= (String) request.getAttribute("messaggio") %></div> 
+          <% } %>
+          </div>
+          
           <div class="riga">
             <label>Email:</label>
-            <input type="text" class="input-text" name="email" value="<%= request.getAttribute("email") %>"/>
+            <input type="text" class="input-text" name="email" value="<%= request.getAttribute("email") %>" readonly/>
           </div>
           <div class="riga">
             <label>Password attuale:</label>
@@ -151,7 +169,9 @@
             <label>Nuova password:</label>
             <input type="password" class="input-text" name="nuovaPassword"/>
           </div>
-           <div id="passwordErrata" style="color: red; display: none;">Password errata</div>
+          
+         
+          
           <div class="tasti">
             <button type="submit" class="save-button">Salva</button>
             <button type="button" class="cancel-button">Annulla</button>

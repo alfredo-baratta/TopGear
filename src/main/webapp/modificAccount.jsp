@@ -256,14 +256,58 @@ pageEncoding="UTF-8" %>
     </div>
   </div>
 
-  <script>
-    function abilitaModifica(button) {
-      var input = button.previousElementSibling;
-      input.readOnly = false;
-      input.focus();
-      button.style.display = 'none';
+<script>
+  var valoriOriginali = {};
+
+  function abilitaModifica(button) {
+    var input = button.previousElementSibling;
+    input.readOnly = false;
+    input.focus();
+    button.style.display = 'none';
+  }
+
+  function memorizzaValoriOriginali() {
+    var inputs = document.querySelectorAll('.input-text');
+    for (var i = 0; i < inputs.length; i++) {
+      var input = inputs[i];
+      var name = input.getAttribute('name');
+      var value = input.value;
+      valoriOriginali[name] = value;
     }
-  </script>
+  }
+
+  function controllaModifiche() {
+    var inputs = document.querySelectorAll('.input-text');
+    var isModificato = false;
+
+    for (var i = 0; i < inputs.length; i++) {
+      var input = inputs[i];
+      var name = input.getAttribute('name');
+      var value = input.value;
+      var valoreOriginale = valoriOriginali[name];
+
+      if (value !== valoreOriginale) {
+        isModificato = true;
+        break;
+      }
+    }
+
+    var saveButton = document.querySelector('.save-button');
+    saveButton.disabled = !isModificato;
+  }
+
+  window.addEventListener('load', function () {
+    memorizzaValoriOriginali();
+    controllaModifiche();
+
+    var inputs = document.querySelectorAll('.input-text');
+    for (var i = 0; i < inputs.length; i++) {
+      inputs[i].addEventListener('input', controllaModifiche);
+    }
+  });
+</script>
+
+
 </div>
 </body>
 <%@ include file="footer.html" %>
