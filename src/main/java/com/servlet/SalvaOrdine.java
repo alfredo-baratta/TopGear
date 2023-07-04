@@ -1,6 +1,9 @@
 package com.servlet;
 
 import java.io.IOException;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.util.*;
 import entities.Ordine;
 import javax.servlet.ServletException;
@@ -9,6 +12,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+
+import Model.DriverManagerConnectionPool;
 
 @WebServlet("/SalvaOrdine")
 public class SalvaOrdine extends HttpServlet {
@@ -22,20 +27,30 @@ public class SalvaOrdine extends HttpServlet {
 		
         String orderData = request.getReader().lines().reduce("", (accumulator, actual) -> accumulator + actual);
         
-        /*
         HttpSession session = request.getSession();
         
         if (session == null ||  session.getAttribute("username") == null) {
 	        session.invalidate();
 	    	response.sendRedirect("login.jsp");
 	    }
-	    */
         
+        String username = (String) session.getAttribute("username"); 
+        String cf = "";
+        try (Connection conn = DriverManagerConnectionPool.getConnection();
+                PreparedStatement statement = conn.prepareStatement("SELECT * FROM utenti WHERE cf = ?")) {
+
+               statement.setString(1, username);
+               try (ResultSet rs = statement.executeQuery()) {
+                   if (rs.next()) {
+                       cf = rs.getString("cf");
+                   }
+               }
+               DriverManagerConnectionPool.releaseConnection(conn);
+           } catch (Exception e) {
+               System.out.println("Errore: " + e.getMessage());
+           }
+        System.out.println("cf: " + cf);        
         Ordine ordine = new Ordine();
-        
-        //devo prendere i dati presenti in orderData, dividerli e passarli alla funzione salvaOrdine
-        
-        System.out.println(orderData);	//testing
         
         
         orderData = orderData.trim();
@@ -72,8 +87,6 @@ public class SalvaOrdine extends HttpServlet {
             			String couple_temp = items[index];
             			cartItems.add(couple_temp);
             			
-            			//testing
-            			System.out.println("ind: " + index + " " + couple_temp);
             		}
             	}
             }
@@ -86,15 +99,11 @@ public class SalvaOrdine extends HttpServlet {
             }
         }
         
-        //testing
-        System.out.println("\n");
-        System.out.println("Prodotti: " + totalProducts);
-        System.out.println("Totale: " + totalPrice);
         
         //salvo proprio l'ordine nel database
-        ordine.salvaOrdine(cartItems, totalProducts, totalPrice);
+        ordine.salvaOrdine(cartItems, totalProducts, totalPrice, cf);
 
-        response.setContentType("application/json");
+        response.setContentType("text/plain");
         response.getWriter().write("Ordine effettuato correttamente!");
 	}
 	

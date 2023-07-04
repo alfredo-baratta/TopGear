@@ -91,7 +91,7 @@ img{
    				},
     			body: JSON.stringify(orderData),
   			})
-    		.then(response => response.json())
+    		.then(response => response.text())
     		.then(data => {
       			
     			//Mostro a schermo un messaggio di avvenuta creazione ordine
@@ -103,6 +103,7 @@ img{
      		 console.error(error);
     		});		
 			
+			//cancellaTuttoDalCookie()
 		}
 		
 		function getCartFromCookie() {

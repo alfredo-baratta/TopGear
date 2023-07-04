@@ -100,6 +100,9 @@ public class OrdersServlet extends HttpServlet {
 	        }
 	        */
 	    }
+	    
+	    RequestDispatcher dispatcher = request.getRequestDispatcher("/orders.jsp");
+		dispatcher.forward(request,  response);
 		
 	}
 

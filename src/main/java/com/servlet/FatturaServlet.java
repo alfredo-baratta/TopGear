@@ -1,7 +1,8 @@
 package com.servlet;
 
 import java.io.IOException;
-import java.util.List;
+import java.sql.*;
+import java.sql.Connection;
 import java.io.*;
 import java.util.Date;
 import java.text.DateFormat;   
@@ -18,6 +19,8 @@ import org.apache.pdfbox.pdmodel.PDPage;
 import org.apache.pdfbox.pdmodel.common.PDRectangle;
 import org.apache.pdfbox.pdmodel.PDPageContentStream;
 import org.apache.pdfbox.pdmodel.font.PDType1Font;
+
+import Model.DriverManagerConnectionPool;
 
 
 @WebServlet("/FatturaServlet")
@@ -121,7 +124,7 @@ public class FatturaServlet extends HttpServlet {
             					nome = couple[1];
             				}
             				else if (l == 3) {
-            					prezzo = couple[1];
+            					prezzo = "€ " + couple[1];
             				}
             			}
                 	}
@@ -224,7 +227,7 @@ public class FatturaServlet extends HttpServlet {
         contentStream.newLineAtOffset(pageWidth-200, 400);
         contentStream.showText("Elementi totali: " + totalProducts);
         contentStream.newLineAtOffset(0, 20);
-        contentStream.showText("Costo totale: " + totalPrice + "€");
+        contentStream.showText("Costo totale: € " + totalPrice);
         
         contentStream.endText();
 
@@ -250,9 +253,95 @@ public class FatturaServlet extends HttpServlet {
         fileInputStream.close();
         outputStream.flush();
         outputStream.close();
-
-        //lol immagina lasciare il file temporaneo 
         tempFile.delete();
+        
+        //salviamo la fattura nel database:
+        int ordineAccessorioId = 0; //di default
+        String ordineAccessorioIdQuery = "SELECT id FROM ordini_accessorio ORDER BY id DESC LIMIT 1";
+        
+        //Query per prelevare l'ultimo ID
+        try (Connection conn = DriverManagerConnectionPool.getConnection();
+        		Statement statement = conn.createStatement();
+        	    ResultSet resultSet = statement.executeQuery(ordineAccessorioIdQuery)) {
+            if (resultSet.next()) {
+                ordineAccessorioId = resultSet.getInt("id");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        
+        Connection conn = null;
+        PreparedStatement stmt = null;
+        
+        try {
+        	conn = DriverManagerConnectionPool.getConnection();
+
+            //Query di inserimento
+            String query = "INSERT INTO fattura_accessori (prezzo, iva, fk_accessorio, fk_ordine_accessorio) VALUES (?, ?, ?, ?)";
+            stmt = conn.prepareStatement(query);
+            
+            for (String element : elements) {
+                
+                String[] keyValue = element.split(":");
+                
+                String first_key = keyValue[0].trim();
+                
+                if(first_key.equals("\"cart\"")) {
+                	
+                	for(int i = 1; i<=rowCount;i++){ //righe, una per elemento
+                    	
+                    	float prezzo = 0.0f;
+                    	int id = 0;
+                    	
+                    	//per prendere gli elementi del cart parte dalla seconda riga
+                    	if(i >= 2) {
+                    		int m = i-2;
+                    		for(int l = 0; l < 5; l++) {
+                    		
+                				int index = (l + 5*m);
+                				String couple_temp = items[index];
+                			
+                				String[] couple = couple_temp.split(":");
+                				if(l == 0) {
+                					id = Integer.parseInt(couple[1]);
+                				}
+                				else if (l == 3) {
+                					prezzo = Float.parseFloat(couple[1]);
+                				}
+                			}
+                    		
+                    		//imposta i valori nella statement
+                            stmt.setFloat(1, prezzo);
+                            stmt.setFloat(2, 22); //TODO: prendi l'iva del prodotto dal DB
+                            stmt.setInt(3, id);
+                            stmt.setInt(4, ordineAccessorioId);
+                            
+                            //Si esegue la query di inserimento
+                            stmt.executeUpdate();	
+                    	}
+                	}
+                }
+            }
+            
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            if (stmt != null) {
+                try {
+                    stmt.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+            if (conn != null) {
+                try {
+                    conn.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

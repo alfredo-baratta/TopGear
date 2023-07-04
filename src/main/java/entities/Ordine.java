@@ -1,7 +1,7 @@
 package entities;
 
 import java.sql.*;
-import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import Model.DriverManagerConnectionPool;
@@ -65,96 +65,77 @@ public class Ordine {
 		this.type = type;
 	}
 	
-	public Risposta salvaOrdine(List<String> cartItems, int totalProducts, float totalPrice) {
+	public Risposta salvaOrdine(List<String> cartItems, int totalProducts, float totalPrice, String fkUtente) {
 		Risposta r = new Risposta();
 		
-		//Converto i dati in un oggetto Java di tipo Cart che avrà al suo
-		//interno una lista di entities.Accessorio basically
-		
 		long millis = System.currentTimeMillis();  
+        Date date = new Date(millis);
+        
+		this.setTotale(totalPrice);
+		this.dataPagamento = date;
 		
-		Cart cart = new Cart(); 
 		
-		try {
-			this.setTotale(totalPrice);
-			this.dataPagamento = new Date(millis);
+		try (Connection conn = DriverManagerConnectionPool.getConnection()) {
 			
-			int productId;
-			int quantity;
-			String nome;
-			Float prezzo;
-			String imageId;
-			
-			for(int i = 0; i < totalProducts; i++) {
-        		
+			//Inserimento dell'ordine nel DB
+	        String insertOrdineQuery = "INSERT INTO ordini (totale, data_pagamento, fk_utente) VALUES (?, ?, ?)";
+	        PreparedStatement insertOrdineStmt = conn.prepareStatement(insertOrdineQuery);
+	        insertOrdineStmt.setFloat(1, totalPrice);
+	        insertOrdineStmt.setDate(2, new java.sql.Date(dataPagamento.getTime()));
+	        insertOrdineStmt.setString(3, fkUtente);
+	        insertOrdineStmt.executeUpdate();
+
+	        //Recupero dell'ID dell'ordine appena inserito
+	        String selectLastInsertIdQuery = "SELECT LAST_INSERT_ID()";
+	        PreparedStatement selectLastInsertIdStmt = conn.prepareStatement(selectLastInsertIdQuery);
+	        ResultSet resultSet = selectLastInsertIdStmt.executeQuery();
+	        int fkOrdine = 0;
+	        if (resultSet.next()) {
+	            fkOrdine = resultSet.getInt(1);
+	        }
+	        
+	        //Inserimento degli elementi dell'ordine nel DB
+	        String insertOrdiniAccessorioQuery = "INSERT INTO ordini_accessorio (quantita, fk_ordine, fk_accessorio) VALUES (?, ?, ?)";
+	        PreparedStatement insertOrdiniAccessorioStmt = conn.prepareStatement(insertOrdiniAccessorioQuery);
+
+	        for (int i = 0; i < totalProducts/5; i++) {
+	        	
+				int fkAccessorio = 0;
+				int quantity = 0;
+
         		for(int j = 0; j < 5; j++) {
+        			
         			int index = (j + 5*i);
         			String couple_temp = cartItems.get(index);
         			
         			String[] couple = couple_temp.split(":");
         			
         			if(couple[0].contentEquals("productId")) {
-        				productId = Integer.parseInt(couple[1]);
+        				fkAccessorio = Integer.parseInt(couple[1]);
         			}
         			else if(couple[0].contentEquals("quantity")) {
         				quantity = Integer.parseInt(couple[1]);
         			}
-        			else if(couple[0].contentEquals("nome")) {
-        				nome = couple[1];
-        			}
-        			else if(couple[0].contentEquals("prezzo")) {
-        				prezzo = Float.parseFloat(couple[1]);
-        			}
-        			else {
-        				imageId = couple[1];
-        			}
-        			
-        			/*
-        			creo l'oggetto Accessorio e lo metto nel cart
-        			Accessorio acc = new Accessorio(bla bla bla);
-        			
-        			cart.add(Accessorio);
-        			
-        			*/
-        			
         		}
-        	}
-			
-		}
-		catch(Exception e){
-			e.printStackTrace();
-		}
-		
-		
-		//salvo tutte le informazioni poste nell'obj ordine nel DB
-		/*
-		try (Connection conn = DriverManagerConnectionPool.getConnection()) {
-        	String query = "INSERT INTO ordini (id, totale, data_pagamento, fk_utente) "
-        			+ "VALUES (?, ?, ?, ?)";
-        	PreparedStatement ps = conn.prepareStatement(query);
-        	ps.setInt(1, id);
-	        ps.setFloat(2, totalPrice);
-	        ps.setDate(3, dataPagamento);
-	        ps.setString(4, utente_cf);
-            ps.executeUpdate();
-            
-            setId(id);
-            setTotale(totale);
-            setDataPagamento(dataPagamento);
-            setUtente(utente_cf);
-            
-            //devo capire come associare l'ordine ad una lista di prodotti. mh.
-            
-            DriverManagerConnectionPool.releaseConnection(conn);
-            r.setEsito(true);
-            r.setMessage("OK");
-        }catch (SQLException e) {
-        	System.out.println(e.getMessage());
+        		
+	            insertOrdiniAccessorioStmt.setInt(1, quantity);
+	            insertOrdiniAccessorioStmt.setInt(2, fkOrdine);
+	            insertOrdiniAccessorioStmt.setInt(3, fkAccessorio);
+	            insertOrdiniAccessorioStmt.executeUpdate();
+	        }
+
+	        //Chiusura delle risorse
+	        insertOrdineStmt.close();
+	        selectLastInsertIdStmt.close();
+	        insertOrdiniAccessorioStmt.close();
+	        resultSet.close();
+	        conn.close();
+		} 
+		catch (SQLException e) {
+	        e.printStackTrace();
         	r.setEsito(false); 
-        	r.setMessage("Ops! Qualcosa e' andato storto. Haha POV: sei me qualsiasi momento della vita");
-        	//TODO: yeayea smelly code, però devo comunque ricordarmi di modificare questo ^ altrimenti piango
-		}
-		*/
+        	r.setMessage("Ops! Qualcosa e' andato storto.");
+	    }
 		
         return r;
 	}
