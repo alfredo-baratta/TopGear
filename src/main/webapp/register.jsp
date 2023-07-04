@@ -255,6 +255,7 @@
               placeholder="example@gmail.com"
               required
             />
+            <p id="errorEmail"></p>
           </div>
           <div class="label-box">
             <label for="password">Password</label>
@@ -275,4 +276,30 @@
         </p>
     </form>
   </body>
+
+	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+	
+	<script>
+	  $(document).ready(function() {
+	    $('input[name="email"]').on('blur', function() {
+	      var email = $(this).val();
+	      $.ajax({
+	        url: 'verificaEmail',
+	        type: 'POST',
+	        data: { email: email },
+	        success: function(response) {
+	          if (response == "true") {
+	            var paragrafo = document.getElementById('errorEmail');
+	            paragrafo.textContent = "L'email inserita è già associata ad un account.";
+	          }else{
+	        	  var paragrafo = document.getElementById('errorEmail');
+		          paragrafo.textContent = "";
+	          }
+	        }
+	      });
+	    });
+	  });
+	</script>
+
+
 </html>
