@@ -147,6 +147,16 @@ pageEncoding="UTF-8" %>
 
               <div class="titolo-sezione">Informazioni personali</div>
 
+				<div class="riga">
+                  <label>Codice fiscale:</label>
+                  <input
+                    type="text"
+                    class="input-text"
+                    name="cf"
+                    value="<%= request.getAttribute("cf") %>"
+                    readonly
+                  />
+                </div>
 
                 <div class="riga">
                   <label>Nome:</label>
@@ -154,6 +164,7 @@ pageEncoding="UTF-8" %>
                     type="text"
                     class="input-text"
                     name="nome"
+                    pattern = "^[a-zA-Z\\s]+$"
                     value="<%= request.getAttribute("nome") %>"
                     readonly
                   />
@@ -166,6 +177,7 @@ pageEncoding="UTF-8" %>
                     type="text"
                     class="input-text"
                     name="cognome"
+                    pattern = "^[a-zA-Z\\s]+$"
                     value="<%= request.getAttribute("cognome") %>"
                     readonly
                   />
@@ -175,7 +187,7 @@ pageEncoding="UTF-8" %>
                 <div class="riga">
                   <label>Data di nascita:</label>
                   <input
-                    type="text"
+                    type="date"
                     class="input-text"
                     name="datanascita"
                     value="<%= request.getAttribute("datanascita") %>"
@@ -184,17 +196,7 @@ pageEncoding="UTF-8" %>
                   <input type="button" value="Modifica" class="edit-button" onclick="abilitaModifica(this)" />
                 </div>
 
-                <div class="riga">
-                  <label>Codice fiscale:</label>
-                  <input
-                    type="text"
-                    class="input-text"
-                    name="cf"
-                    value="<%= request.getAttribute("cf") %>"
-                    readonly
-                  />
-                  <input type="button" value="Modifica" class="edit-button" onclick="abilitaModifica(this)" />
-                </div>
+                
 
               <div class="titolo-sezione">Contatti</div>
 
@@ -204,6 +206,7 @@ pageEncoding="UTF-8" %>
                     type="text"
                     class="input-text"
                     name="telefono"
+                    pattern = "^\d{10}$"
                     value="<%= request.getAttribute("telefono") %>"
                     readonly
                   />
@@ -216,6 +219,7 @@ pageEncoding="UTF-8" %>
                     type="text"
                     class="input-text"
                     name="via"
+                    pattern = "^[a-zA-Z\s]+,\s(\d+[A-Za-z]?|SNC|snc)$"
                     value="<%= request.getAttribute("via") %>"
                     readonly
                   />
@@ -228,6 +232,7 @@ pageEncoding="UTF-8" %>
                     type="text"
                     class="input-text"
                     name="citta"
+                    pattern = "^[a-zA-Z\\s]+$"
                     value="<%= request.getAttribute("citta") %>"
                     readonly
                   />
@@ -240,6 +245,7 @@ pageEncoding="UTF-8" %>
                     type="text"
                     class="input-text"
                     name="cap"
+                    pattern = "[0-9]{5}"
                     value="<%= request.getAttribute("cap") %>"
                     readonly
                   />
@@ -249,7 +255,7 @@ pageEncoding="UTF-8" %>
 
         <div class="tasti">
           <button type="submit" class="save-button">Salva</button>
-          <button type="button" class="cancel-button">Annulla</button>
+          <button type="reset" class="cancel-button">Annulla</button>
         </div>
         
       </form>

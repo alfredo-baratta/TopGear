@@ -159,27 +159,29 @@
           
           <div class="riga">
             <label>Email:</label>
-            <input type="text" class="input-text" name="email" value="<%= request.getAttribute("email") %>" readonly/>
+            <input type="text" class="input-email" name="email" value="<%= request.getAttribute("email") %>" readonly/>
           </div>
           <div class="riga">
             <label>Password attuale:</label>
-            <input type="password" class="input-text" name="passwordAttuale"/>
+            <input type="password" class="input-text" name="passwordAttuale" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}" required/>
           </div>
           <div class="riga">
             <label>Nuova password:</label>
-            <input type="password" class="input-text" name="nuovaPassword"/>
+            <input type="password" class="input-text" name="nuovaPassword" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}" required/>
           </div>
           
          
           
           <div class="tasti">
             <button type="submit" class="save-button">Salva</button>
-            <button type="button" class="cancel-button">Annulla</button>
+            <button type="reset" class="cancel-button">Annulla</button>
           </div>
         </form>
       </div>
     </div>
   </div>
+  
+  
 </body>
 <%@ include file="footer.html" %>
 </html>

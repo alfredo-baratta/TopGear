@@ -114,7 +114,7 @@ pageEncoding="UTF-8" %>
         </a>
       </div>
       <div class="sezione">
-        <a href="/Ordini">
+        <a href="/Orders">
           <svg
             class="icon"
             width="25"
