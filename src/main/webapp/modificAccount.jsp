@@ -130,6 +130,39 @@ pageEncoding="UTF-8" %>
 	display:flex;
 	justify-content:center;
 	}
+	
+	@media (max-width: 600px) {
+  /* Stili specifici per dispositivi con larghezza massima di 600px */
+
+  .contenitore-esterno {
+    width: 90%;
+    margin: 0 auto;
+  }
+
+  .input-text {
+    width: 100%;
+  }
+
+  .edit-button {
+    margin-left: 0;
+  }
+  
+  .tasti {
+    flex-direction: column;
+  }
+
+  .save-button,
+  .cancel-button {
+    width: 100%;
+    margin-top: 10px;
+  }
+  
+  .contenitore {
+    padding: 10px;
+  }
+}
+	
+
     </style>
   </head>
   
