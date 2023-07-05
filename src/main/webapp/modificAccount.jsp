@@ -132,7 +132,6 @@ pageEncoding="UTF-8" %>
 	}
 	
 	@media (max-width: 600px) {
-  /* Stili specifici per dispositivi con larghezza massima di 600px */
 
   .contenitore-esterno {
     width: 90%;
