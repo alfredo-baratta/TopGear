@@ -65,15 +65,14 @@ public class Ordine {
 		this.type = type;
 	}
 	
-	public Risposta salvaOrdine(List<String> cartItems, int totalProducts, float totalPrice, String fkUtente) {
-		Risposta r = new Risposta();
+	public int salvaOrdine(List<String> cartItems, int totalProducts, float totalPrice, String fkUtente) {
 		
 		long millis = System.currentTimeMillis();  
         Date date = new Date(millis);
         
 		this.setTotale(totalPrice);
 		this.dataPagamento = date;
-		
+		int fkOrdine = 0;
 		
 		try (Connection conn = DriverManagerConnectionPool.getConnection()) {
 			
@@ -89,7 +88,6 @@ public class Ordine {
 	        String selectLastInsertIdQuery = "SELECT LAST_INSERT_ID()";
 	        PreparedStatement selectLastInsertIdStmt = conn.prepareStatement(selectLastInsertIdQuery);
 	        ResultSet resultSet = selectLastInsertIdStmt.executeQuery();
-	        int fkOrdine = 0;
 	        if (resultSet.next()) {
 	            fkOrdine = resultSet.getInt(1);
 	        }
@@ -133,10 +131,80 @@ public class Ordine {
 		} 
 		catch (SQLException e) {
 	        e.printStackTrace();
-        	r.setEsito(false); 
-        	r.setMessage("Ops! Qualcosa e' andato storto.");
 	    }
+        return fkOrdine;
+	}
+	
+	public void salvaFattura(List<String> cartItems,  int totalProducts) {
 		
-        return r;
+		
+		int ordineAccessorioId = 0; //di default
+        PreparedStatement stmt = null;
+        String ordineAccessorioIdQuery = "";
+        
+        System.out.println("Elementi: " + totalProducts/5);
+        
+        //Query per prelevare l'ultimo ID
+        try (Connection conn = DriverManagerConnectionPool.getConnection()){
+        	ordineAccessorioIdQuery = "SELECT id FROM ordini_accessorio ORDER BY id DESC LIMIT " + totalProducts/5;
+        		
+        		Statement statement = conn.createStatement();
+        	    ResultSet resultSet = statement.executeQuery(ordineAccessorioIdQuery);
+        	    int i = 0;
+        	    
+                while (resultSet.next()) {
+                    ordineAccessorioId = resultSet.getInt("id");
+
+            		try {
+                        //Query di inserimento
+                        String query = "INSERT INTO fattura_accessori (prezzo, iva, fk_accessorio, fk_ordine_accessorio) VALUES (?, ?, ?, ?)";
+                        stmt = conn.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
+                        
+            	        	
+            			float prezzo = 0.0f;
+                        int fkAccessorio = 0;
+
+                    	for(int l = 0; l < 5; l++) {
+                    			
+                    		int index = (l + 5*i);
+                    		String couple_temp = cartItems.get(index);
+                    			
+                			String[] couple = couple_temp.split(":");
+                			if(l == 0) {
+                				fkAccessorio = Integer.parseInt(couple[1]);
+                			}
+                			else if (l == 3) {
+                				prezzo = Float.parseFloat(couple[1]);
+                			}
+                    	}
+                    		
+                        stmt.setFloat(1, prezzo);
+                        stmt.setFloat(2, 22);
+                        stmt.setInt(3, fkAccessorio);
+                        stmt.setInt(4, ordineAccessorioId);
+                        stmt.executeUpdate();
+                        
+                    } catch (SQLException e) {
+                        e.printStackTrace();
+                    }
+            		
+            		i++;
+                }
+                
+        	conn.close();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            if (stmt != null) {
+                try {
+                    stmt.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+ 
+        }
+
 	}
 }

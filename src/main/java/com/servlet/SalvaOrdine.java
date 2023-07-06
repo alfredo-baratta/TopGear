@@ -4,6 +4,8 @@ import java.io.IOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.*;
 import entities.Ordine;
 import javax.servlet.ServletException;
@@ -69,7 +71,6 @@ public class SalvaOrdine extends HttpServlet {
         int totalProducts = 0;
         float totalPrice = 0.0f;
 
-        
         for (String element : elements) {
             
             String[] keyValue = element.split(":");
@@ -91,6 +92,7 @@ public class SalvaOrdine extends HttpServlet {
             	}
             }
             
+            //ultime informazioni importanti:
             value = value.replace("\"", "");
             if (first_key.equals("\"totalProducts\"")) {
                 totalProducts = Integer.parseInt(value);
@@ -99,12 +101,20 @@ public class SalvaOrdine extends HttpServlet {
             }
         }
         
-        
         //salvo proprio l'ordine nel database
-        ordine.salvaOrdine(cartItems, totalProducts, totalPrice, cf);
+        int idOrdine = ordine.salvaOrdine(cartItems, totalProducts, totalPrice, cf);
+        
+        //Salvo la fattura nel DB
+        ordine.salvaFattura(cartItems, totalProducts);
 
         response.setContentType("text/plain");
         response.getWriter().write("Ordine effettuato correttamente!");
+
+        if (idOrdine != -1) {
+            response.getWriter().write("\nIdOrdine: " + idOrdine);
+        } else {
+            response.getWriter().write("\nErrore durante l'elaborazione dell'ordine.");
+        }
 	}
 	
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

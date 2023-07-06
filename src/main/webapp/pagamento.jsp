@@ -71,6 +71,8 @@ img{
 			}
 		}
 		
+		var idOrdine;
+		
 		function procedeToSaveOrder(){
 			//prendo tutto ciò che serve dal cookie
 			var cart = getCartFromCookie();
@@ -96,6 +98,12 @@ img{
       			
     			//Mostro a schermo un messaggio di avvenuta creazione ordine
       			console.log(data);
+    			
+      			// Verifica se la risposta contiene l'ID della fattura
+                if (data.includes("IdOrdine:")) {
+                    idOrdine = parseInt(data.split(":")[1]); // Estrai l'ID della fattura dalla risposta
+                    console.log("ID Ordine:", idOrdine); // Mostra l'ID della fattura nella console
+                }
     			
     		})
     		.catch(error => {
@@ -164,50 +172,36 @@ img{
 	    	}
 	    	
 	    function stampaFattura(){
-			//prendo tutto ciò che serve dal cookie
-			var cart = getCartFromCookie();
-		 	const totalProducts = getTotalProductsFromCookie();
-		 	const totalPrice = getTotalPriceFromCookie();
-		 	
-		 	const orderData = {
-		 		cart: cart,
-		 		totalProducts: totalProducts,
-		 		totalPrice: totalPrice
-		 	};
-		  
-			//esegui una richiesta AJAX per passare i dati alla servlet
-			fetch('FatturaServlet', {
-    			method: 'POST',
-   				headers: {
-      				'Content-Type': 'application/json',
-   				},
-    			body: JSON.stringify(orderData),
-  			})
-    		.then(response => response.blob())
-    		.then(blob => {
-    			
-    			//URL dal blob e link temp per scaricare il PDF
-    	        const url = URL.createObjectURL(blob);
-    	        const link = document.createElement('a');
-    	        link.href = url;
-    	        link.download = 'fattura.pdf';
-    	        
-    	        //aggiungo il Link al DOM, simulo il click su tale link, poi rimuovo il tutto
-    	        document.body.appendChild(link);
-    	        link.click();
+	        if (idOrdine) { //Verifico se idOrdine ha un valore
+	            fetch('FatturaServlet', {
+	                method: 'POST',
+	                headers: {
+	                    'Content-Type': 'text/plain',
+	                },
+	                body: idOrdine.toString(),
+	            })
+	                .then(response => response.blob())
+	                .then(blob => {
+	                    const url = URL.createObjectURL(blob);
+	                    const link = document.createElement('a');
+	                    link.href = url;
+	                    link.download = 'fattura.pdf';
 
-    	        document.body.removeChild(link);
-    	        URL.revokeObjectURL(url);
-    	        
-    	      	//Mostro a schermo 'na roba per indicare che la fattura è stata scaricata
-    			
-    		})
-    		.catch(error => {
-      			
-     		 console.error(error);
-    		});	
-			
-			//cancellaTuttoDalCookie()
+	                    document.body.appendChild(link);
+	                    link.click();
+
+	                    document.body.removeChild(link);
+	                    URL.revokeObjectURL(url);
+
+	                    // Mostro a schermo che la fattura è stata scaricata
+	                })
+	                .catch(error => {
+	                    console.error(error);
+	                });
+	        } else {
+	            console.log("ID Fattura non disponibile."); // Mostra un messaggio se idFattura non ha un valore
+	        }
+
 	    }
 	    
 	    function cancellaTuttoDalCookie(){
