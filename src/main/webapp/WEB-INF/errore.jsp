@@ -35,10 +35,10 @@
             margin-bottom: 30px;
         }
 
-        .button {
+        .link {
             background-color: #4E9BB7;
             color: #ffffff;
-            padding: 10px 20px;
+            padding: 10px 10px;
             border: none;
             border-radius: 5px;
             cursor: pointer;
@@ -47,13 +47,11 @@
 </head>
 <body>
     <div class="container">
-        <h1>Modifica Account</h1>
+        <h1>Errore</h1>
         <div>
-            <h3>Errore durante la modifica dell'account!</h3>
-            <p>Si è verificato un errore durante il salvataggio delle modifiche al tuo account.</p>
-            <form action="modificAccount">
-                <input type="submit" value="Torna alla pagina di modifica" class="button">
-            </form>
+            <h3>Oops sembra che qualcosa sia andato storto!</h3>
+            <p>Prova a ricaricare la pagina o tona alla</p>
+            <a class = "link" href="/TopGear/homepage.jsp">home</a>
         </div>
     </div>
 </body>

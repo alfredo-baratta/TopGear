@@ -180,7 +180,7 @@
     </style>
   </head>
   <body>
-     <video class="video-bg" src="assets/video.mp4" autoplay muted loop></video>
+     <video class="video-bg" src="assets/home.mp4" autoplay muted loop></video>
     <div class="section watch">
       <h3 class="title" style="position: fixed; bottom: 10">Auto</h3>
       <h1 class="title">Accendete i motori</h1>
