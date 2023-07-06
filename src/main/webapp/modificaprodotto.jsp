@@ -15,7 +15,7 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title><%= request.getAttribute("nome") %></title>
+    <title>Modifica</title>
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     
      <style>
@@ -226,6 +226,10 @@
 		}
       }
       
+      .rbdiv{
+      	margin-bottom: 10px;
+      	display: block;
+      }
       
     </style>
     <!-- Add the slick-theme.css if you want default styling -->
@@ -280,12 +284,15 @@
         <label for="qt_disp">Quantità disponibile:</label>
         <input type="number" id="qt_disp" name="disponibilita" value="<%= request.getAttribute("disponibilita") %>">
         
-        
-  		<input type="radio" id="rb1" class="visibile" name="visibile" value="false" <%= ("0".equals(String.valueOf(request.getAttribute("visibilita")))) ? "checked" : "" %>>
-  		<label for="rb1">Non visibile</label>
-
-  		<input type="radio" id="rb2" class="visibile" name="visibile" value="true" <%= ("1".equals(String.valueOf(request.getAttribute("visibilita")))) ? "checked" : "" %>>
-  		<label for="rb2">Visibile</label>
+        <div class="rbdiv">
+  			<input type="radio" id="rb1" class="visibile" name="visibile" value="false" <%= ("0".equals(String.valueOf(request.getAttribute("visibilita")))) ? "checked" : "" %>>
+  			<label for="rb1">Non visibile</label>
+		</div>
+		
+		<div>
+  			<input type="radio" id="rb2" class="visibile" name="visibile" value="true" <%= ("1".equals(String.valueOf(request.getAttribute("visibilita")))) ? "checked" : "" %>>
+  			<label for="rb2">Visibile</label>
+		</div>
 		
 		<input type="hidden" id="dacancellare" name="dacancellare" value="<%= dacancellare %>">
 		<input type="hidden" name="id" value="<%= request.getParameter("id") %>">
