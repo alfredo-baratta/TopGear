@@ -156,6 +156,7 @@
         }
 
         .header__icons {
+          margin-right:30px;
           display: flex;
           width: 80px;
           justify-content: center;
@@ -163,9 +164,29 @@
         }
         
         .cart-count-badge {
-          right: 40px;
-          top: 0px;
+		position: absolute;
+ 		top: -10px;
+  		right: -10px;
+  		background-color: red;
+  		color: white;
+  		border-radius: 50%;
+  		width: 20px;
+  		height: 20px;
+  		display: flex;
+  		justify-content: center;
+  		align-items: center;
+  		font-size: 12px;
+}
+
+.header__cart {
+  position: relative;
+}
+        
+        .account{
+        text-decoration: none; 
+        color: white;
         }
+
       }
 
     </style>
@@ -180,9 +201,10 @@
           <li><a href="">Model 3</a></li>
           <li><a href="/TopGear/catalogo">Shop</a></li>
         </ul>
-        <div class="header__icons">
-          <a style="text-decoration: none; color: white" href="/TopGear/cart"
-            >
+        <div class="header__icons"
+        style="display: flex; flex-direction: row;">
+        
+            <a class="header__cart" style="text-decoration: none; color: white; margin-right: 10px;" href="/TopGear/cart">
             <span class="cart-count-badge" id="header-quantity"></span><svg
               width="25"
               height="25"
@@ -196,6 +218,21 @@
                 d="M21.413 5.662a1.121 1.121 0 0 0-.87-.412H6.276L5.99 3.62A.75.75 0 0 0 5.25 3h-3a.75.75 0 0 0 0 1.5h2.37l2.141 12.13a.75.75 0 0 0 .739.62h12a.75.75 0 1 0 0-1.5H8.13l-.265-1.5h11.328a1.128 1.128 0 0 0 1.104-.904l1.35-6.75a1.124 1.124 0 0 0-.234-.934Z"
               ></path>
             </svg>
+          </a>
+          
+           <a class="account" style="text-decoration: none; color: white; margin-left: 10px;" href="/TopGear/Account">
+            <svg 
+            width="25" 
+            height="25" 
+            fill="none" 
+            stroke="currentColor" 
+            stroke-linecap="round" 
+            stroke-linejoin="round" 
+            stroke-width="2" viewBox="0 0 24 24" 
+            xmlns="http://www.w3.org/2000/svg">
+  			<path d="M12 10a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7Z"></path>
+  			<path d="M3 20.4v.6h18v-.6c0-2.24 0-3.36-.436-4.216a4 4 0 0 0-1.748-1.748C17.96 14 16.84 14 14.6 14H9.4c-2.24 0-3.36 0-4.216.436a4 4 0 0 0-1.748 1.748C3 17.04 3 18.16 3 20.4Z"></path>
+			</svg>
           </a>
 
           <div class="icon-hamburger">
