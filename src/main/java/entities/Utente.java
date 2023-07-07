@@ -33,7 +33,7 @@ public class Utente {
     	return codicefiscale;
     }
     
-    private void setCodicefiscale(String codicefiscale) {
+    public void setCodicefiscale(String codicefiscale) {
     	this.codicefiscale = codicefiscale;
     }
     
