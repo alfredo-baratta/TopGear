@@ -19,6 +19,6 @@
 	<classpathentry kind="lib" path="src/main/webapp/WEB-INF/lib/commons-logging-1.2.jar"/>
 	<classpathentry kind="lib" path="src/main/webapp/WEB-INF/lib/fontbox-2.0.29.jar"/>
 	<classpathentry kind="lib" path="src/main/webapp/WEB-INF/lib/pdfbox-2.0.29.jar"/>
-	<classpathentry kind="lib" path="C:/Users/alfre/Downloads/gson-2.10.1.jar"/>
+	<classpathentry kind="lib" path="src/main/webapp/WEB-INF/lib/gson-2.10.1.jar"/>
 	<classpathentry kind="output" path="build/classes"/>
 </classpath>
