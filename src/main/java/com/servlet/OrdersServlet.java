@@ -43,7 +43,20 @@ public class OrdersServlet extends HttpServlet {
 	    }
 	    else {
 	    	
-	    	String username = (String) session.getAttribute("username"); 
+	    	
+	        int pageSize = 5; // Numero di ordini per pagina
+	        int currentPage = 1; // Pagina corrente (predefinita: 1)
+	        int totalOrders = 0;
+
+	        String pageParam = request.getParameter("page");
+	        if (pageParam != null) {
+	            currentPage = Integer.parseInt(pageParam);
+	        }
+
+	        // Calcola l'indice iniziale dell'ordine in base alla pagina corrente
+	        int startIndex = (currentPage - 1) * pageSize;
+	        
+	        String username = (String) session.getAttribute("username"); 
 	        String cf = "";
 	        try (Connection conn = DriverManagerConnectionPool.getConnection();
 	                PreparedStatement statement = conn.prepareStatement("SELECT * FROM utenti WHERE cf = ?")) {
@@ -59,16 +72,27 @@ public class OrdersServlet extends HttpServlet {
 	               System.out.println("Errore: " + e.getMessage());
 	           }
 	    	
-	    	//deve mostrare a schermo alcune info sugli ordini presi dal DB, come Data, quantità di oggetti
-	    	//e totale speso per quell'ordine
 	    	Connection conn = null;
 
 	    	try {
 	        	conn = dataSource.getConnection();
+	        	
+	        	//calcolo il numero totale di ordini:
+	        	String queryOrdiniTotali = "SELECT * FROM ordini WHERE fk_utente = ?";
+	            PreparedStatement stmt_ordini_totali = conn.prepareStatement(queryOrdiniTotali);
+	            stmt_ordini_totali.setString(1, cf);
+	            ResultSet rs_ordini_totali = stmt_ordini_totali.executeQuery();
 	            
-	            String query = "SELECT * FROM ordini WHERE fk_utente = ?";
+	            while (rs_ordini_totali.next()) {
+	                totalOrders++;
+	            }
+	        	
+	            // Aggiungi la logica per ottenere solo una pagina di ordini dal database
+	            String query = "SELECT * FROM ordini WHERE fk_utente = ? LIMIT ?, ?";
 	            PreparedStatement stmt = conn.prepareStatement(query);
 	            stmt.setString(1, cf);
+	            stmt.setInt(2, startIndex);
+	            stmt.setInt(3, pageSize);
 	            ResultSet rs = stmt.executeQuery();
 	            
 	            List<Ordine> ordini = new ArrayList<Ordine>();
@@ -82,6 +106,10 @@ public class OrdersServlet extends HttpServlet {
 	            }
 	            
 	            request.setAttribute("ordini", ordini);
+	            request.setAttribute("currentPage", currentPage);
+	            request.setAttribute("pageSize", pageSize);
+	            request.setAttribute("totalOrders", totalOrders);
+	            
 	            
 	            RequestDispatcher dispatcher = request.getRequestDispatcher("/orders.jsp");
 	            dispatcher.forward(request, response);

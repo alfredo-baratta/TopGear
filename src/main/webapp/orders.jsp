@@ -2,6 +2,8 @@
     pageEncoding="UTF-8"%>
     
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ page import ="entities.*" %>
+<%@ page import="java.util.List" %>
     
 <!DOCTYPE html>
 <html lang="it">
@@ -55,6 +57,19 @@
 	  display: flex;
 	  align-items: center;
 	}
+	
+	
+	.pagination {
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        margin-top: 20px;
+    }
+
+    .pagination button {
+        margin: 0 5px;
+    }
+	
 
 </style>
 
@@ -77,8 +92,42 @@
       </div>
      </div>
     </c:forEach>
-      <% } %>
-    </div>
+    
+    <% 
+   		 
+        int currentPage = (Integer) request.getAttribute("currentPage");
+    	int pageSize = (Integer) request.getAttribute("pageSize");
+        int totalOrders = (Integer) request.getAttribute("totalOrders");
+        int totalPages = (int) Math.ceil((double) totalOrders / pageSize);
+
+        // Genera i pulsanti per la paginazione
+        String baseUrl = request.getRequestURL().toString().replace("orders.jsp", "orders");
+
+        // Pulsante Pagina Precedente
+ 		if (totalPages > 1) {
+       		if (currentPage > 1) {
+          		String prevUrl = baseUrl + "?page=" + (currentPage - 1);
+	 		 %>
+	          	<a href="<%= prevUrl %>"><button>Precedente</button></a>
+	 	 	 <%
+	      	}
+	
+	     	for (int i = 1; i <= totalPages; i++) {
+	        	  String pageUrl = baseUrl + "?page=" + i;
+	 			 %>
+	          		<a href="<%= pageUrl %>"><button<%= (currentPage == i) ? " disabled" : "" %>><%= i %></button></a>
+	  			 <%
+	     	}
+
+	      	if (currentPage < totalPages) {
+	         	 String nextUrl = baseUrl + "?page=" + (currentPage + 1);
+	  			%>
+	          		<a href="<%= nextUrl %>"><button>Successiva</button></a>
+	 	 		<%
+        	} 
+    	%>
+    	</div>
+      <% } } %>
 	
 	<script>
 
