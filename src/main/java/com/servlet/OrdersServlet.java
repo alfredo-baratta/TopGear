@@ -9,17 +9,17 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import java.io.IOException;
+import java.util.Date;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Base64;
 import java.util.List;
 import javax.annotation.Resource;
 import javax.sql.DataSource;
 
+import Model.DriverManagerConnectionPool;
 import entities.*;
 
 @WebServlet("/orders")
@@ -27,8 +27,7 @@ public class OrdersServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     public OrdersServlet() {
-        super();
-        
+        super();    
     }
     
 	@Resource(name="jdbc/topgear")
@@ -44,46 +43,47 @@ public class OrdersServlet extends HttpServlet {
 	    }
 	    else {
 	    	
+	    	String username = (String) session.getAttribute("username"); 
+	        String cf = "";
+	        try (Connection conn = DriverManagerConnectionPool.getConnection();
+	                PreparedStatement statement = conn.prepareStatement("SELECT * FROM utenti WHERE cf = ?")) {
+
+	               statement.setString(1, username);
+	               try (ResultSet rs = statement.executeQuery()) {
+	                   if (rs.next()) {
+	                       cf = rs.getString("cf");
+	                   }
+	               }
+	               DriverManagerConnectionPool.releaseConnection(conn);
+	           } catch (Exception e) {
+	               System.out.println("Errore: " + e.getMessage());
+	           }
+	    	
 	    	//deve mostrare a schermo alcune info sugli ordini presi dal DB, come Data, quantità di oggetti
 	    	//e totale speso per quell'ordine
 	    	Connection conn = null;
-	    	
-	    	/*
-	    	 * 
-	    	 * SISI questo è ancora un WIP copiato da... Pietro? mi pare? yea, poi quando arrivo a fare la pagina 
-	    	 * dove mostrare gli ordini lo modifico opportunamente questo codice
+
 	    	try {
 	        	conn = dataSource.getConnection();
 	            
-	            String query = "SELECT * FROM accessori WHERE visibilita = true";
+	            String query = "SELECT * FROM ordini WHERE fk_utente = ?";
 	            PreparedStatement stmt = conn.prepareStatement(query);
+	            stmt.setString(1, cf);
 	            ResultSet rs = stmt.executeQuery();
 	            
-	            List<Accessorio> accessori = new ArrayList<Accessorio>();
+	            List<Ordine> ordini = new ArrayList<Ordine>();
 
 	            while (rs.next()) {
 	            	int id = rs.getInt("id");
-	                String nome = rs.getString("nome");
-	                String descrizione = rs.getString("descrizione");
-	                float prezzo = (float) rs.getDouble("prezzo");
-	                int disponibilita = rs.getInt("disponibilita");
-	                int idImmagine = -1;
+	            	float totale = rs.getFloat("totale");
+	            	Date data_pagamento = rs.getDate("data_pagamento");
 	                
-	                String q2 = "SELECT id FROM immagini_accessorio WHERE fk_accessorio = ? LIMIT 1";
-	                PreparedStatement stmt2 = conn.prepareStatement(q2);
-	                stmt2.setInt(1, id);
-	                ResultSet rs2 = stmt2.executeQuery();
-	                
-	                if(rs2.next()) {
-	                	idImmagine = rs2.getInt("id");
-	                }
-	                
-	                accessori.add(new Accessorio(id, nome, descrizione, prezzo, disponibilita, String.valueOf(idImmagine)));
+	                ordini.add(new Ordine(id, totale, data_pagamento, cf, true));
 	            }
 	            
-	            request.setAttribute("accessori", accessori);
+	            request.setAttribute("ordini", ordini);
 	            
-	            RequestDispatcher dispatcher = request.getRequestDispatcher("/catalogo.jsp");
+	            RequestDispatcher dispatcher = request.getRequestDispatcher("/orders.jsp");
 	            dispatcher.forward(request, response);
 	        } catch (Exception e) {
 	            System.out.println("Errore: " + e.getMessage());
@@ -91,19 +91,12 @@ public class OrdersServlet extends HttpServlet {
 	            if (conn != null) {
 	                try {
 	                    conn.close();
-	                    RequestDispatcher dispatcher = request.getRequestDispatcher("/orders.jsp");
-	        			dispatcher.forward(request,  response);
 	                } catch (SQLException e) {
 	                    System.out.println("Errore durante la chiusura della connessione: " + e.getMessage());
 	                }
 	            }
 	        }
-	        */
-	    }
-	    
-	    RequestDispatcher dispatcher = request.getRequestDispatcher("/orders.jsp");
-		dispatcher.forward(request,  response);
-		
+	    }	
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

@@ -51,7 +51,7 @@ public class SalvaOrdine extends HttpServlet {
            } catch (Exception e) {
                System.out.println("Errore: " + e.getMessage());
            }
-        System.out.println("cf: " + cf);        
+        
         Ordine ordine = new Ordine();
         
         
@@ -82,7 +82,6 @@ public class SalvaOrdine extends HttpServlet {
 
             	for(int i = 0; i < items.length/5; i++) {
             		
-            		System.out.println("\nnuovo item!");
             		for(int j = 0; j < 5; j++) {
             			int index = (j + 5*i);
             			String couple_temp = items[index];

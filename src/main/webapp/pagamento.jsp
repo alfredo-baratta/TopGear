@@ -99,10 +99,10 @@ img{
     			//Mostro a schermo un messaggio di avvenuta creazione ordine
       			console.log(data);
     			
-      			// Verifica se la risposta contiene l'ID della fattura
+
                 if (data.includes("IdOrdine:")) {
-                    idOrdine = parseInt(data.split(":")[1]); // Estrai l'ID della fattura dalla risposta
-                    console.log("ID Ordine:", idOrdine); // Mostra l'ID della fattura nella console
+                    idOrdine = parseInt(data.split(":")[1]); 
+                    console.log("ID Ordine:", idOrdine); 
                 }
     			
     		})

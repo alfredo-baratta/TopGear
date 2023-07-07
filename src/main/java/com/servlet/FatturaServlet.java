@@ -69,7 +69,6 @@ public class FatturaServlet extends HttpServlet {
         int cellHeight = 30;
         int cellWidth = 100;
         int colCount = 3;
-        //int rowCount = 1;
         
         //Linea divisoria tra gli elementi
         contentStream.setLineWidth(1);
@@ -157,7 +156,6 @@ public class FatturaServlet extends HttpServlet {
             contentStream.newLineAtOffset(0, - 20);
             contentStream.showText("CF: " + fk_utente);
             
-            //contentStream.newLineAtOffset(0, - 20);
             contentStream.newLineAtOffset(260, +40);
             contentStream.showText("Città: " + citta);
             contentStream.newLineAtOffset(0, - 20);
