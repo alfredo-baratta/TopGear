@@ -15,6 +15,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.Part;
 
+import com.google.gson.JsonObject;
+
 import Model.DriverManagerConnectionPool;
 
 /**
@@ -47,6 +49,7 @@ public class caricaAccessorio extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String nome = request.getParameter("nome");
+		System.out.println(nome);
 		String descrizione = request.getParameter("descrizione");
 		double prezzo = Double.parseDouble(request.getParameter("prezzo"));
 		double iva = Double.parseDouble(request.getParameter("iva"));
@@ -93,9 +96,31 @@ public class caricaAccessorio extends HttpServlet {
 			System.out.println("Errore: " + e.getMessage());
 		}
 		
-		response.setStatus(HttpServletResponse.SC_OK);
-		response.setContentType("application/json; charset=UTF-8");
-		response.getWriter().write("{\"success\": true}");
+		System.out.println("Mannaggia la marina");
+		
+		/*response.setContentType("application/json");
+		response.setCharacterEncoding("UTF-8");
+
+		JsonObject responseJson = new JsonObject();
+		responseJson.addProperty("success", true);
+
+		response.setHeader("Cache-Control", "no-cache");
+		response.getWriter().write(responseJson.toString());*/
+		
+		JsonObject responseJson = new JsonObject();
+
+	    // Aggiungi i dati alla risposta JSON
+	    responseJson.addProperty("success", true);
+	    responseJson.addProperty("message", "Il caricamento dell'accessorio è avvenuto con successo");
+
+	    // Imposta il tipo di contenuto e la codifica dei caratteri della risposta
+	    response.setContentType("application/json");
+	    response.setCharacterEncoding("UTF-8");
+	    
+	    System.out.println(responseJson.toString());
+	    // Invia la risposta JSON al client
+	    response.getWriter().write(responseJson.toString());
+
 
 	}
 

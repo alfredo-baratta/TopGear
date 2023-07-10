@@ -379,6 +379,7 @@
 				        location.reload();
 				    },
 				    error: function() {
+				    	alert("Errore caricamento immagine")
 				    }
 		        });
 		    }

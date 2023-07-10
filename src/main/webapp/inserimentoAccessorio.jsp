@@ -187,9 +187,9 @@
 </head>
 <body>
     <div class="informazioni-prodotto">
-      <form class="informazioni-prodotto-form" method="post" onsubmit="inviaDati()"  enctype="multipart/form-data">
+      <form class="informazioni-prodotto-form" method="post" enctype="multipart/form-data">
         <label for="nome" class="labnome">Nome:</label>
-        <input type="text" name="nome" required>
+        <input type="text" id="nome" name="nome" required>
         
         <label for="descrizione">Descrizione:</label>
         <textarea id="descrizione" name="descrizione" rows="8" cols="50" required></textarea>
@@ -218,7 +218,7 @@
 			<i class="material-icons">add_photo_alternate</i>
 			Carica immagine
 		</label>
-		<button type="submit" class="submit-button">Inserisci prodotto</button>
+		<button type="submit" class="submit-button" onclick="inviaDati(event)">Inserisci prodotto</button>
         
         <output id="imageOutput"></output>       
       </form>
@@ -283,10 +283,12 @@
 	}
 	
 	
-	function inviaDati() {
+	function inviaDati(e) {
 		  // Recupera i dati del form
+		  e.preventDefault();
 		 
 		  var nome = document.querySelector('input[name="nome"]').value;
+		  console.log(nome);
 		  var descrizione = document.querySelector('textarea[name="descrizione"]').value;
 		  var prezzo = document.querySelector('input[name="prezzo"]').value;
 		  var iva = document.querySelector('input[name="iva"]').value;
@@ -313,25 +315,33 @@
 		  
 		  // Invia i dati tramite Ajax
 		  $.ajax({
-			  url: 'caricamentoAccessorio',
-			  type : 'POST',
-              encType : 'multipart/form-data',
-              dataType: 'json',
-              //contentType: 'application/x-www-form-urlencoded',
-              cache : false,
-              processData : false,
-              contentType : false,
-              
-              data : formData,
-              
-		    success: function(response) {
-		    	window.location.replace("/TopGear/catalogoadmin");
-		    },
-		    error: function(xhr, status, error) {
-		      alert(xhr.responseText+" "+status+" "+error)
-		    }
-		  });
-		}
+			    url: 'caricamentoAccessorio',
+			    type: 'POST',
+			    data: formData,
+			    cache: false,
+			    processData: false,
+			    contentType: false, // Imposta correttamente l'intestazione "Content-Type" a "false" per l'upload dei file multipart
+			    dataType: 'json', // Imposta il tipo di dati atteso come JSON
+			    beforeSend: function(xhr) {
+			    	xhr.setRequestHeader('Accept-Charset', 'UTF-8');
+			    },
+			    success: function(response) {
+			        // Gestisci la risposta della servlet
+			        if (response.success) {
+			            // Il caricamento dell'accessorio è avvenuto con successo
+			            location.href="/TopGear/catalogoadmin";
+			        } else {
+			            // Il caricamento dell'accessorio ha fallito
+			            alert("Errore durante il caricamento dell'accessorio");
+			        }
+			    },
+			    error: function(xhr, status, error) {
+			        // Errore durante l'invio AJAX
+			        alert("Errore durante l'invio AJAX: " + error);
+			    }
+			});
+	}
+
 	
 	// Funzione per convertire l'URL dell'immagine in un oggetto File
 	function dataURLtoFile(dataURL, filename) {
