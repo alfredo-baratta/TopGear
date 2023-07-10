@@ -95,7 +95,10 @@ public class caricaAccessorio extends HttpServlet {
 			System.out.println("Errore: " + e.getMessage());
 		}
 		
-		response.sendRedirect("catalogoadmin");
+		response.setContentType("application/json");
+		response.setCharacterEncoding("UTF-8");
+		response.getWriter().write("{\"success\": true}");
+
 	}
 
 }

@@ -310,17 +310,13 @@
 			  formData.append('fileInput[]', file);
 			});
 		  
-		  var formDataString = formData.toString();
-              var formDataSize = formDataString.length;
-
-              // Visualizza la dimensione in un alert
-              alert("Dimensione dati FormData: " + formDataSize + " byte");
-              console.log(imagesArray),
+		  
 		  // Invia i dati tramite Ajax
 		  $.ajax({
 			  url: 'caricamentoAccessorio',
 			  type : 'POST',
               encType : 'multipart/form-data',
+              dataType: 'json',
               //contentType: 'application/x-www-form-urlencoded',
               cache : false,
               processData : false,
@@ -329,7 +325,7 @@
               data : formData,
               
 		    success: function(response) {
-		    	window.location.href = "/catalogoadmin"
+		    	window.location.replace("/TopGear/catalogoadmin");
 		    },
 		    error: function(xhr, status, error) {
 		      alert(xhr+" "+status+" "+error)
