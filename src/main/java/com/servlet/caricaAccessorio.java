@@ -55,8 +55,6 @@ public class caricaAccessorio extends HttpServlet {
 		
 		int fkAccessorio = -1;
 		
-		System.out.println("Sono qui");
-		
 		try (Connection conn = DriverManagerConnectionPool.getConnection()){
 				PreparedStatement insertStatement = conn.prepareStatement("INSERT INTO accessori (nome, descrizione, prezzo, iva, disponibilita, visibilita) VALUES (?, ?, ?, ?, ?, ?)", Statement.RETURN_GENERATED_KEYS);
 				insertStatement.setString(1, nome);
@@ -95,8 +93,8 @@ public class caricaAccessorio extends HttpServlet {
 			System.out.println("Errore: " + e.getMessage());
 		}
 		
-		response.setContentType("application/json");
-		response.setCharacterEncoding("UTF-8");
+		response.setStatus(HttpServletResponse.SC_OK);
+		response.setContentType("application/json; charset=UTF-8");
 		response.getWriter().write("{\"success\": true}");
 
 	}

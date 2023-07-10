@@ -328,7 +328,7 @@
 		    	window.location.replace("/TopGear/catalogoadmin");
 		    },
 		    error: function(xhr, status, error) {
-		      alert(xhr+" "+status+" "+error)
+		      alert(xhr.responseText+" "+status+" "+error)
 		    }
 		  });
 		}
