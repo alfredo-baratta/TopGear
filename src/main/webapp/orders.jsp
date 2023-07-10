@@ -88,22 +88,21 @@
         </div>
       </div>
       <div class="button">
-      	<button onclick="location.href='ordine?id=${ordine.getId()}" class="order-button">Dettagli</button>
+      	<button onclick="location.href='dettagliOrdine?id=${ordine.getId()}'" class="order-button">Dettagli</button>
       </div>
      </div>
     </c:forEach>
     
     <% 
-   		 
+   		 //"location.href='dettagliOrdine?id=${ordine.getId()}'"
         int currentPage = (Integer) request.getAttribute("currentPage");
     	int pageSize = (Integer) request.getAttribute("pageSize");
         int totalOrders = (Integer) request.getAttribute("totalOrders");
         int totalPages = (int) Math.ceil((double) totalOrders / pageSize);
 
-        // Genera i pulsanti per la paginazione
+        //Genera i pulsanti per la paginazione
         String baseUrl = request.getRequestURL().toString().replace("orders.jsp", "orders");
 
-        // Pulsante Pagina Precedente
  		if (totalPages > 1) {
        		if (currentPage > 1) {
           		String prevUrl = baseUrl + "?page=" + (currentPage - 1);

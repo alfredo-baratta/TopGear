@@ -18,7 +18,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.sql.DataSource;
 
 
-@WebServlet("/DetailsOrder")
+@WebServlet("/dettagliOrdine")
 public class DetailsOrder extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	@Resource(name="jdbc/topgear")
@@ -32,7 +32,7 @@ public class DetailsOrder extends HttpServlet {
 		
         String idOrdine = request.getParameter("id");
         
-        if(idOrdine == null || idOrdine.isEmpty()) {
+        if(idOrdine == null || idOrdine.isEmpty()) {        	
         	response.sendRedirect("/TopGear/orders");
         	return;
         }
@@ -40,7 +40,7 @@ public class DetailsOrder extends HttpServlet {
         Connection conn = null;
 
         try {
-        	
+        	      	
         	conn = dataSource.getConnection();
         	
         	int id = Integer.parseInt(idOrdine);
@@ -62,6 +62,7 @@ public class DetailsOrder extends HttpServlet {
                 ArrayList<OrdineAccessorio> ordini_accessorio = new ArrayList<OrdineAccessorio>();
                 
                 while(rs2.next()) {
+                	
                 	int id_ordine_accessorio = rs2.getInt("id");
                 	int quantita = rs2.getInt("quantita");
                 	int id_accessorio = rs2.getInt("fk_accessorio");
